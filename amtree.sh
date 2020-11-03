@@ -14,6 +14,7 @@ OOTBNODETYPES=(${OOTBNODETYPES_7[@]})
 CONTAINERNODETYPES=( "PageNode" "CustomPageNode" )
 SCRIPTNODETYPES=( "ScriptedDecisionNode" "ClientScriptNode" "CustomScriptNode" )
 AM=""
+COOKIES="cookies.txt"
 REALM=""
 AMADMIN=""
 AMPASSWD=""
@@ -33,13 +34,15 @@ if ! [ -x "$(command -v jq)" ]; then
 fi
 
 function login {
+    NAME=$(echo "$AM-$REALM" | sed 's/^http[s]:\/\///g;s/\/.*-//g;s/\./_/g;s/\//-/g')
+    COOKIES=".cookies-$NAME.txt"
     AREALM=$REALM
     shopt -s nocasematch
     if [[ $AMADMIN == "amadmin" ]]; then
         AREALM=""
     fi
     shopt -u nocasematch
-    RESPONSE=$(curl -j -c cookies.txt -s -k -i -X POST -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" -H "X-OpenAM-Username:${AMADMIN}" -H "X-OpenAM-Password:${AMPASSWD}" "$AM/json/authenticate")
+    RESPONSE=$(curl -j -c "${COOKIES}" -s -k -i -X POST -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" -H "X-OpenAM-Username:${AMADMIN}" -H "X-OpenAM-Password:${AMPASSWD}" "$AM/json/authenticate")
     if [[ $RESPONSE = "" ]]; then
         echo 'Error: Check hostname is valid.'
         exit -1
@@ -55,7 +58,7 @@ function login {
 }
 
 function setVersion {
-    JVERSION=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/serverinfo/version)
+    JVERSION=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/serverinfo/version)
     VERSION=$(echo $JVERSION| jq -r  '.version')
     FULLVER=$(echo $JVERSION| jq -r  '.fullVersion')
     1>&2 echo "Connected to $FULLVER"
@@ -107,7 +110,7 @@ function prune {
 
     #get all the trees and their node references
     #these are all the nodes that are actively in use. every node instance we find in the next step, that is not in this list, is orphaned and will be removed/pruned.
-    JTREES=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
+    JTREES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
     ACTIVENODES=($(echo $JTREES| jq -r  '.result|.[]|.nodes|keys|.[]'))
 
     #do any of the active nodes have inner nodes?
@@ -117,7 +120,7 @@ function prune {
 
         #get the inner nodes for each container node
         for CONTAINERNODE in "${CONTAINERNODES[@]}" ; do
-            JINNERNODES=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$CONTAINERNODETYPE/$CONTAINERNODE)
+            JINNERNODES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$CONTAINERNODETYPE/$CONTAINERNODE)
             local ERROR="$(echo $JINNERNODES | jq -r '.code')"
             if [ "$ERROR" == "null" ] ; then
                 INNERNODES+=($(echo $JINNERNODES | jq -r '.nodes|.[]|._id'))
@@ -132,7 +135,7 @@ function prune {
     ACTIVENODES+=(${INNERNODES[@]})
 
     #get all the node instances
-    JNODES=$(curl -b cookies.txt -s -k -X POST --data "{}" -H "Accept-API-Version:resource=1.0" -H  "Content-Type:application/json" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes?_action=nextdescendents)
+    JNODES=$(curl -b "${COOKIES}" -s -k -X POST --data "{}" -H "Accept-API-Version:resource=1.0" -H  "Content-Type:application/json" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes?_action=nextdescendents)
     NODES=($(echo $JNODES| jq -r  '.result|.[]|._id'))
     ORPHANEDNODES=()
 
@@ -166,7 +169,7 @@ function prune {
             do
                 1>&2 echo -n "."
                 TYPE=$(echo $JNODES | jq -r --arg id "$NODE" '.result|.[]|select(._id==$id)|._type|._id')
-                RESULT=$(curl -b cookies.txt -s -k -X DELETE -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$NODE)
+                RESULT=$(curl -b "${COOKIES}" -s -k -X DELETE -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$NODE)
             done
             1>&2 echo
             1>&2 echo "Done."
@@ -183,7 +186,7 @@ function prune {
 
 
 function listTrees {
-    local JTREES=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
+    local JTREES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
     local TREES=($(echo $JTREES| jq -r '.result|.[]|._id'))
     if [[ -z $FILE ]] ; then
         CUSTOM=false
@@ -217,7 +220,7 @@ function isCustomTree {
         if ! itemIn "$TYPE" "${OOTBNODETYPES[@]}" ; then
             return 1
         fi
-        local NODE=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$each | jq '. | del (._rev)')
+        local NODE=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$each | jq '. | del (._rev)')
 
         # inner nodes
         # Currently the only node type containing inner nodes is "PageNode". Additional types can be defined in CONTAINERNODETYPES.
@@ -258,7 +261,7 @@ function describeAllTrees {
         done;
     else
         login
-        local JTREES=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
+        local JTREES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
         local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id'))
         for TREE in "${TREES[@]}" ; do
             describe "$(exportTree "$TREE" true)"
@@ -333,7 +336,7 @@ function describe {
 }
 
 function exportAllTrees {
-    local JTREES=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
+    local JTREES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
     local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id'))
     local EXPORTS="{ \"trees\":{} }"
     for TREE in "${TREES[@]}" ; do
@@ -352,7 +355,7 @@ function exportAllTrees {
 function exportTreesSeparately {
     local FILEPREFIX=$FILE
     echo "Export all trees to files"
-    local JTREES=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
+    local JTREES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
     local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id'))
     local EXPORTS="{ \"trees\":{} }"
     for TREE in "${TREES[@]}" ; do
@@ -377,7 +380,7 @@ function importTreesSeparately {
     JTREES=${JTREES%???????}
     jtrees=$JTREES$'  }\n}'
     # get list of already installed trees for dependency and conflict resolution
-    local jinstalled=$(curl -b cookies.txt -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
+    local jinstalled=$(curl -b "${COOKIES}" -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
     local installed=($(echo $jinstalled| jq -r  '.result|.[]|._id'))
     local resolved=()
     local unresolved=()
@@ -391,13 +394,12 @@ function importTreesSeparately {
 # exportTree <tree> <flag>
 # where tree is the name of tree to export and if flag is set to anything, stdout will be used for output even if $FILE is set.
 function exportTree {
-    1>&2 echo -n "$1"
-    local TREE=$(curl -b cookies.txt -f -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$1 | jq -c '. | del (._rev)')
+    local TREE=$(curl -b "${COOKIES}" -f -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$1 | jq -c '. | del (._rev)')
     if [ -z "$TREE" ]; then
         1>&2 echo "Failed to find tree: $1"
         exit -1
     fi
-    1>&2 echo -n "."
+    1>&2 echo -n "$1."
 
     local NODES=$(echo $TREE| jq -r  '.nodes | keys | .[]')
 
@@ -407,7 +409,7 @@ function exportTree {
 
     for each in $NODES ; do
         local TYPE=$(echo $TREE | jq -r --arg NODE "$each" '.nodes | .[$NODE] | .nodeType')
-        local NODE=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$each | jq '. | del (._rev)')
+        local NODE=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$each | jq '. | del (._rev)')
         1>&2 echo -n "."
         EXPORTS=$(echo $EXPORTS "{ \"nodes\": { \"$each\": $NODE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
 
@@ -418,14 +420,14 @@ function exportTree {
             for page in $PAGES; do
                 local PAGENODEID=$(echo $NODE | jq -r --arg IND "$page" '.nodes[($IND|tonumber)] | ._id')
                 local PAGENODETYPE=$(echo $NODE | jq -r --arg IND "$page" '.nodes[($IND|tonumber)] | .nodeType')
-                local PAGENODE=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$PAGENODETYPE/$PAGENODEID | jq '. | del (._rev)')
+                local PAGENODE=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$PAGENODETYPE/$PAGENODEID | jq '. | del (._rev)')
                 1>&2 echo -n "."
                 EXPORTS=$(echo $EXPORTS "{ \"innernodes\": { \"$PAGENODEID\": $PAGENODE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
                 
                 # Export scripts inside page nodes
                 if itemIn "$PAGENODETYPE" "${SCRIPTNODETYPES[@]}" ; then
                     local SCRIPTID=$(echo $PAGENODE | jq -r '.script')
-                    local SCRIPT=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$SCRIPTID | jq '. | del (._rev)')
+                    local SCRIPT=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$SCRIPTID | jq '. | del (._rev)')
                     EXPORTS=$(echo $EXPORTS "{ \"scripts\": { \"$SCRIPTID\": $SCRIPT } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
                 fi
             done
@@ -433,19 +435,19 @@ function exportTree {
         # Export scripts referenced by nodes in this tree
         if itemIn "$TYPE" "${SCRIPTNODETYPES[@]}" ; then
             local SCRIPTID=$(echo $NODE | jq -r '.script')
-            local SCRIPT=$(curl -b cookies.txt -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$SCRIPTID | jq '. | del (._rev)')
+            local SCRIPT=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$SCRIPTID | jq '. | del (._rev)')
             1>&2 echo -n "."
             EXPORTS=$(echo $EXPORTS "{ \"scripts\": { \"$SCRIPTID\": $SCRIPT } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
         fi
     done
 
     EXPORTS=$(echo ${EXPORTS} "{ \"tree\":${TREE} }" | jq -s 'reduce .[] as $item ({}; . * $item)')
+    1>&2 echo "."
     if [[ -z $FILE ]] || [[ -n $2 ]] ; then
         echo $EXPORTS | jq .
     else
         echo $EXPORTS | jq . >>$FILE
     fi
-    1>&2 echo "."
 }
 
 
@@ -555,7 +557,6 @@ function resolve {
     elif [[ $after -gt 0 ]] ; then
         # 1>&2 echo "continuing dependency resolution."
         resolve $after
-        1>&2 echo "."
     fi
 }
 
@@ -569,7 +570,7 @@ function importAllTrees {
     fi
 
     # get list of already installed trees for dependency and conflict resolution
-    local jinstalled=$(curl -b cookies.txt -s -k -X GET --data "{}" -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
+    local jinstalled=$(curl -b "${COOKIES}" -s -k -X GET --data "{}" -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
     local installed=($(echo $jinstalled| jq -r  '.result|.[]|._id'))
     local resolved=()
     local unresolved=()
@@ -608,7 +609,7 @@ function importTree {
         NAME=$(echo $SCRIPT | jq -r '.name')
         1>&2 echo -n "."
         #1>&2 echo "Importing script $NAME ($each)"
-        RESULT=$(curl -b cookies.txt -s -k -X PUT --data "$SCRIPT" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$each)
+        RESULT=$(curl -b "${COOKIES}" -s -k -X PUT --data "$SCRIPT" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$each)
         if [ "$(echo $RESULT | jq '._id')" == "null" ]; then
             1>&2 echo "Error importing script $NAME ($each): $RESULT"
             1>&2 echo "$SCRIPT"
@@ -628,7 +629,7 @@ function importTree {
         NEWNODE=$(echo $INNERNODE | jq ._id=\"${NEWUUID}\")
         1>&2 echo -n "."
         #1>&2 echo "Importing inner node $TYPE ($NEWUUID)"
-        RESULT=$(curl -b cookies.txt -s -k -X PUT --data "$NEWNODE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$NEWUUID)
+        RESULT=$(curl -b "${COOKIES}" -s -k -X PUT --data "$NEWNODE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$NEWUUID)
         if [ "$(echo $RESULT | jq '._id')" == "null" ]; then
             1>&2 echo "Error importing inner node $TYPE ($NEWUUID): $RESULT"
             1>&2 echo "$NEWNODE"
@@ -656,7 +657,7 @@ function importTree {
         fi
         1>&2 echo -n "."
         #1>&2 echo "Importing node $TYPE ($NEWUUID)"
-        RESULT=$(curl -b cookies.txt -s -k -X PUT --data "$NEWNODE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$NEWUUID)
+        RESULT=$(curl -b "${COOKIES}" -s -k -X PUT --data "$NEWNODE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/nodes/$TYPE/$NEWUUID)
         if [ "$(echo $RESULT | jq '._id')" == "null" ]; then
             1>&2 echo "Error importing node $TYPE ($NEWUUID): $RESULT"
             1>&2 echo "$NEWNODE"
@@ -675,7 +676,7 @@ function importTree {
         TREE=$(echo $TREE | sed -e 's/'$each'/'$NEW'/g')
     done
     #1>&2 echo "Importing tree $1"
-    curl -b cookies.txt -s -k -X PUT --data "$TREE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$ID > /dev/null
+    curl -b "${COOKIES}" -s -k -X PUT --data "$TREE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$ID > /dev/null
     1>&2 echo "."
 }
 
