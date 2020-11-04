@@ -509,11 +509,13 @@ function exportTree {
                 # But if somebody were to create such a node and were to follow the same implementation 
                 # and property naming pattern as the existing email template referencing nodes, then 
                 # this code will handle such a node properly.
-                if itemIn "$PAGENODETYPE" "${EMAILTEMPLATENODETYPES[@]}" ; then
-                    local TEMPLATEID=$(echo $PAGENODE | jq -r '.emailTemplateName')
-                    local TEMPLATE=$(curl -s -k -X GET -H "Authorization: Bearer $ACCESS_TOKEN" $BASE_HOST/openidm/config/emailTemplate/$TEMPLATEID | jq '. | del (._rev)')
-                    1>&2 echo -n "."
-                    EXPORTS=$(echo $EXPORTS "{ \"emailTemplates\": { \"$TEMPLATEID\": $TEMPLATE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
+                if [ "$DEPLOYMENT" == "Cloud" ] || [ "$DEPLOYMENT" == "ForgeOps" ] ; then
+                    if itemIn "$PAGENODETYPE" "${EMAILTEMPLATENODETYPES[@]}" ; then
+                        local TEMPLATEID=$(echo $PAGENODE | jq -r '.emailTemplateName')
+                        local TEMPLATE=$(curl -s -k -X GET -H "Authorization: Bearer $ACCESS_TOKEN" $BASE_HOST/openidm/config/emailTemplate/$TEMPLATEID | jq '. | del (._rev)')
+                        1>&2 echo -n "."
+                        EXPORTS=$(echo $EXPORTS "{ \"emailTemplates\": { \"$TEMPLATEID\": $TEMPLATE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
+                    fi
                 fi
             done
         fi
@@ -525,11 +527,13 @@ function exportTree {
             EXPORTS=$(echo $EXPORTS "{ \"scripts\": { \"$SCRIPTID\": $SCRIPT } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
         fi
         # If this is FIDC or ForgeOps, export email templates referenced by nodes in this tree
-        if itemIn "$TYPE" "${EMAILTEMPLATENODETYPES[@]}" ; then
-            local TEMPLATEID=$(echo $NODE | jq -r '.emailTemplateName')
-            local TEMPLATE=$(curl -s -k -X GET -H "Authorization: Bearer $ACCESS_TOKEN" $BASE_HOST/openidm/config/emailTemplate/$TEMPLATEID | jq '. | del (._rev)')
-            1>&2 echo -n "."
-            EXPORTS=$(echo $EXPORTS "{ \"emailTemplates\": { \"$TEMPLATEID\": $TEMPLATE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
+        if [ "$DEPLOYMENT" == "Cloud" ] || [ "$DEPLOYMENT" == "ForgeOps" ] ; then
+            if itemIn "$TYPE" "${EMAILTEMPLATENODETYPES[@]}" ; then
+                local TEMPLATEID=$(echo $NODE | jq -r '.emailTemplateName')
+                local TEMPLATE=$(curl -s -k -X GET -H "Authorization: Bearer $ACCESS_TOKEN" $BASE_HOST/openidm/config/emailTemplate/$TEMPLATEID | jq '. | del (._rev)')
+                1>&2 echo -n "."
+                EXPORTS=$(echo $EXPORTS "{ \"emailTemplates\": { \"$TEMPLATEID\": $TEMPLATE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
+            fi
         fi
     done
 
