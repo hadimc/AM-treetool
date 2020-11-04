@@ -13,25 +13,50 @@ OOTBNODETYPES_7_1=( "PushRegistrationNode" "GetAuthenticatorAppNode" "MultiFacto
 OOTBNODETYPES=(${OOTBNODETYPES_7[@]})
 CONTAINERNODETYPES=( "PageNode" "CustomPageNode" )
 SCRIPTNODETYPES=( "ScriptedDecisionNode" "ClientScriptNode" "CustomScriptNode" )
+EMAILTEMPLATENODETYPES=( "EmailSuspendNode" "EmailTemplateNode" )
 AM=""
 COOKIES="cookies.txt"
 REALM=""
 AMADMIN=""
 AMPASSWD=""
 AMSESSION=""
+ACCESS_TOKEN=""
 FILE=""
+VERSION=""
+DEPLOYMENT="Classic"
 ORIGIN_CMD="md5<<<\$AM\$REALM"
-if ! [ -x "$(command -v md5)" ]; then
-    if [ -x "$(command -v md5sum)" ]; then
+SHA256SUM_CMD='shasum -a 256'
+
+checkUtils(){
+    if ! [ -x "$(command -v md5)" ]; then
+        if ! [ -x "$(command -v md5sum)" ]; then
+            1>&2 echo 'Error: neither md5 nor md5sum is installed.'
+            exit 1
+        fi
         ORIGIN_CMD="md5sum<<<\$AM\$REALM"
-    else
-        1>&2 echo 'Error: neither md5 nor md5sum is installed.'
     fi
-fi
-if ! [ -x "$(command -v jq)" ]; then
-    1>&2 echo 'Error: jq is required but not installed.'
-    exit 1
-fi
+    if ! [ -x "$(command -v jq)" ]; then
+        1>&2 echo 'Error: jq is required but not installed.'
+        exit 1
+    fi
+    if ! [ -x "$(command -v shasum)" ]; then
+        if ! [ -x "$(command -v sha256sum)" ]; then
+            echo >&2 "Error: neither shasum nor sha256sum installed."
+            exit 1
+        fi
+        HA256SUM_CMD='sha256sum'
+    fi
+    if ! [ -x "$(command -v xxd)" ]; then
+        echo >&2 "Error: xxd is required but not installed."
+        exit 1
+    fi
+}
+checkUtils
+
+CLIENT_ID="idmAdminClient"
+CLIENT_PASSWORD="doesnotmatter"
+SCOPES="fr:idm:*"
+RESPONSE_TYPE="code"
 
 function login {
     NAME=$(echo "$AM-$REALM" | sed 's/^http[s]:\/\///g;s/\/.*-//g;s/\./_/g;s/\//-/g')
@@ -42,7 +67,7 @@ function login {
         AREALM=""
     fi
     shopt -u nocasematch
-    RESPONSE=$(curl -j -c "${COOKIES}" -s -k -i -X POST -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" -H "X-OpenAM-Username:${AMADMIN}" -H "X-OpenAM-Password:${AMPASSWD}" "$AM/json/authenticate")
+    RESPONSE=$(curl -j -c "${COOKIES}" -s -k -i -X POST -H "Accept-API-Version:resource=2.0,protocol=1.0" -H "X-Requested-With:XmlHttpRequest" -H "X-OpenAM-Username:${AMADMIN}" -H "X-OpenAM-Password:${AMPASSWD}" "$AM/json/authenticate")
     if [[ $RESPONSE = "" ]]; then
         echo 'Error: Check hostname is valid.'
         exit -1
@@ -55,6 +80,53 @@ function login {
         fi
     fi
     setVersion
+    setDeployment
+    # if cloud or forgeops deployment, also get an IDM session
+    if [ "$DEPLOYMENT" == "Cloud" ] || [ "$DEPLOYMENT" == "ForgeOps" ] ; then
+        getAccessToken
+    fi
+}
+
+getAccessToken() {
+	VERIFIER=`LC_CTYPE=C && LANG=C && cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1`
+	CHALLENGE=`echo -n $VERIFIER | $SHA256SUM_CMD | cut -d " " -f 1 | xxd -r -p | base64 | tr / _ | tr + - | tr -d =`
+
+    AM_AUTHORIZE=$AM/oauth2/authorize
+    AM_ACCESS_TOKEN=$AM/oauth2/access_token
+    BASE_HOST="${AM%/*}"
+    REDIRECT_URL=$BASE_HOST/platform/appAuthHelperRedirect.html
+    CODE=`curl -b "${COOKIES}" -s -k -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "redirect_uri=$REDIRECT_URL&scope=$SCOPES&response_type=$RESPONSE_TYPE&client_id=$CLIENT_ID&csrf=$AMSESSION&decision=allow&code_challenge=$CHALLENGE&code_challenge_method=S256" "$AM_AUTHORIZE" -D - | grep "code=" | cut -d '=' -f2 | cut -d '&' -f1`
+    # 1>&2 echo "authz code: $CODE"
+
+    # FIDC uses a different oauth2 client config than forgeops
+    if [ "$DEPLOYMENT" == "Cloud" ] ; then
+        TOKENS=`curl -s -X POST --user "$CLIENT_ID:$CLIENT_PASSWORD" -H "Cache-Control: no-cache" -d "grant_type=authorization_code&code=$CODE&redirect_uri=$REDIRECT_URL&code_verifier=$VERIFIER" -k "$AM_ACCESS_TOKEN" | jq .`
+    elif [ "$DEPLOYMENT" == "ForgeOps" ] ; then
+        TOKENS=`curl -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Cache-Control: no-cache" -d "client_id=$CLIENT_ID&grant_type=authorization_code&code=$CODE&redirect_uri=$REDIRECT_URL&code_verifier=$VERIFIER" -k "$AM_ACCESS_TOKEN" | jq .`
+    fi
+    ACCESS_TOKEN=`echo $TOKENS | jq -r .access_token`
+    # 1>&2 echo "access token: $ACCESS_TOKEN"
+
+    JVERSION=`curl -s -X GET -H "Authorization: Bearer $ACCESS_TOKEN" "$BASE_HOST/openidm/info/version"`
+    IDM_VERSION=`echo $JVERSION | jq -r .productVersion`
+    IDM_BUILD_DATE=`echo $JVERSION | jq -r .productBuildDate`
+    IDM_REVISION=`echo $JVERSION | jq -r .productRevision`
+    IDM_VERSION_STRING="ForgeRock Identity Management $IDM_VERSION Build $IDM_REVISION ($IDM_BUILD_DATE)"
+    1>&2 echo "Connected to $IDM_VERSION_STRING"
+}
+
+function setDeployment {
+    if [[ $VERSION == *"PAAS"* ]]; then
+        DEPLOYMENT="Cloud"
+        1>&2 echo "ForgeRock Identity Cloud detected."
+    elif [[ $VERSION == *"SNAPSHOT"* ]]; then
+        DEPLOYMENT="ForgeOps"
+        CLIENT_ID="idm-admin-ui"
+        1>&2 echo "ForgeOps deployment detected."
+    else
+        DEPLOYMENT="Classic"
+        1>&2 echo "Classic deployment detected."
+    fi
 }
 
 function setVersion {
@@ -405,7 +477,7 @@ function exportTree {
 
     local ORIGIN=$(eval $ORIGIN_CMD)
 
-    local EXPORTS="{ \"origin\":\"$ORIGIN\", \"innernodes\":{}, \"nodes\":{}, \"scripts\":{} }"
+    local EXPORTS="{ \"origin\":\"$ORIGIN\", \"innernodes\":{}, \"nodes\":{}, \"scripts\":{}, \"emailTemplates\":{} }"
 
     for each in $NODES ; do
         local TYPE=$(echo $TREE | jq -r --arg NODE "$each" '.nodes | .[$NODE] | .nodeType')
@@ -438,6 +510,13 @@ function exportTree {
             local SCRIPT=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$SCRIPTID | jq '. | del (._rev)')
             1>&2 echo -n "."
             EXPORTS=$(echo $EXPORTS "{ \"scripts\": { \"$SCRIPTID\": $SCRIPT } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
+        fi
+        # If this is FIDC or ForgeOps, export email templates referenced by nodes in this tree
+        if itemIn "$TYPE" "${EMAILTEMPLATENODETYPES[@]}" ; then
+            local TEMPLATEID=$(echo $NODE | jq -r '.emailTemplateName')
+            local TEMPLATE=$(curl -s -k -X GET -H "Authorization: Bearer $ACCESS_TOKEN" $BASE_HOST/openidm/config/emailTemplate/$TEMPLATEID | jq '. | del (._rev)')
+            1>&2 echo -n "."
+            EXPORTS=$(echo $EXPORTS "{ \"emailTemplates\": { \"$TEMPLATEID\": $TEMPLATE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
         fi
     done
 
@@ -614,6 +693,22 @@ function importTree {
             1>&2 echo "Error importing script $NAME ($each): $RESULT"
             1>&2 echo "$SCRIPT"
             exit -1
+        fi
+    done
+
+    # Email Templates
+    TEMPLATES=$(echo $TREES | jq -r  '.emailTemplates | keys | .[]')
+    for each in $TEMPLATES
+    do
+        TEMPLATE=$(echo $TREES | jq --arg template $each '.emailTemplates[$template]')
+        TEMPLATEID=$(echo $TEMPLATE | jq -r '.name')
+        1>&2 echo -n "."
+        #1>&2 echo "Importing email template $each"
+        RESULT=$(curl -s -k -X PUT --data-raw "$TEMPLATE" -H "Authorization: Bearer $ACCESS_TOKEN" -H "Content-Type:application/json" $BASE_HOST/openidm/config/emailTemplate/$each)
+        if [ "$(echo $RESULT | jq '._id')" == "null" ]; then
+            1>&2 echo "Error importing email template $each: $RESULT"
+            1>&2 echo "$TEMPLATE"
+            #exit -1
         fi
     done
 
