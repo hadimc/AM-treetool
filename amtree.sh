@@ -502,6 +502,19 @@ function exportTree {
                     local SCRIPT=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$SCRIPTID | jq '. | del (._rev)')
                     EXPORTS=$(echo $EXPORTS "{ \"scripts\": { \"$SCRIPTID\": $SCRIPT } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
                 fi
+
+                # If this is FIDC or ForgeOps, export email templates referenced by nodes in this page node
+                #
+                # There is currently no node that produces a callback and references an email template. 
+                # But if somebody were to create such a node and were to follow the same implementation 
+                # and property naming pattern as the existing email template referencing nodes, then 
+                # this code will handle such a node properly.
+                if itemIn "$PAGENODETYPE" "${EMAILTEMPLATENODETYPES[@]}" ; then
+                    local TEMPLATEID=$(echo $PAGENODE | jq -r '.emailTemplateName')
+                    local TEMPLATE=$(curl -s -k -X GET -H "Authorization: Bearer $ACCESS_TOKEN" $BASE_HOST/openidm/config/emailTemplate/$TEMPLATEID | jq '. | del (._rev)')
+                    1>&2 echo -n "."
+                    EXPORTS=$(echo $EXPORTS "{ \"emailTemplates\": { \"$TEMPLATEID\": $TEMPLATE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
+                fi
             done
         fi
         # Export scripts referenced by nodes in this tree
