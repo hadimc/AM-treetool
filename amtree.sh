@@ -95,6 +95,7 @@ getAccessToken() {
     AM_ACCESS_TOKEN=$AM/oauth2/access_token
     BASE_HOST="${AM%/*}"
     REDIRECT_URL=$BASE_HOST/platform/appAuthHelperRedirect.html
+    
     CODE=`curl -b "${COOKIES}" -s -k -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "redirect_uri=$REDIRECT_URL&scope=$SCOPES&response_type=$RESPONSE_TYPE&client_id=$CLIENT_ID&csrf=$AMSESSION&decision=allow&code_challenge=$CHALLENGE&code_challenge_method=S256" "$AM_AUTHORIZE" -D - | grep "code=" | cut -d '=' -f2 | cut -d '&' -f1`
     # 1>&2 echo "authz code: $CODE"
 
@@ -107,7 +108,7 @@ getAccessToken() {
     ACCESS_TOKEN=`echo $TOKENS | jq -r .access_token`
     # 1>&2 echo "access token: $ACCESS_TOKEN"
 
-    JVERSION=`curl -s -X GET -H "Authorization: Bearer $ACCESS_TOKEN" "$BASE_HOST/openidm/info/version"`
+    JVERSION=`curl -s -X GET -H "Authorization: Bearer $ACCESS_TOKEN" -k "$BASE_HOST/openidm/info/version"`
     IDM_VERSION=`echo $JVERSION | jq -r .productVersion`
     IDM_BUILD_DATE=`echo $JVERSION | jq -r .productBuildDate`
     IDM_REVISION=`echo $JVERSION | jq -r .productRevision`
@@ -121,7 +122,7 @@ function setDeployment {
         1>&2 echo "ForgeRock Identity Cloud detected."
     elif [[ $VERSION == *"SNAPSHOT"* ]]; then
         DEPLOYMENT="ForgeOps"
-        CLIENT_ID="idm-admin-ui"
+        # CLIENT_ID="idm-admin-ui"
         1>&2 echo "ForgeOps deployment detected."
     else
         DEPLOYMENT="Classic"
