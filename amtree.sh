@@ -87,7 +87,7 @@ function login {
     fi
 }
 
-getAccessToken() {
+function getAccessToken() {
 	VERIFIER=`LC_CTYPE=C && LANG=C && cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1`
 	CHALLENGE=`echo -n $VERIFIER | $SHA256SUM_CMD | cut -d " " -f 1 | xxd -r -p | base64 | tr / _ | tr + - | tr -d =`
 
@@ -655,6 +655,7 @@ function resolve {
         # 1>&2 echo "continuing dependency resolution."
         resolve $after
     fi
+    echo
 }
 
 
@@ -715,7 +716,7 @@ function importTree {
     done
 
     # Email Templates
-    TEMPLATES=$(echo $TREES | jq -r  '.emailTemplates | keys | .[]')
+    TEMPLATES=$(echo $TREES | jq -r  'try .emailTemplates | keys | .[]')
     for each in $TEMPLATES
     do
         TEMPLATE=$(echo $TREES | jq --arg template $each '.emailTemplates[$template]')
