@@ -278,7 +278,7 @@ function listTrees {
         fi
     else
         for TREE in "${TREES[@]}" ; do
-            echo $TREE >>$FILE
+            echo $TREE >>"$FILE"
         done;
     fi
 }
@@ -335,7 +335,14 @@ function describeAllTrees {
     else
         login
         local JTREES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
-        local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id'))
+        # local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id'))
+        local TREES=()
+        #local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id' | sed -e 's/^/"/g' -e 's/$/"/g' | tr '\n' ' '))
+        # using while loop with herestring to create the TREES array - this is needed for handling trees with spaces in names
+        while read -r line ; do
+            TREES+=( "${line}" )
+        done <<< "$(echo $JTREES| jq '.result|.[]|._id')"
+
         for TREE in "${TREES[@]}" ; do
             describe "$(exportTree "$TREE" true)"
         done;
@@ -410,18 +417,23 @@ function describe {
 
 function exportAllTrees {
     local JTREES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
-    local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id'))
+    local TREES=()
+    # local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id'))
+    # using while loop with herestring to create the TREES array - this is needed for handling trees with spaces in names
+    while read -r line ; do
+        TREES+=( "${line}" )
+    done <<< "$(echo $JTREES| jq '.result|.[]|._id')"
     local EXPORTS="{ \"trees\":{} }"
     for TREE in "${TREES[@]}" ; do
         local JTREE=`exportTree "$TREE" "noFile"`
-        EXPORTS=$(echo $EXPORTS "{ \"trees\": { \"$TREE\":$JTREE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
+        EXPORTS=$(echo $EXPORTS "{ \"trees\": { \"${TREE//\"}\":$JTREE } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
     done;
 
     if [[ -z $FILE ]]; then
         echo $EXPORTS | jq .
     else
-        echo "" > $FILE
-        echo $EXPORTS | jq . >>$FILE
+        echo "" > "$FILE"
+        echo $EXPORTS | jq . >>"$FILE"
     fi
 }
 
@@ -429,14 +441,19 @@ function exportTreesSeparately {
     local FILEPREFIX=$FILE
     echo "Export all trees to files"
     local JTREES=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
-    local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id'))
+    local TREES=()
+    #local TREES=($(echo $JTREES| jq -r  '.result|.[]|._id' | sed -e 's/^/"/g' -e 's/$/"/g' | tr '\n' ' '))
+    # using while loop with herestring to create the TREES array - this is needed for handling trees with spaces in names
+    while read -r line ; do
+        TREES+=( "${line}" )
+    done <<< "$(echo $JTREES| jq '.result|.[]|._id')"
     local EXPORTS="{ \"trees\":{} }"
     for TREE in "${TREES[@]}" ; do
-        FILE=$FILEPREFIX$TREE.json
+        FILE="${FILEPREFIX}${TREE//\"}.json"
         if [[ -n $FILE ]]; then
-            echo "" > $FILE
+            echo "" > "$FILE"
         fi
-        local JTREE=`exportTree "$TREE"`
+        local JTREE=`exportTree "${TREE}"`
     done;
 }
 
@@ -454,7 +471,13 @@ function importTreesSeparately {
     jtrees=$JTREES$'  }\n}'
     # get list of already installed trees for dependency and conflict resolution
     local jinstalled=$(curl -b "${COOKIES}" -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
-    local installed=($(echo $jinstalled| jq -r  '.result|.[]|._id'))
+    # local installed=($(echo $jinstalled| jq -r  '.result|.[]|._id'))
+    local installed=()
+    # using while loop with herestring to create the installed array - this is needed for handling trees with spaces in names
+    while read -r line ; do
+        installed+=( "${line}" )
+    done <<< "$(echo $jinstalled| jq '.result|.[]|._id')"
+
     local resolved=()
     local unresolved=()
     resolve
@@ -467,12 +490,14 @@ function importTreesSeparately {
 # exportTree <tree> <flag>
 # where tree is the name of tree to export and if flag is set to anything, stdout will be used for output even if $FILE is set.
 function exportTree {
-    local TREE=$(curl -b "${COOKIES}" -f -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$1 | jq -c '. | del (._rev)')
+    local TREENAME=${1//\"} # remove double quotes which were inserted
+    TREENAMEFORURL=$(echo "$TREENAME" | sed 's/ /%20/g') # replace any spaces with %20
+    local TREE=$(curl -b "${COOKIES}" -f -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" "$AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$TREENAMEFORURL" | jq -c '. | del (._rev)')
     if [ -z "$TREE" ]; then
-        1>&2 echo "Failed to find tree: $1"
+        1>&2 echo "Failed to find tree: $TREENAME"
         exit -1
     fi
-    1>&2 echo -n "$1."
+    1>&2 echo -n "$TREENAME."
 
     local NODES=$(echo $TREE| jq -r  '.nodes | keys | .[]')
 
@@ -543,7 +568,7 @@ function exportTree {
     if [[ -z $FILE ]] || [[ -n $2 ]] ; then
         echo $EXPORTS | jq .
     else
-        echo $EXPORTS | jq . >>$FILE
+        echo $EXPORTS | jq . >>"$FILE"
     fi
 }
 
@@ -668,7 +693,13 @@ function importAllTrees {
 
     # get list of already installed trees for dependency and conflict resolution
     local jinstalled=$(curl -b "${COOKIES}" -s -k -X GET --data "{}" -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
-    local installed=($(echo $jinstalled| jq -r  '.result|.[]|._id'))
+    # local installed=($(echo $jinstalled| jq -r  '.result|.[]|._id'))
+    local installed=()
+    # using while loop with herestring to create the installed array - this is needed for handling trees with spaces in names
+    while read -r line ; do
+        installed+=( "${line}" )
+    done <<< "$(echo $jinstalled| jq '.result|.[]|._id')"
+
     local resolved=()
     local unresolved=()
     resolve
@@ -688,7 +719,7 @@ function importTree {
     if [[ -z $FILE ]] || [[ -n $2 ]] ; then
         TREES=$(</dev/stdin)
     else
-        TREES=$(<$FILE)
+        TREES=$(<"$FILE")
     fi
     1>&2 echo -n "$1."
     
@@ -780,8 +811,9 @@ function importTree {
 
     # Tree
     TREE=$(echo $TREES | jq -r  '.tree')
-    ID=$1
-    TREE=$(echo $TREE | jq --arg id $ID '._id=$id')
+    ID="$1"
+    IDFORURL=$(echo "$ID" | sed 's/ /%20/g') # replace any spaces with %20
+    TREE=$(echo $TREE | jq --arg id "$ID" '._id=$id')
     MAP=$(echo $HASHMAP| jq -r  '.map | keys | .[]' )
     for each in $MAP
     do
@@ -789,7 +821,7 @@ function importTree {
         TREE=$(echo $TREE | sed -e 's/'$each'/'$NEW'/g')
     done
     #1>&2 echo "Importing tree $1"
-    curl -b "${COOKIES}" -s -k -X PUT --data "$TREE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$ID > /dev/null
+    curl -b "${COOKIES}" -s -k -X PUT --data "$TREE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" "$AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$IDFORURL" > /dev/null
     1>&2 echo "."
 }
 
@@ -1102,7 +1134,7 @@ elif [ "$TASK" == 'importAll' ] ; then
 elif [ "$TASK" == 'export' ] ; then
     login
     if [[ -n $FILE ]]; then
-        echo "" > $FILE
+        echo "" > "$FILE"
     fi
     exportTree "$TREENAME"
 elif [ "$TASK" == 'exportAll' ] ; then
