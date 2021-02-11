@@ -1,0 +1,188 @@
+
+{
+  "origin": "122e2cec99f219b838ff535cad891635",
+  "innernodes": {},
+  "nodes": {
+    "3a31df7b-5b46-4ad4-8e30-c7321598000a": {
+      "_id": "3a31df7b-5b46-4ad4-8e30-c7321598000a",
+      "acceptableVariance": 0,
+      "expiration": 30,
+      "useScript": false,
+      "script": "01e1a3c0-038b-4c16-956a-6c9d89328cff",
+      "_type": {
+        "_id": "DeviceMatchNode",
+        "name": "Device Match",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        },
+        {
+          "id": "unknownDevice",
+          "displayName": "Unknown Device"
+        }
+      ]
+    },
+    "94db921d-868f-49c1-8aff-8922007569c2": {
+      "_id": "94db921d-868f-49c1-8aff-8922007569c2",
+      "maxSavedProfiles": 5,
+      "saveDeviceMetadata": true,
+      "saveDeviceLocation": false,
+      "variableName": "",
+      "_type": {
+        "_id": "DeviceSaveNode",
+        "name": "Device Profile Save",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "d29d7cb5-4299-45e9-b166-c71aff2f9806": {
+      "_id": "d29d7cb5-4299-45e9-b166-c71aff2f9806",
+      "message": {
+        "en": "We have not seen you use this device before, is this a personal or a shared device?"
+      },
+      "messageYes": {
+        "en": "Personal"
+      },
+      "messageNo": {
+        "en": "Shared"
+      },
+      "_type": {
+        "_id": "MessageNode",
+        "name": "Message Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "e1c85f08-a356-4a8f-8d86-0886bd6d893d": {
+      "_id": "e1c85f08-a356-4a8f-8d86-0886bd6d893d",
+      "tree": "Login",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "f8acee92-0e8a-4b8f-a3ad-72b1be764be2": {
+      "_id": "f8acee92-0e8a-4b8f-a3ad-72b1be764be2",
+      "maximumSize": "3",
+      "deviceMetadata": true,
+      "deviceLocation": false,
+      "message": {},
+      "_type": {
+        "_id": "DeviceProfileCollectorNode",
+        "name": "Device Profile Collector",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "DevicePrint",
+    "entryNodeId": "e1c85f08-a356-4a8f-8d86-0886bd6d893d",
+    "nodes": {
+      "e1c85f08-a356-4a8f-8d86-0886bd6d893d": {
+        "x": 210,
+        "y": 130,
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "f8acee92-0e8a-4b8f-a3ad-72b1be764be2"
+        },
+        "nodeType": "InnerTreeEvaluatorNode",
+        "displayName": "Login"
+      },
+      "3a31df7b-5b46-4ad4-8e30-c7321598000a": {
+        "x": 758,
+        "y": 117.5,
+        "connections": {
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "unknownDevice": "d29d7cb5-4299-45e9-b166-c71aff2f9806",
+          "false": "d29d7cb5-4299-45e9-b166-c71aff2f9806"
+        },
+        "nodeType": "DeviceMatchNode",
+        "displayName": "Match Device Profile"
+      },
+      "f8acee92-0e8a-4b8f-a3ad-72b1be764be2": {
+        "x": 440,
+        "y": 155,
+        "connections": {
+          "outcome": "3a31df7b-5b46-4ad4-8e30-c7321598000a"
+        },
+        "nodeType": "DeviceProfileCollectorNode",
+        "displayName": "Collect Device Profile"
+      },
+      "94db921d-868f-49c1-8aff-8922007569c2": {
+        "x": 1218,
+        "y": 80,
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "nodeType": "DeviceSaveNode",
+        "displayName": "Save Device Profile"
+      },
+      "d29d7cb5-4299-45e9-b166-c71aff2f9806": {
+        "x": 977,
+        "y": 379.76666259765625,
+        "connections": {
+          "true": "94db921d-868f-49c1-8aff-8922007569c2",
+          "false": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "nodeType": "MessageNode",
+        "displayName": "New Device Prompt"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 70,
+        "y": 147.5
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 1485,
+        "y": 147.5
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 1346,
+        "y": 619
+      }
+    },
+    "uiConfig": {},
+    "identityResource": "managed/alpha_user"
+  }
+}

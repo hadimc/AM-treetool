@@ -1,0 +1,84 @@
+
+{
+  "origin": "6c95f9ef41743c411b138b740e0328e6",
+  "innernodes": {
+    "7e920cc1-9ce1-4cf9-8a64-6faa5402c53e": {
+      "_id": "7e920cc1-9ce1-4cf9-8a64-6faa5402c53e",
+      "overwriteButtonText": {
+        "en": "Back"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "c2fa6153-0b4b-4d66-97ca-7e5a03ed7e3d": {
+      "_id": "c2fa6153-0b4b-4d66-97ca-7e5a03ed7e3d",
+      "uriScheme": "",
+      "operationMode": "FreeText",
+      "uriQueryParams": {},
+      "freeText": "https://onsemi.mytestrun.com/openam/XUI/?service=register#login/",
+      "uriHost": "",
+      "_type": {
+        "_id": "QRCodeNode",
+        "name": "QR Code",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "4a0da7d3-d360-497d-9703-454f6de2e0a9": {
+      "_id": "4a0da7d3-d360-497d-9703-454f6de2e0a9",
+      "nodes": [
+        {
+          "_id": "7e920cc1-9ce1-4cf9-8a64-6faa5402c53e",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "c2fa6153-0b4b-4d66-97ca-7e5a03ed7e3d",
+          "nodeType": "QRCodeNode",
+          "displayName": "QR Code"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "90c79cd5-1ae7-43cb-a891-3471173be9e2": {
+      "_id": "90c79cd5-1ae7-43cb-a891-3471173be9e2",
+      "failureUrl": "https://onsemi.mytestrun.com/openam/XUI/?service=register#login/",
+      "_type": {
+        "_id": "SetFailureUrlNode",
+        "name": "Failure URL",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "tree": {
+    "_id": "bridge2mobile",
+    "nodes": {
+      "4a0da7d3-d360-497d-9703-454f6de2e0a9": {
+        "displayName": "Bridge to mobile",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "90c79cd5-1ae7-43cb-a891-3471173be9e2"
+        }
+      },
+      "90c79cd5-1ae7-43cb-a891-3471173be9e2": {
+        "displayName": "Go Back",
+        "nodeType": "SetFailureUrlNode",
+        "connections": {
+          "outcome": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      }
+    },
+    "entryNodeId": "4a0da7d3-d360-497d-9703-454f6de2e0a9"
+  }
+}

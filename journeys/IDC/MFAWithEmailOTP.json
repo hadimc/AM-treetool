@@ -1,0 +1,319 @@
+
+{
+  "origin": "122e2cec99f219b838ff535cad891635",
+  "innernodes": {},
+  "nodes": {
+    "113d8e2a-2caf-4abb-a102-28f0a4ca4eeb": {
+      "_id": "113d8e2a-2caf-4abb-a102-28f0a4ca4eeb",
+      "emailTemplateName": "oneTimePassword",
+      "emailAttribute": "mail",
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "EmailTemplateNode",
+        "name": "Email Template Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "EMAIL_SENT",
+          "displayName": "Email Sent"
+        },
+        {
+          "id": "EMAIL_NOT_SENT",
+          "displayName": "Email Not Sent"
+        }
+      ]
+    },
+    "14ea46b0-0d68-403c-aec8-f538e439bcd5": {
+      "_id": "14ea46b0-0d68-403c-aec8-f538e439bcd5",
+      "outcomes": [
+        "true"
+      ],
+      "inputs": [
+        "*"
+      ],
+      "outputs": [
+        "*"
+      ],
+      "script": "98a87024-3d07-4c75-b1ea-43ff905e9def",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "true"
+        }
+      ]
+    },
+    "856186ef-90c6-4761-8b8e-432ef9c588ee": {
+      "_id": "856186ef-90c6-4761-8b8e-432ef9c588ee",
+      "tree": "Login",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "8b070c85-30e7-4b42-a961-e561681ce2fe": {
+      "_id": "8b070c85-30e7-4b42-a961-e561681ce2fe",
+      "patchAsObject": false,
+      "ignoredFields": [
+        "userName"
+      ],
+      "identityResource": "managed/alpha_user",
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "PatchObjectNode",
+        "name": "Patch Object",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "PATCHED",
+          "displayName": "Patched"
+        },
+        {
+          "id": "FAILURE",
+          "displayName": "Failed"
+        }
+      ]
+    },
+    "955ffbcb-d0e1-470f-a364-396c1dc05f7c": {
+      "_id": "955ffbcb-d0e1-470f-a364-396c1dc05f7c",
+      "length": 8,
+      "_type": {
+        "_id": "OneTimePasswordGeneratorNode",
+        "name": "HOTP Generator",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "9d7baad8-85e0-49f6-ab1d-a3ab2bb64976": {
+      "_id": "9d7baad8-85e0-49f6-ab1d-a3ab2bb64976",
+      "passwordExpiryTime": 5,
+      "_type": {
+        "_id": "OneTimePasswordCollectorDecisionNode",
+        "name": "OTP Collector Decision",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "a0253ec3-ddf8-4283-9fcd-0198e3f26ac3": {
+      "_id": "a0253ec3-ddf8-4283-9fcd-0198e3f26ac3",
+      "outcomes": [
+        "true"
+      ],
+      "inputs": [
+        "*"
+      ],
+      "outputs": [
+        "*"
+      ],
+      "script": "5561a45f-bf00-4ec5-bab4-f069bac9a38b",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "true"
+        }
+      ]
+    },
+    "edaf2260-c942-48eb-994d-377c3f93d2e4": {
+      "_id": "edaf2260-c942-48eb-994d-377c3f93d2e4",
+      "patchAsObject": false,
+      "ignoredFields": [
+        "userName"
+      ],
+      "identityResource": "managed/alpha_user",
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "PatchObjectNode",
+        "name": "Patch Object",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "PATCHED",
+          "displayName": "Patched"
+        },
+        {
+          "id": "FAILURE",
+          "displayName": "Failed"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "98a87024-3d07-4c75-b1ea-43ff905e9def": {
+      "_id": "98a87024-3d07-4c75-b1ea-43ff905e9def",
+      "name": "ResetOTPProfileAttribute",
+      "description": "null",
+      "script": "LyoKICogQ29weSBhbiBPVFAgZ2VuZXJhdGVkIGJ5IHRoZSAiSE9UUCBHZW5lcmF0b3IiIG5vZGUgdG8gdGhlIElETSBwcm9maWxlIAogKiBzaGFyZWQgc3RhdGUgc28gaXQgY2FuIGJlIHBhdGNoZWQgdG8gdGhlIHVzZXIgcHJvZmlsZS4KICovCgppZiAoc2hhcmVkU3RhdGUuZ2V0KCJvYmplY3RBdHRyaWJ1dGVzIikpIHsKCXNoYXJlZFN0YXRlLmdldCgib2JqZWN0QXR0cmlidXRlcyIpLnB1dCgiZGVzY3JpcHRpb24iLCAiIikKfQplbHNlIHsKCXNoYXJlZFN0YXRlLnB1dCgib2JqZWN0QXR0cmlidXRlcyIsIHtkZXNjcmlwdGlvbjogIiJ9KTsKfQpvdXRjb21lID0gInRydWUiOw==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    },
+    "5561a45f-bf00-4ec5-bab4-f069bac9a38b": {
+      "_id": "5561a45f-bf00-4ec5-bab4-f069bac9a38b",
+      "name": "CopyOTPToObjectAttributes",
+      "description": "Copy an OTP generated by the \"HOTP Generator\" node to the IDM profile shared state so it can be patched to the user profile.",
+      "script": "LyoKICogQ29weSBhbiBPVFAgZ2VuZXJhdGVkIGJ5IHRoZSAiSE9UUCBHZW5lcmF0b3IiIG5vZGUgdG8gdGhlIElETSBwcm9maWxlIAogKiBzaGFyZWQgc3RhdGUgc28gaXQgY2FuIGJlIHBhdGNoZWQgdG8gdGhlIHVzZXIgcHJvZmlsZS4KICovCgppZiAoc2hhcmVkU3RhdGUuZ2V0KCJvYmplY3RBdHRyaWJ1dGVzIikpIHsKCXNoYXJlZFN0YXRlLmdldCgib2JqZWN0QXR0cmlidXRlcyIpLnB1dCgiZGVzY3JpcHRpb24iLCBzaGFyZWRTdGF0ZS5nZXQoIm9uZVRpbWVQYXNzd29yZCIpKQp9CmVsc2UgewoJc2hhcmVkU3RhdGUucHV0KCJvYmplY3RBdHRyaWJ1dGVzIiwge2Rlc2NyaXB0aW9uOiBzaGFyZWRTdGF0ZS5nZXQoIm9uZVRpbWVQYXNzd29yZCIpfSk7Cn0Kb3V0Y29tZSA9ICJ0cnVlIjs=",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "emailTemplates": {
+    "oneTimePassword": {
+      "_id": "emailTemplate/oneTimePassword",
+      "enabled": true,
+      "from": "",
+      "subject": {
+        "en": "One-Time Password for Identity Cloud login"
+      },
+      "message": {
+        "en": "<h3>This is your one-time password:</h3><h4>{{object.description}}</a></h4>"
+      },
+      "defaultLocale": "en",
+      "mimeType": "text/html"
+    }
+  },
+  "tree": {
+    "_id": "MFAWithEmailOTP",
+    "entryNodeId": "856186ef-90c6-4761-8b8e-432ef9c588ee",
+    "nodes": {
+      "113d8e2a-2caf-4abb-a102-28f0a4ca4eeb": {
+        "x": 802,
+        "y": 355.76666259765625,
+        "connections": {
+          "EMAIL_SENT": "9d7baad8-85e0-49f6-ab1d-a3ab2bb64976",
+          "EMAIL_NOT_SENT": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "nodeType": "EmailTemplateNode",
+        "displayName": "Send OTP"
+      },
+      "955ffbcb-d0e1-470f-a364-396c1dc05f7c": {
+        "x": 314,
+        "y": 15.76666259765625,
+        "connections": {
+          "outcome": "a0253ec3-ddf8-4283-9fcd-0198e3f26ac3"
+        },
+        "nodeType": "OneTimePasswordGeneratorNode",
+        "displayName": "Generate HOTP"
+      },
+      "9d7baad8-85e0-49f6-ab1d-a3ab2bb64976": {
+        "x": 968,
+        "y": 499.76666259765625,
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "14ea46b0-0d68-403c-aec8-f538e439bcd5"
+        },
+        "nodeType": "OneTimePasswordCollectorDecisionNode",
+        "displayName": "Validate OTP"
+      },
+      "8b070c85-30e7-4b42-a961-e561681ce2fe": {
+        "x": 636,
+        "y": 205.76666259765625,
+        "connections": {
+          "PATCHED": "113d8e2a-2caf-4abb-a102-28f0a4ca4eeb",
+          "FAILURE": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "nodeType": "PatchObjectNode",
+        "displayName": "Store OTP"
+      },
+      "a0253ec3-ddf8-4283-9fcd-0198e3f26ac3": {
+        "x": 476,
+        "y": 113.76666259765625,
+        "connections": {
+          "true": "8b070c85-30e7-4b42-a961-e561681ce2fe"
+        },
+        "nodeType": "ScriptedDecisionNode",
+        "displayName": "Prep OTP Store"
+      },
+      "856186ef-90c6-4761-8b8e-432ef9c588ee": {
+        "x": 154,
+        "y": 160.76666259765625,
+        "connections": {
+          "true": "955ffbcb-d0e1-470f-a364-396c1dc05f7c",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "nodeType": "InnerTreeEvaluatorNode",
+        "displayName": "Login"
+      },
+      "14ea46b0-0d68-403c-aec8-f538e439bcd5": {
+        "x": 1146,
+        "y": 647.7666625976562,
+        "connections": {
+          "true": "edaf2260-c942-48eb-994d-377c3f93d2e4"
+        },
+        "nodeType": "ScriptedDecisionNode",
+        "displayName": "Prep OTP Reset"
+      },
+      "edaf2260-c942-48eb-994d-377c3f93d2e4": {
+        "x": 1275,
+        "y": 756.7666625976562,
+        "connections": {
+          "PATCHED": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "FAILURE": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "nodeType": "PatchObjectNode",
+        "displayName": "Reset OTP"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 50,
+        "y": 75
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 1494,
+        "y": 781
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 1371,
+        "y": 20
+      }
+    },
+    "uiConfig": {},
+    "identityResource": "managed/alpha_user"
+  }
+}

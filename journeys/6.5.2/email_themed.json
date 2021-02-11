@@ -1,0 +1,243 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {
+    "60d3129b-c003-46f3-ba6a-ff2f1bd367b7": {
+      "_id": "60d3129b-c003-46f3-ba6a-ff2f1bd367b7",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "a60b129e-5491-4df4-8c0f-a0fddc27d839": {
+      "_id": "a60b129e-5491-4df4-8c0f-a0fddc27d839",
+      "defaultChoice": "Yes",
+      "choices": [
+        "Yes",
+        "No"
+      ],
+      "prompt": "Your OTP has failed. Resend a new OTP? ",
+      "_type": {
+        "_id": "ChoiceCollectorNode",
+        "name": "Choice Collector",
+        "collection": true
+      }
+    },
+    "d041d052-8c95-4f33-adeb-b912f2354679": {
+      "_id": "d041d052-8c95-4f33-adeb-b912f2354679",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "375a358b-19a1-408c-9fd2-a3917c6d70c1": {
+      "_id": "375a358b-19a1-408c-9fd2-a3917c6d70c1",
+      "passwordExpiryTime": 5,
+      "_type": {
+        "_id": "OneTimePasswordCollectorDecisionNode",
+        "name": "OTP Collector Decision",
+        "collection": true
+      }
+    },
+    "27b55e77-56d6-46bb-90c0-396b3d7fefa0": {
+      "_id": "27b55e77-56d6-46bb-90c0-396b3d7fefa0",
+      "_type": {
+        "_id": "UsernameCollectorNode",
+        "name": "Username Collector",
+        "collection": true
+      }
+    },
+    "3c14942c-77f0-4cb8-b76d-53a14485dcec": {
+      "_id": "3c14942c-77f0-4cb8-b76d-53a14485dcec",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "26bd009a-2495-44ba-870d-6597f5d32408": {
+      "_id": "26bd009a-2495-44ba-870d-6597f5d32408",
+      "hostName": "smtp.gmail.com",
+      "password": null,
+      "sslOption": "SSL",
+      "hostPort": 465,
+      "emailAttribute": "mail",
+      "fromEmailAddress": "vscheuber@gmail.com",
+      "smsGatewayImplementationClass": "com.sun.identity.authentication.modules.hotp.DefaultSMSGatewayImpl",
+      "username": "vscheuber@gmail.com",
+      "_type": {
+        "_id": "OneTimePasswordSmtpSenderNode",
+        "name": "OTP Email Sender",
+        "collection": true
+      }
+    },
+    "6608964f-dd1d-4971-96f3-cb984d4d0cd1": {
+      "_id": "6608964f-dd1d-4971-96f3-cb984d4d0cd1",
+      "outcomes": [
+        "known",
+        "unknown"
+      ],
+      "script": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "8e310a48-b3f0-4cd0-9109-dee2148f439f": {
+      "_id": "8e310a48-b3f0-4cd0-9109-dee2148f439f",
+      "nodes": [
+        {
+          "_id": "60d3129b-c003-46f3-ba6a-ff2f1bd367b7",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "a60b129e-5491-4df4-8c0f-a0fddc27d839",
+          "nodeType": "ChoiceCollectorNode",
+          "displayName": "Resend OTP?"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "93f5117e-9a4f-4258-8671-1852cfc77d7c": {
+      "_id": "93f5117e-9a4f-4258-8671-1852cfc77d7c",
+      "length": 8,
+      "_type": {
+        "_id": "OneTimePasswordGeneratorNode",
+        "name": "HOTP Generator",
+        "collection": true
+      }
+    },
+    "c4a768e8-8920-4042-836d-1426f87a396b": {
+      "_id": "c4a768e8-8920-4042-836d-1426f87a396b",
+      "nodes": [
+        {
+          "_id": "d041d052-8c95-4f33-adeb-b912f2354679",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "375a358b-19a1-408c-9fd2-a3917c6d70c1",
+          "nodeType": "OneTimePasswordCollectorDecisionNode",
+          "displayName": "Validate OTP"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "dd38d722-6247-4f59-9c1c-0d7b29170b81": {
+      "_id": "dd38d722-6247-4f59-9c1c-0d7b29170b81",
+      "nodes": [
+        {
+          "_id": "27b55e77-56d6-46bb-90c0-396b3d7fefa0",
+          "nodeType": "UsernameCollectorNode",
+          "displayName": "Username"
+        },
+        {
+          "_id": "3c14942c-77f0-4cb8-b76d-53a14485dcec",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "739bdc48-fd24-4c52-b353-88706d75558a": {
+      "_id": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "name": "Check Username",
+      "description": "Check if username is known.",
+      "script": "LyoKICBDaGVjayBpZiB1c2VybmFtZSBoYXMgYWxyZWFkeSBiZWVuIGNvbGxlY3RlZC4gCiAgUmV0dXJuICJrbm93biIgaWYgeWVzLCAidW5rbm93biIgb3RoZXJ3aXNlLgogKi8KCmlmIChudWxsICE9IHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSkgewoJb3V0Y29tZSA9ICJrbm93biI7Cn0KZWxzZSB7CiAJb3V0Y29tZSA9ICJ1bmtub3duIjsKfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "emailTemplates": {},
+  "tree": {
+    "_id": "email",
+    "nodes": {
+      "93f5117e-9a4f-4258-8671-1852cfc77d7c": {
+        "displayName": "Generate OTP",
+        "nodeType": "OneTimePasswordGeneratorNode",
+        "connections": {
+          "outcome": "26bd009a-2495-44ba-870d-6597f5d32408"
+        }
+      },
+      "26bd009a-2495-44ba-870d-6597f5d32408": {
+        "displayName": "Email OTP",
+        "nodeType": "OneTimePasswordSmtpSenderNode",
+        "connections": {
+          "outcome": "c4a768e8-8920-4042-836d-1426f87a396b"
+        }
+      },
+      "6608964f-dd1d-4971-96f3-cb984d4d0cd1": {
+        "displayName": "Check Username",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "known": "93f5117e-9a4f-4258-8671-1852cfc77d7c",
+          "unknown": "dd38d722-6247-4f59-9c1c-0d7b29170b81"
+        }
+      },
+      "dd38d722-6247-4f59-9c1c-0d7b29170b81": {
+        "displayName": "Page",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "6608964f-dd1d-4971-96f3-cb984d4d0cd1"
+        }
+      },
+      "c4a768e8-8920-4042-836d-1426f87a396b": {
+        "displayName": "Page",
+        "nodeType": "PageNode",
+        "connections": {
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "false": "8e310a48-b3f0-4cd0-9109-dee2148f439f"
+        }
+      },
+      "8e310a48-b3f0-4cd0-9109-dee2148f439f": {
+        "displayName": "Page",
+        "nodeType": "PageNode",
+        "connections": {
+          "Yes": "93f5117e-9a4f-4258-8671-1852cfc77d7c",
+          "No": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      }
+    },
+    "entryNodeId": "6608964f-dd1d-4971-96f3-cb984d4d0cd1"
+  }
+}

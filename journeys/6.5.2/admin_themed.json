@@ -1,0 +1,113 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {
+    "309e4eea-6aae-401f-b94a-4d4ed944a186": {
+      "_id": "309e4eea-6aae-401f-b94a-4d4ed944a186",
+      "_type": {
+        "_id": "UsernameCollectorNode",
+        "name": "Username Collector",
+        "collection": true
+      }
+    },
+    "061c6999-e47f-44d6-98c8-edfc9191cf12": {
+      "_id": "061c6999-e47f-44d6-98c8-edfc9191cf12",
+      "_type": {
+        "_id": "PasswordCollectorNode",
+        "name": "Password Collector",
+        "collection": true
+      }
+    },
+    "5ff7afc1-ea99-47d8-afe2-5315093262fc": {
+      "_id": "5ff7afc1-ea99-47d8-afe2-5315093262fc",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "Admin Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "6a61edcd-3452-4e79-8f68-0f9b2eacc760": {
+      "_id": "6a61edcd-3452-4e79-8f68-0f9b2eacc760",
+      "usernameHeader": "X-OpenAM-Username",
+      "referrerWhiteList": [],
+      "allowWithoutReferer": true,
+      "passwordHeader": "X-OpenAM-Password",
+      "_type": {
+        "_id": "ZeroPageLoginNode",
+        "name": "Zero Page Login Collector",
+        "collection": true
+      }
+    },
+    "6e81f8dd-b93d-44c8-bb58-5ae2a5040eb5": {
+      "_id": "6e81f8dd-b93d-44c8-bb58-5ae2a5040eb5",
+      "_type": {
+        "_id": "DataStoreDecisionNode",
+        "name": "Data Store Decision",
+        "collection": true
+      }
+    },
+    "81ba8044-841f-4488-8448-9c50d759d3de": {
+      "_id": "81ba8044-841f-4488-8448-9c50d759d3de",
+      "nodes": [
+        {
+          "_id": "309e4eea-6aae-401f-b94a-4d4ed944a186",
+          "nodeType": "UsernameCollectorNode",
+          "displayName": "Username"
+        },
+        {
+          "_id": "061c6999-e47f-44d6-98c8-edfc9191cf12",
+          "nodeType": "PasswordCollectorNode",
+          "displayName": "Password"
+        },
+        {
+          "_id": "5ff7afc1-ea99-47d8-afe2-5315093262fc",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "admin",
+    "nodes": {
+      "6e81f8dd-b93d-44c8-bb58-5ae2a5040eb5": {
+        "displayName": "Authenticate",
+        "nodeType": "DataStoreDecisionNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "81ba8044-841f-4488-8448-9c50d759d3de": {
+        "displayName": "Login",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "6e81f8dd-b93d-44c8-bb58-5ae2a5040eb5"
+        }
+      },
+      "6a61edcd-3452-4e79-8f68-0f9b2eacc760": {
+        "displayName": "Header Login",
+        "nodeType": "ZeroPageLoginNode",
+        "connections": {
+          "true": "6e81f8dd-b93d-44c8-bb58-5ae2a5040eb5",
+          "false": "81ba8044-841f-4488-8448-9c50d759d3de"
+        }
+      }
+    },
+    "entryNodeId": "6a61edcd-3452-4e79-8f68-0f9b2eacc760"
+  }
+}

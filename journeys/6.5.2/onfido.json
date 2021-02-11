@@ -1,0 +1,91 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {},
+  "nodes": {
+    "b84f668d-7bcf-4411-a2a6-92ef31bddb2c": {
+      "_id": "b84f668d-7bcf-4411-a2a6-92ef31bddb2c",
+      "accountProviderClass": "org.forgerock.openam.authentication.modules.common.mapping.DefaultAccountProvider",
+      "_type": {
+        "_id": "ProvisionDynamicAccountNode",
+        "name": "Provision Dynamic Account",
+        "collection": true
+      }
+    },
+    "c7541762-d922-42f5-bcfa-11b7b336003d": {
+      "_id": "c7541762-d922-42f5-bcfa-11b7b336003d",
+      "onfidoJSURL": "https://assets.onfido.com/web-sdk-releases/5.2.1/onfido.min.js",
+      "onfidoHelpMessage": "Thank you for using Onfido for Identity Verification",
+      "onfidoWelcomeMessage": "Identity Verification",
+      "onfidoJWTreferrer": "*://*/*",
+      "onfidoToken": null,
+      "onfidoApplicantIdAttribute": "telephoneNumber",
+      "attributeMappingConfiguration": {
+        "givenName": "first_name",
+        "sn": "last_name",
+        "cn": "first_name"
+      },
+      "biometricCheck": "None",
+      "JITProvisioning": true,
+      "onfidoCSSUrl": "https://assets.onfido.com/web-sdk-releases/5.2.1/style.css",
+      "_type": {
+        "_id": "onfidoRegistrationNode",
+        "name": "Onfido Registration Node",
+        "collection": true
+      }
+    },
+    "d9f2d927-a97d-44bd-acfb-ac396a909ac5": {
+      "_id": "d9f2d927-a97d-44bd-acfb-ac396a909ac5",
+      "minPasswordLength": 8,
+      "_type": {
+        "_id": "CreatePasswordNode",
+        "name": "Create Password",
+        "collection": true
+      }
+    },
+    "f8cdb527-a19a-4ead-ab5f-6f67fd9a2996": {
+      "_id": "f8cdb527-a19a-4ead-ab5f-6f67fd9a2996",
+      "_type": {
+        "_id": "UsernameCollectorNode",
+        "name": "Username Collector",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "onfido",
+    "nodes": {
+      "c7541762-d922-42f5-bcfa-11b7b336003d": {
+        "displayName": "Onfido Registration Node",
+        "nodeType": "onfidoRegistrationNode",
+        "connections": {
+          "outcome": "d9f2d927-a97d-44bd-acfb-ac396a909ac5"
+        }
+      },
+      "f8cdb527-a19a-4ead-ab5f-6f67fd9a2996": {
+        "displayName": "Username Collector",
+        "nodeType": "UsernameCollectorNode",
+        "connections": {
+          "outcome": "c7541762-d922-42f5-bcfa-11b7b336003d"
+        }
+      },
+      "d9f2d927-a97d-44bd-acfb-ac396a909ac5": {
+        "displayName": "Create Password",
+        "nodeType": "CreatePasswordNode",
+        "connections": {
+          "outcome": "b84f668d-7bcf-4411-a2a6-92ef31bddb2c"
+        }
+      },
+      "b84f668d-7bcf-4411-a2a6-92ef31bddb2c": {
+        "displayName": "Provision Dynamic Account",
+        "nodeType": "ProvisionDynamicAccountNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      }
+    },
+    "entryNodeId": "f8cdb527-a19a-4ead-ab5f-6f67fd9a2996"
+  }
+}

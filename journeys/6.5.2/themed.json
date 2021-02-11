@@ -1,0 +1,230 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {
+    "4e171452-ca01-48e5-bdf4-948cf0051a7f": {
+      "_id": "4e171452-ca01-48e5-bdf4-948cf0051a7f",
+      "variable": "givenName",
+      "useTransient": true,
+      "isPassword": false,
+      "prompt": "First Name",
+      "_type": {
+        "_id": "InputCollectorNode",
+        "name": "Input Collector Node",
+        "collection": true
+      }
+    },
+    "f59b0276-fc84-4b60-adbd-691a44163a72": {
+      "_id": "f59b0276-fc84-4b60-adbd-691a44163a72",
+      "variable": "sn",
+      "useTransient": true,
+      "isPassword": false,
+      "prompt": "Last Name",
+      "_type": {
+        "_id": "InputCollectorNode",
+        "name": "Input Collector Node",
+        "collection": true
+      }
+    },
+    "a81da0d4-e2bb-466d-8cda-b998d34d3ab1": {
+      "_id": "a81da0d4-e2bb-466d-8cda-b998d34d3ab1",
+      "variable": "mail",
+      "useTransient": true,
+      "isPassword": false,
+      "prompt": "Email",
+      "_type": {
+        "_id": "InputCollectorNode",
+        "name": "Input Collector Node",
+        "collection": true
+      }
+    },
+    "236d6b25-40fc-416f-ba4f-5b04a01ed6e7": {
+      "_id": "236d6b25-40fc-416f-ba4f-5b04a01ed6e7",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "df0d21cc-a12b-4b91-85ff-46f2a78f6a5d": {
+      "_id": "df0d21cc-a12b-4b91-85ff-46f2a78f6a5d",
+      "overwriteButtonText": {
+        "en": "Finish"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "1cf1ee19-a30f-4b03-a133-8f09235b8489": {
+      "_id": "1cf1ee19-a30f-4b03-a133-8f09235b8489",
+      "defaultChoice": "Yes",
+      "choices": [
+        "Yes",
+        "No"
+      ],
+      "prompt": "Would you like to verify your identity?",
+      "_type": {
+        "_id": "ChoiceCollectorNode",
+        "name": "Choice Collector",
+        "collection": true
+      }
+    },
+    "7b1d59f5-57e3-47a0-9fcc-68732e94214d": {
+      "_id": "7b1d59f5-57e3-47a0-9fcc-68732e94214d",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "f1339e92-c2fc-41fd-9c8c-b56ba13f96df": {
+      "_id": "f1339e92-c2fc-41fd-9c8c-b56ba13f96df",
+      "defaultChoice": "Two",
+      "choices": [
+        "One",
+        "Two",
+        "Three"
+      ],
+      "prompt": "Please make a choice",
+      "_type": {
+        "_id": "ChoiceCollectorNode",
+        "name": "Choice Collector",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "5b46001c-22e5-41a8-8168-78741cd10fe2": {
+      "_id": "5b46001c-22e5-41a8-8168-78741cd10fe2",
+      "anonymousUserName": "anonymous",
+      "_type": {
+        "_id": "AnonymousUserNode",
+        "name": "Anonymous User Mapping",
+        "collection": true
+      }
+    },
+    "93a55955-45d8-4748-8e88-d4350c7e9b3e": {
+      "_id": "93a55955-45d8-4748-8e88-d4350c7e9b3e",
+      "nodes": [
+        {
+          "_id": "4e171452-ca01-48e5-bdf4-948cf0051a7f",
+          "nodeType": "InputCollectorNode",
+          "displayName": "First Name"
+        },
+        {
+          "_id": "f59b0276-fc84-4b60-adbd-691a44163a72",
+          "nodeType": "InputCollectorNode",
+          "displayName": "Last Name"
+        },
+        {
+          "_id": "a81da0d4-e2bb-466d-8cda-b998d34d3ab1",
+          "nodeType": "InputCollectorNode",
+          "displayName": "Email Address"
+        },
+        {
+          "_id": "236d6b25-40fc-416f-ba4f-5b04a01ed6e7",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "9cbe4fb5-f5d0-4d8e-a0c1-f874eb99166d": {
+      "_id": "9cbe4fb5-f5d0-4d8e-a0c1-f874eb99166d",
+      "nodes": [
+        {
+          "_id": "df0d21cc-a12b-4b91-85ff-46f2a78f6a5d",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "1cf1ee19-a30f-4b03-a133-8f09235b8489",
+          "nodeType": "ChoiceCollectorNode",
+          "displayName": "Verification Choice"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "b4a5fdb3-8b61-487d-aecc-574b073bb072": {
+      "_id": "b4a5fdb3-8b61-487d-aecc-574b073bb072",
+      "nodes": [
+        {
+          "_id": "7b1d59f5-57e3-47a0-9fcc-68732e94214d",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "f1339e92-c2fc-41fd-9c8c-b56ba13f96df",
+          "nodeType": "ChoiceCollectorNode",
+          "displayName": "Choice Collector"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "theme",
+    "nodes": {
+      "93a55955-45d8-4748-8e88-d4350c7e9b3e": {
+        "displayName": "Page 1",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "b4a5fdb3-8b61-487d-aecc-574b073bb072"
+        }
+      },
+      "5b46001c-22e5-41a8-8168-78741cd10fe2": {
+        "displayName": "Anonymous",
+        "nodeType": "AnonymousUserNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "b4a5fdb3-8b61-487d-aecc-574b073bb072": {
+        "displayName": "Page 2",
+        "nodeType": "PageNode",
+        "connections": {
+          "One": "9cbe4fb5-f5d0-4d8e-a0c1-f874eb99166d",
+          "Two": "9cbe4fb5-f5d0-4d8e-a0c1-f874eb99166d",
+          "Three": "9cbe4fb5-f5d0-4d8e-a0c1-f874eb99166d"
+        }
+      },
+      "9cbe4fb5-f5d0-4d8e-a0c1-f874eb99166d": {
+        "displayName": "Page 3",
+        "nodeType": "PageNode",
+        "connections": {
+          "Yes": "5b46001c-22e5-41a8-8168-78741cd10fe2",
+          "No": "5b46001c-22e5-41a8-8168-78741cd10fe2"
+        }
+      }
+    },
+    "entryNodeId": "93a55955-45d8-4748-8e88-d4350c7e9b3e"
+  }
+}

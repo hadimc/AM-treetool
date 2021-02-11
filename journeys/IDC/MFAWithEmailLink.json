@@ -1,0 +1,104 @@
+
+{
+  "origin": "122e2cec99f219b838ff535cad891635",
+  "innernodes": {},
+  "nodes": {
+    "195cd9c9-7731-408f-b946-21fcf3a9c31e": {
+      "_id": "195cd9c9-7731-408f-b946-21fcf3a9c31e",
+      "emailTemplateName": "multiFactorEmailLink",
+      "emailAttribute": "mail",
+      "emailSuspendMessage": {
+        "en": "An email has been sent to the address you entered. Click the link in that email to proceed."
+      },
+      "objectLookup": true,
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "EmailSuspendNode",
+        "name": "Email Suspend Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "b078dac0-4ba1-4cc6-9a2a-e50397dbaab7": {
+      "_id": "b078dac0-4ba1-4cc6-9a2a-e50397dbaab7",
+      "tree": "Login",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {
+    "multiFactorEmailLink": {
+      "_id": "emailTemplate/multiFactorEmailLink",
+      "enabled": true,
+      "from": "",
+      "subject": {
+        "en": "Multi-Factor Email for Identity Cloud login"
+      },
+      "message": {
+        "en": "<h3>You started a multi-factor login process.</h3><h4><a href=\"{{object.resumeURI}}\">Complete login</a></h4>"
+      },
+      "defaultLocale": "en",
+      "mimeType": "text/html"
+    }
+  },
+  "tree": {
+    "_id": "MFAWithEmailLink",
+    "entryNodeId": "b078dac0-4ba1-4cc6-9a2a-e50397dbaab7",
+    "nodes": {
+      "b078dac0-4ba1-4cc6-9a2a-e50397dbaab7": {
+        "x": 154,
+        "y": 160.76666259765625,
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "195cd9c9-7731-408f-b946-21fcf3a9c31e"
+        },
+        "nodeType": "InnerTreeEvaluatorNode",
+        "displayName": "Login"
+      },
+      "195cd9c9-7731-408f-b946-21fcf3a9c31e": {
+        "x": 412,
+        "y": 136.76666259765625,
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "nodeType": "EmailSuspendNode",
+        "displayName": "Send MFA Email"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 50,
+        "y": 75
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 725,
+        "y": 129
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 723,
+        "y": 354
+      }
+    },
+    "uiConfig": {},
+    "identityResource": "managed/alpha_user"
+  }
+}

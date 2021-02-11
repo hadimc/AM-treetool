@@ -1,0 +1,413 @@
+
+{
+  "origin": "6c95f9ef41743c411b138b740e0328e6",
+  "innernodes": {
+    "75495da5-5175-4b29-805e-7c8d0f88d73d": {
+      "_id": "75495da5-5175-4b29-805e-7c8d0f88d73d",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {
+        "en": "Proceed"
+      },
+      "overwriteButton": true,
+      "box": false,
+      "message": {
+        "en": "<p><h3>An account with that email address already exists. Please login or start the username/password recovery process.</h3></p>"
+      },
+      "vAlign": "NEUTRAL",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    },
+    "46DF9245-564B-4215-A1E1-A831B8BA2359": {
+      "_id": "46DF9245-564B-4215-A1E1-A831B8BA2359",
+      "variable": "givenName",
+      "useTransient": false,
+      "isPassword": false,
+      "prompt": "First Name",
+      "_type": {
+        "_id": "InputCollectorNode",
+        "name": "Input Collector Node",
+        "collection": true
+      }
+    },
+    "87231A3A-5731-4214-A426-F96463355B23": {
+      "_id": "87231A3A-5731-4214-A426-F96463355B23",
+      "variable": "sn",
+      "useTransient": false,
+      "isPassword": false,
+      "prompt": "Last Name",
+      "_type": {
+        "_id": "InputCollectorNode",
+        "name": "Input Collector Node",
+        "collection": true
+      }
+    },
+    "5AC83061-C1C4-4E9A-B740-8714AA3E6E41": {
+      "_id": "5AC83061-C1C4-4E9A-B740-8714AA3E6E41",
+      "variable": "mail",
+      "useTransient": false,
+      "isPassword": false,
+      "prompt": "Email",
+      "_type": {
+        "_id": "InputCollectorNode",
+        "name": "Input Collector Node",
+        "collection": true
+      }
+    },
+    "7b5eeade-b7e9-4bc1-8223-b89764c7a4d6": {
+      "_id": "7b5eeade-b7e9-4bc1-8223-b89764c7a4d6",
+      "overwriteButtonText": {
+        "en": "Register"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "af9a1265-bb2f-4aa0-86a0-d7e8674b2e58": {
+      "_id": "af9a1265-bb2f-4aa0-86a0-d7e8674b2e58",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {},
+      "overwriteButton": false,
+      "box": false,
+      "message": {
+        "en": "<p><a href=\"/openam/?service=user\">Login</a> <span>·</span> <a href=\"/openam/?service=bridge2mobile\">I want to do this on my phone</a></p>"
+      },
+      "vAlign": "BOTTOM",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    },
+    "4a49bd31-a389-4e8b-8a16-6f3b73e53db7": {
+      "_id": "4a49bd31-a389-4e8b-8a16-6f3b73e53db7",
+      "overwriteButtonText": {
+        "en": "Continue"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "9cc4b912-38c1-4cde-98fa-9fc0ef19ab0e": {
+      "_id": "9cc4b912-38c1-4cde-98fa-9fc0ef19ab0e",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {},
+      "overwriteButton": false,
+      "box": true,
+      "message": {
+        "en": "<p><h2>Hello {{givenName}} {{sn}}!</h2></p><p><h4>To better serve you, we ask you to either proof your identity or let us verify your email address. You can choose either of those options right now or at a later time:</h4></p>"
+      },
+      "vAlign": "NEUTRAL",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    },
+    "8dc41aef-42b3-4d25-b97c-ce3512dbbbe1": {
+      "_id": "8dc41aef-42b3-4d25-b97c-ce3512dbbbe1",
+      "defaultChoice": "Not Right Now",
+      "choices": [
+        "Proof My Identity",
+        "Verify My Email",
+        "Not Right Now"
+      ],
+      "prompt": " ",
+      "_type": {
+        "_id": "ChoiceCollectorNode",
+        "name": "Choice Collector",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "0D67E752-6C4A-4423-BF78-D360EB09120B": {
+      "_id": "0D67E752-6C4A-4423-BF78-D360EB09120B",
+      "onfidoJSURL": "https://assets.onfido.com/web-sdk-releases/5.2.1/onfido.min.js",
+      "onfidoHelpMessage": "Thank you for using Onfido for Identity Verification",
+      "onfidoWelcomeMessage": "Identity Verification",
+      "onfidoToken": null,
+      "onfidoJWTreferrer": "*://*/*",
+      "onfidoApplicantIdAttribute": "title",
+      "attributeMappingConfiguration": {
+        "postalAddress": "address_line_1",
+        "city": "address_line_3",
+        "postalCode": "address_line_4",
+        "givenName": "first_name",
+        "stateProvince": "address_line_5",
+        "sn": "last_name",
+        "cn": "first_name"
+      },
+      "biometricCheck": "None",
+      "JITProvisioning": true,
+      "onfidoCSSUrl": "https://assets.onfido.com/web-sdk-releases/5.2.1/style.css",
+      "_type": {
+        "_id": "onfidoRegistrationNode",
+        "name": "Onfido Registration Node",
+        "collection": true
+      }
+    },
+    "2C4C4712-1046-4A0B-A594-7614A9233345": {
+      "_id": "2C4C4712-1046-4A0B-A594-7614A9233345",
+      "outcomes": [
+        "Success",
+        "Error"
+      ],
+      "script": "0f8cbe8f-67ab-42cf-9238-23a64bee34da",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "43887066-CF80-47BE-A074-BC8F858E0BE0": {
+      "_id": "43887066-CF80-47BE-A074-BC8F858E0BE0",
+      "outcomes": [
+        "Success",
+        "Error"
+      ],
+      "script": "929f019e-8cfb-4270-972e-e9e967ea3d51",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "54c7f3de-93f9-467b-9d6b-0f552c10dc1c": {
+      "_id": "54c7f3de-93f9-467b-9d6b-0f552c10dc1c",
+      "nodes": [
+        {
+          "_id": "75495da5-5175-4b29-805e-7c8d0f88d73d",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "HTML Message"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "63D87C1A-88A9-4071-A4AA-7745589A04F5": {
+      "_id": "63D87C1A-88A9-4071-A4AA-7745589A04F5",
+      "nodes": [
+        {
+          "_id": "46DF9245-564B-4215-A1E1-A831B8BA2359",
+          "nodeType": "InputCollectorNode",
+          "displayName": "First Name"
+        },
+        {
+          "_id": "87231A3A-5731-4214-A426-F96463355B23",
+          "nodeType": "InputCollectorNode",
+          "displayName": "Last Name"
+        },
+        {
+          "_id": "5AC83061-C1C4-4E9A-B740-8714AA3E6E41",
+          "nodeType": "InputCollectorNode",
+          "displayName": "Email Address"
+        },
+        {
+          "_id": "7b5eeade-b7e9-4bc1-8223-b89764c7a4d6",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "af9a1265-bb2f-4aa0-86a0-d7e8674b2e58",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "HTML Message"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "95d67ec1-7087-4f00-98d1-c29a22e61514": {
+      "_id": "95d67ec1-7087-4f00-98d1-c29a22e61514",
+      "tree": "email-send",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "B768C8C9-88D4-447F-8B44-7B1F2E69D601": {
+      "_id": "B768C8C9-88D4-447F-8B44-7B1F2E69D601",
+      "successUrl": "https://onsemi.mytestrun.com/user",
+      "_type": {
+        "_id": "SetSuccessUrlNode",
+        "name": "Success URL",
+        "collection": true
+      }
+    },
+    "a6458d4a-47e8-4093-bc38-966885ac7017": {
+      "_id": "a6458d4a-47e8-4093-bc38-966885ac7017",
+      "nodes": [
+        {
+          "_id": "4a49bd31-a389-4e8b-8a16-6f3b73e53db7",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "9cc4b912-38c1-4cde-98fa-9fc0ef19ab0e",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "HTML Message"
+        },
+        {
+          "_id": "8dc41aef-42b3-4d25-b97c-ce3512dbbbe1",
+          "nodeType": "ChoiceCollectorNode",
+          "displayName": "Verification Choice"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "aadbe7ac-caa9-4672-adf1-0aadeff079ce": {
+      "_id": "aadbe7ac-caa9-4672-adf1-0aadeff079ce",
+      "tree": "user",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "ce6634e8-7ae4-4129-921d-bc91f4ae233a": {
+      "_id": "ce6634e8-7ae4-4129-921d-bc91f4ae233a",
+      "datastoreAttributes": [
+        "mail"
+      ],
+      "sharedStateAttribute": "mail",
+      "_type": {
+        "_id": "SearchForUserNode",
+        "name": "Search For User",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "0f8cbe8f-67ab-42cf-9238-23a64bee34da": {
+      "_id": "0f8cbe8f-67ab-42cf-9238-23a64bee34da",
+      "name": "UpdateUser",
+      "description": "null",
+      "script": "dmFyIHVzZXJuYW1lID0gc2hhcmVkU3RhdGUuZ2V0KCJ1c2VybmFtZSIpOwp2YXIgSURNX0FQSV9VUkkgPSAiaHR0cDovL2xvY2FsaG9zdDo4MTgwL29wZW5pZG0vbWFuYWdlZC91c2VyLyI7CnZhciBJRE1fQVBJX1VzZXIgPSAib3BlbmlkbS1hZG1pbiI7CnZhciBJRE1fQVBJX1Bhc3N3b3JkID0gIk9uc2VtaUAyMDIwIjsKb3V0Y29tZSA9ICJTdWNjZXNzIjsKCi8vIFByb3Zpc2lvbmluZyBQYXJhbWV0ZXJzCnZhciBQUk9WX0RlZmF1bHRQYXNzd29yZCA9ICJTQG50QG5kM3IiOwp2YXIgb25maWRvR2l2ZW5OYW1lID0gc2hhcmVkU3RhdGUuZ2V0KCJ1c2VySW5mbyIpLmdldCgiYXR0cmlidXRlcyIpLmdldCgiZ2l2ZW5OYW1lIikuZ2V0KDApLnNwbGl0KCIgIilbMF0udG9Mb3dlckNhc2UoKTsKdmFyIG9uZmlkb0xhc3ROYW1lID0gc2hhcmVkU3RhdGUuZ2V0KCJ1c2VySW5mbyIpLmdldCgiYXR0cmlidXRlcyIpLmdldCgic24iKS5nZXQoMCkudG9Mb3dlckNhc2UoKTsKdmFyIG9uZmlkb0FkZHJlc3MgPSBzaGFyZWRTdGF0ZS5nZXQoInVzZXJJbmZvIikuZ2V0KCJhdHRyaWJ1dGVzIikuZ2V0KCJwb3N0YWxBZGRyZXNzIikuZ2V0KDApLnRvTG93ZXJDYXNlKCk7CnZhciBvbmZpZG9DaXR5ID0gc2hhcmVkU3RhdGUuZ2V0KCJ1c2VySW5mbyIpLmdldCgiYXR0cmlidXRlcyIpLmdldCgiY2l0eSIpLmdldCgwKS50b0xvd2VyQ2FzZSgpOwp2YXIgb25maWRvWmlwID0gc2hhcmVkU3RhdGUuZ2V0KCJ1c2VySW5mbyIpLmdldCgiYXR0cmlidXRlcyIpLmdldCgicG9zdGFsQ29kZSIpLmdldCgwKS50b0xvd2VyQ2FzZSgpOwp2YXIgb25maWRvU3RhdGUgPSBzaGFyZWRTdGF0ZS5nZXQoInVzZXJJbmZvIikuZ2V0KCJhdHRyaWJ1dGVzIikuZ2V0KCJzdGF0ZVByb3ZpbmNlIikuZ2V0KDApLnRvVXBwZXJDYXNlKCk7CmxvZ2dlci5lcnJvcigib25maWRvR2l2ZW5OYW1lOiAiICsgb25maWRvR2l2ZW5OYW1lKTsKbG9nZ2VyLmVycm9yKCJvbmZpZG9MYXN0TmFtZTogIiArIG9uZmlkb0xhc3ROYW1lKTsKdmFyIGdpdmVuTmFtZSA9IHNoYXJlZFN0YXRlLmdldCgiZ2l2ZW5OYW1lIikudG9Mb3dlckNhc2UoKTsKdmFyIHNuID0gc2hhcmVkU3RhdGUuZ2V0KCJzbiIpLnRvTG93ZXJDYXNlKCk7CnZhciB1c2VybmFtZSA9IHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKTsKaWYgKG9uZmlkb0dpdmVuTmFtZSA9PSBnaXZlbk5hbWUgJiYgb25maWRvTGFzdE5hbWUgPT0gc24pIHsKICB2YXIgcmVzdEJvZHkgPSBbewogICAgCQkJIm9wZXJhdGlvbiI6ICJhZGQiLAogICAgCQkJImZpZWxkIjogInZlcmlmaWVkIiwKICAgIAkJCSJ2YWx1ZSI6IHRydWUKICAJCQl9LAogICAgICAgICAgICAgICAgIHsKICAgIAkJCSJvcGVyYXRpb24iOiAiYWRkIiwKICAgIAkJCSJmaWVsZCI6ICJkZXNjcmlwdGlvbiIsCiAgICAJCQkidmFsdWUiOiAiVmVyaWZpZWQgd2l0aCBPbkZpZG8iCiAgCQkJfV0KfQplbHNlIHsKICAgIHZhciByZXN0Qm9keSA9IFt7CiAgICAJCQkib3BlcmF0aW9uIjogImFkZCIsCiAgICAJCQkiZmllbGQiOiAidmVyaWZpZWQiLAogICAgCQkJInZhbHVlIjogZmFsc2UKICAJCQl9XQogIAp9CmlmIChvbmZpZG9BZGRyZXNzICE9IG51bGwpIHsKCXJlc3RCb2R5LnB1c2goewogICAgCQkJIm9wZXJhdGlvbiI6ICJhZGQiLAogICAgCQkJImZpZWxkIjogInBvc3RhbEFkZHJlc3MiLAogICAgCQkJInZhbHVlIjogb25maWRvQWRkcmVzcwogICAgfSkKfQppZiAob25maWRvQ2l0eSAhPSBudWxsKSB7CglyZXN0Qm9keS5wdXNoKHsKICAgIAkJCSJvcGVyYXRpb24iOiAiYWRkIiwKICAgIAkJCSJmaWVsZCI6ICJjaXR5IiwKICAgIAkJCSJ2YWx1ZSI6IG9uZmlkb0NpdHkKICAgIH0pCn0KaWYgKG9uZmlkb1ppcCAhPSBudWxsKSB7CglyZXN0Qm9keS5wdXNoKHsKICAgIAkJCSJvcGVyYXRpb24iOiAiYWRkIiwKICAgIAkJCSJmaWVsZCI6ICJwb3N0YWxDb2RlIiwKICAgIAkJCSJ2YWx1ZSI6IG9uZmlkb1ppcAogICAgfSkKfQppZiAob25maWRvU3RhdGUgIT0gbnVsbCkgewoJcmVzdEJvZHkucHVzaCh7CiAgICAJCQkib3BlcmF0aW9uIjogImFkZCIsCiAgICAJCQkiZmllbGQiOiAic3RhdGVQcm92aW5jZSIsCiAgICAJCQkidmFsdWUiOiBvbmZpZG9TdGF0ZQogICAgfSkKfQp2YXIgcmVxdWVzdCA9IG5ldyBvcmcuZm9yZ2Vyb2NrLmh0dHAucHJvdG9jb2wuUmVxdWVzdCgpOwpyZXF1ZXN0LnNldE1ldGhvZCgnUEFUQ0gnKTsKcmVxdWVzdC5zZXRVcmkoSURNX0FQSV9VUkkgKyB1c2VybmFtZSk7CnJlcXVlc3QuZ2V0SGVhZGVycygpLmFkZCgiY29udGVudC10eXBlIiwiYXBwbGljYXRpb24vanNvbiIpOwpyZXF1ZXN0LmdldEhlYWRlcnMoKS5hZGQoIlgtT3BlbklETS1Vc2VybmFtZSIsSURNX0FQSV9Vc2VyKTsKcmVxdWVzdC5nZXRIZWFkZXJzKCkuYWRkKCJYLU9wZW5JRE0tUGFzc3dvcmQiLElETV9BUElfUGFzc3dvcmQpOwpyZXF1ZXN0LmdldEVudGl0eSgpLnNldFN0cmluZyhKU09OLnN0cmluZ2lmeShyZXN0Qm9keSkpOwp2YXIgcmVzcG9uc2UgPSBodHRwQ2xpZW50LnNlbmQocmVxdWVzdCkuZ2V0KCk7CnZhciBqc29uUmVzdWx0ID0gSlNPTi5wYXJzZShyZXNwb25zZS5nZXRFbnRpdHkoKS5nZXRTdHJpbmcoKSk7CmxvZ2dlci5lcnJvcigiSURNVXBkYXRlOiBKU09OIHJlc3VsdDogIiArIEpTT04uc3RyaW5naWZ5KGpzb25SZXN1bHQpKTs=",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    },
+    "929f019e-8cfb-4270-972e-e9e967ea3d51": {
+      "_id": "929f019e-8cfb-4270-972e-e9e967ea3d51",
+      "name": "ProvisionIDM",
+      "description": "Provision an account.",
+      "script": "bG9nZ2VyLmVycm9yKCJJRE1Qcm92aXNpb246IHN0YXJ0Iik7CgovLyBJRE0gUHJvdmlzaW9uaW5nIEFQSSBDb25maWd1cmF0aW9uCnZhciBJRE1fQVBJX1VSSSA9ICJodHRwOi8vbG9jYWxob3N0OjgxODAvb3BlbmlkbS9tYW5hZ2VkL3VzZXIvIjsKdmFyIElETV9BUElfVXNlciA9ICJvcGVuaWRtLWFkbWluIjsKdmFyIElETV9BUElfUGFzc3dvcmQgPSAiT25zZW1pQDIwMjAiOwoKLy8gUHJvdmlzaW9uaW5nIFBhcmFtZXRlcnMKdmFyIFBST1ZfRGVmYXVsdFBhc3N3b3JkID0gIk9uc2VtaUAyMDIwIjsKCm91dGNvbWUgPSAiRXJyb3IiOwoKdmFyIHNuID0gc2hhcmVkU3RhdGUuZ2V0KCJzbiIpOwp2YXIgZ2l2ZW5OYW1lID0gc2hhcmVkU3RhdGUuZ2V0KCJnaXZlbk5hbWUiKTsKdmFyIG1haWwgPSBzaGFyZWRTdGF0ZS5nZXQoIm1haWwiKTsKdmFyIHRlbGVwaG9uZU51bWJlciA9IHNoYXJlZFN0YXRlLmdldCgidGVsZXBob25lTnVtYmVyIik7CmxvZ2dlci5lcnJvcigiSURNUHJvdmlzaW9uOiBhdHRyaWJzOiBzbj0iICsgc24gKyAiLCBnaXZlbk5hbWU9IiArIGdpdmVuTmFtZSArICIsIG1haWw9IiArIG1haWwpOwoKLy8gcGFzc3dvcmRzIGFyZSBzdG9yZWQgaW4gInRyYW5zaWVudFN0YXRlIiB3aGlsZSBtb3N0IG9mIHRoZSBvdGhlciBwcm9wZXJ0aWVzIGFyZSBzdG9yZWQgaW4gInNoYXJlZFN0YXRlIi4KLy8gVGhlIGRpZmZlcmVuY2UgaXMgdGhhdCBUcmFuc2llbnQgU3RhdGUgaXMgb25seSBhdmFpbGFibGUgdG8gdGhlIG5leHQgbm9kZSwgdGhlbiBpdCBnb2VzIGF3YXkuIAovLyBTaGFyZWQgU3RhdGUgc3RheXMgYWNjZXNzaWJsZSB0aHJvdWdob3V0IHRoZSB3aG9sZSBmbG93IGFuZCBpcyBldmVuIHBhc3NlZCBpbnRvIGlubmVyIHRyZWVzLgp2YXIgcGFzc3dvcmQgPSB0cmFuc2llbnRTdGF0ZS5nZXQoInBhc3N3b3JkIik7CmlmIChwYXNzd29yZCA9PSBudWxsIHx8IHBhc3N3b3JkLnRyaW0oKS5sZW5ndGggPT0gMCB8fCBwYXNzd29yZCA9PSB1bmRlZmluZWQpIHsKICAgIGxvZ2dlci5lcnJvcigiSURNUHJvdmlzaW9uOiBObyBwYXNzd29yZCBzZXQgYnkgdXNlci4uLiBVc2luZyBkZWZhdWx0IHBhc3N3b3JkLiIpOwogICAgcGFzc3dvcmQgPSBQUk9WX0RlZmF1bHRQYXNzd29yZDsKfQpsb2dnZXIuZXJyb3IoIklETVByb3Zpc2lvbjogUHJvdmlzaW9uaW5nIFBhc3N3b3JkOiAiICsgcGFzc3dvcmQpOwoKaWYgKHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSAhPSBudWxsKSB7CiAgICB2YXIgdXNlcm5hbWUgPSBzaGFyZWRTdGF0ZS5nZXQoInVzZXJuYW1lIikKfSBlbHNlIHsKICAgIHZhciB1c2VybmFtZSA9IChnaXZlbk5hbWUuc3Vic3RyaW5nKDAsIDEpLmNvbmNhdChzbikpLnRvTG93ZXJDYXNlKCk7CiAgICBzaGFyZWRTdGF0ZS5wdXQoInVzZXJuYW1lIiwgdXNlcm5hbWUpOwp9CmxvZ2dlci5lcnJvcigiSURNUHJvdmlzaW9uOiBwcm92aXNpb25pbmcgdXNlcjogIiArIHVzZXJuYW1lKTsKcmVzdEJvZHkgPSB7CiAgICAidXNlcm5hbWUiOiB1c2VybmFtZQp9OwppZiAodXNlcm5hbWUgIT0gbnVsbCkgewogICAgcmVzdEJvZHlbInVzZXJOYW1lIl0gPSB1c2VybmFtZQp9CmlmIChtYWlsICE9IG51bGwpIHsKICAgIHJlc3RCb2R5WyJtYWlsIl0gPSBtYWlsCn0KaWYgKHNuICE9IG51bGwpIHsKICAgIHJlc3RCb2R5WyJzbiJdID0gc24KfQppZiAoZ2l2ZW5OYW1lICE9IG51bGwpIHsKICAgIHJlc3RCb2R5WyJnaXZlbk5hbWUiXSA9IGdpdmVuTmFtZQp9CmlmIChtYWlsICE9IG51bGwpIHsKICAgIHJlc3RCb2R5WyJtYWlsIl0gPSBtYWlsCn0KaWYgKHRlbGVwaG9uZU51bWJlciAhPSBudWxsKSB7CiAgICByZXN0Qm9keVsidGVsZXBob25lTnVtYmVyIl0gPSB0ZWxlcGhvbmVOdW1iZXIKfQppZiAocGFzc3dvcmQgIT0gbnVsbCkgewogICAgcmVzdEJvZHlbInBhc3N3b3JkIl0gPSBwYXNzd29yZAp9Cgpsb2dnZXIuZXJyb3IoIklETVByb3Zpc2lvbjogSlNPTiBCb2R5IC0gIiArIEpTT04uc3RyaW5naWZ5KHJlc3RCb2R5KSk7CnZhciByZXF1ZXN0ID0gbmV3IG9yZy5mb3JnZXJvY2suaHR0cC5wcm90b2NvbC5SZXF1ZXN0KCk7CnJlcXVlc3Quc2V0TWV0aG9kKCdQVVQnKTsKcmVxdWVzdC5zZXRVcmkoSURNX0FQSV9VUkkgKyB1c2VybmFtZSk7CnJlcXVlc3QuZ2V0SGVhZGVycygpLmFkZCgiY29udGVudC10eXBlIiwgImFwcGxpY2F0aW9uL2pzb24iKTsKcmVxdWVzdC5nZXRIZWFkZXJzKCkuYWRkKCJYLU9wZW5JRE0tVXNlcm5hbWUiLCBJRE1fQVBJX1VzZXIpOwpyZXF1ZXN0LmdldEhlYWRlcnMoKS5hZGQoIlgtT3BlbklETS1QYXNzd29yZCIsIElETV9BUElfUGFzc3dvcmQpOwpyZXF1ZXN0LmdldEhlYWRlcnMoKS5hZGQoIklmLU5vbmUtTWF0Y2giLCAiKiIpOwpyZXF1ZXN0LmdldEVudGl0eSgpLnNldFN0cmluZyhKU09OLnN0cmluZ2lmeShyZXN0Qm9keSkpOwp2YXIgcmVzcG9uc2UgPSBodHRwQ2xpZW50LnNlbmQocmVxdWVzdCkuZ2V0KCk7CnZhciBqc29uUmVzdWx0ID0gSlNPTi5wYXJzZShyZXNwb25zZS5nZXRFbnRpdHkoKS5nZXRTdHJpbmcoKSk7CmxvZ2dlci5lcnJvcigiSURNUHJvdmlzaW9uOiBKU09OIHJlc3VsdDogIiArIEpTT04uc3RyaW5naWZ5KGpzb25SZXN1bHQpKTsKaWYgKGpzb25SZXN1bHQuaGFzT3duUHJvcGVydHkoIl9pZCIpKSB7CiAgICBsb2dnZXIuZXJyb3IoIklETVByb3Zpc2lvbjogb3V0Y29tZSA9IHN1Y2Nlc3MiKTsKICAgIG91dGNvbWUgPSAiU3VjY2VzcyI7Cn0gZWxzZSB7CiAgICBsb2dnZXIuZXJyb3IoIklETVByb3Zpc2lvbjogb3V0Y29tZSA9IGVycm9yIik7CiAgICBvdXRjb21lID0gIkVycm9yIjsKfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "tree": {
+    "_id": "register",
+    "nodes": {
+      "63D87C1A-88A9-4071-A4AA-7745589A04F5": {
+        "displayName": "Registration",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "ce6634e8-7ae4-4129-921d-bc91f4ae233a"
+        }
+      },
+      "43887066-CF80-47BE-A074-BC8F858E0BE0": {
+        "displayName": "Provision User",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "Error": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "Success": "a6458d4a-47e8-4093-bc38-966885ac7017"
+        }
+      },
+      "B768C8C9-88D4-447F-8B44-7B1F2E69D601": {
+        "displayName": "Success URL",
+        "nodeType": "SetSuccessUrlNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "0D67E752-6C4A-4423-BF78-D360EB09120B": {
+        "displayName": "Proof Identity",
+        "nodeType": "onfidoRegistrationNode",
+        "connections": {
+          "outcome": "2C4C4712-1046-4A0B-A594-7614A9233345"
+        }
+      },
+      "2C4C4712-1046-4A0B-A594-7614A9233345": {
+        "displayName": "Update Profile",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "Success": "B768C8C9-88D4-447F-8B44-7B1F2E69D601",
+          "Error": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "ce6634e8-7ae4-4129-921d-bc91f4ae233a": {
+        "displayName": "Search For User",
+        "nodeType": "SearchForUserNode",
+        "connections": {
+          "notFound": "43887066-CF80-47BE-A074-BC8F858E0BE0",
+          "found": "54c7f3de-93f9-467b-9d6b-0f552c10dc1c",
+          "ambiguous": "54c7f3de-93f9-467b-9d6b-0f552c10dc1c"
+        }
+      },
+      "54c7f3de-93f9-467b-9d6b-0f552c10dc1c": {
+        "displayName": "Already Exists",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "aadbe7ac-caa9-4672-adf1-0aadeff079ce"
+        }
+      },
+      "aadbe7ac-caa9-4672-adf1-0aadeff079ce": {
+        "displayName": "Login",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "B768C8C9-88D4-447F-8B44-7B1F2E69D601"
+        }
+      },
+      "95d67ec1-7087-4f00-98d1-c29a22e61514": {
+        "displayName": "Verify Email",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "a6458d4a-47e8-4093-bc38-966885ac7017": {
+        "displayName": "Verification Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "Proof My Identity": "0D67E752-6C4A-4423-BF78-D360EB09120B",
+          "Verify My Email": "95d67ec1-7087-4f00-98d1-c29a22e61514",
+          "Not Right Now": "B768C8C9-88D4-447F-8B44-7B1F2E69D601"
+        }
+      }
+    },
+    "entryNodeId": "63D87C1A-88A9-4071-A4AA-7745589A04F5"
+  }
+}

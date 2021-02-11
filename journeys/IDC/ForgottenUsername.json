@@ -1,0 +1,194 @@
+
+{
+  "origin": "122e2cec99f219b838ff535cad891635",
+  "innernodes": {
+    "ea93584b-50ad-47b8-b593-7d47f94c4ebb": {
+      "_id": "ea93584b-50ad-47b8-b593-7d47f94c4ebb",
+      "validateInputs": false,
+      "attributesToCollect": [
+        "mail"
+      ],
+      "required": true,
+      "identityAttribute": "mail",
+      "_type": {
+        "_id": "AttributeCollectorNode",
+        "name": "Attribute Collector",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    }
+  },
+  "nodes": {
+    "153acff8-5648-4f13-8887-00f6bb77067a": {
+      "_id": "153acff8-5648-4f13-8887-00f6bb77067a",
+      "identityAttribute": "mail",
+      "identifier": "userName",
+      "_type": {
+        "_id": "IdentifyExistingUserNode",
+        "name": "Identify Existing User",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "a64d2900-17b5-4403-badf-b9a6123023ce": {
+      "_id": "a64d2900-17b5-4403-badf-b9a6123023ce",
+      "nodes": [
+        {
+          "_id": "ea93584b-50ad-47b8-b593-7d47f94c4ebb",
+          "nodeType": "AttributeCollectorNode",
+          "displayName": "Attribute Collector"
+        }
+      ],
+      "pageDescription": {
+        "en": "Enter your email address or <a href=\"#/service/Login\">Sign in</a>"
+      },
+      "pageHeader": {
+        "en": "Forgotten Username"
+      },
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "acdbaad2-46db-4c28-ac08-269a00a0f498": {
+      "_id": "acdbaad2-46db-4c28-ac08-269a00a0f498",
+      "objectLookup": true,
+      "emailAttribute": "mail",
+      "emailSuspendMessage": {
+        "en": "An email has been sent to the address you entered. Click the link in that email to proceed."
+      },
+      "emailTemplateName": "forgottenUsername",
+      "identityAttribute": "mail",
+      "_type": {
+        "_id": "EmailSuspendNode",
+        "name": "Email Suspend Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "ba39371a-fc04-43a8-abea-1807ac2af411": {
+      "_id": "ba39371a-fc04-43a8-abea-1807ac2af411",
+      "tree": "Login",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {
+    "forgottenUsername": {
+      "_id": "emailTemplate/forgottenUsername",
+      "enabled": true,
+      "from": "",
+      "subject": {
+        "en": "Account Information - username",
+        "fr": "Informations sur le compte - nom d'utilisateur"
+      },
+      "message": {
+        "en": "<html><body>{{#if object.userName}}<p>Your username is '{{object.userName}}'.</p>{{else}}If you received this email in error, please disregard.{{/if}}<h4><a href=\"{{object.resumeURI}}\">Click here to login</a></h4></body></html>",
+        "fr": "<html><body>{{#if object.userName}}<p>Votre nom d'utilisateur est '{{object.userName}}'.</p>{{else}}Si vous avez reçu cet e-mail par erreur, veuillez ne pas en tenir compte.{{/if}}<h4><a href=\"{{object.resumeURI}}\">Cliquez ici pour vous connecter</a></h4></body></html>"
+      },
+      "defaultLocale": "en",
+      "mimeType": "text/html"
+    }
+  },
+  "tree": {
+    "_id": "ForgottenUsername",
+    "nodes": {
+      "a64d2900-17b5-4403-badf-b9a6123023ce": {
+        "displayName": "Page Node",
+        "nodeType": "PageNode",
+        "x": 139,
+        "y": 146,
+        "connections": {
+          "outcome": "153acff8-5648-4f13-8887-00f6bb77067a"
+        }
+      },
+      "153acff8-5648-4f13-8887-00f6bb77067a": {
+        "displayName": "Identify Existing User",
+        "nodeType": "IdentifyExistingUserNode",
+        "x": 324,
+        "y": 152,
+        "connections": {
+          "true": "acdbaad2-46db-4c28-ac08-269a00a0f498",
+          "false": "acdbaad2-46db-4c28-ac08-269a00a0f498"
+        }
+      },
+      "acdbaad2-46db-4c28-ac08-269a00a0f498": {
+        "displayName": "Email Suspend Node",
+        "nodeType": "EmailSuspendNode",
+        "x": 563,
+        "y": 193,
+        "connections": {
+          "outcome": "ba39371a-fc04-43a8-abea-1807ac2af411"
+        }
+      },
+      "ba39371a-fc04-43a8-abea-1807ac2af411": {
+        "displayName": "Inner Tree Evaluator",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "x": 767,
+        "y": 188,
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 50,
+        "y": 25
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 970,
+        "y": 149
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 982,
+        "y": 252
+      }
+    },
+    "entryNodeId": "a64d2900-17b5-4403-badf-b9a6123023ce",
+    "description": "Forgotten Username Tree",
+    "identityResource": "managed/alpha_user",
+    "uiConfig": {}
+  }
+}

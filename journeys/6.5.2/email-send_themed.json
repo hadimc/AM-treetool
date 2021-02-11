@@ -1,0 +1,353 @@
+
+{
+  "origin": "6c95f9ef41743c411b138b740e0328e6",
+  "innernodes": {
+    "9f25d222-7d78-4404-801a-2332cb2159bf": {
+      "_id": "9f25d222-7d78-4404-801a-2332cb2159bf",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "194356A4-C3F0-49B7-99D0-63916ABF023E": {
+      "_id": "194356A4-C3F0-49B7-99D0-63916ABF023E",
+      "variable": "mail",
+      "useTransient": false,
+      "isPassword": false,
+      "prompt": "Email Address",
+      "_type": {
+        "_id": "InputCollectorNode",
+        "name": "Input Collector Node",
+        "collection": true
+      }
+    },
+    "791a088d-74e7-4836-ab17-319a8c901887": {
+      "_id": "791a088d-74e7-4836-ab17-319a8c901887",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "479AD05F-E94F-4F31-BF24-FE6C90FCB588": {
+      "_id": "479AD05F-E94F-4F31-BF24-FE6C90FCB588",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {
+        "en": "Finish"
+      },
+      "overwriteButton": true,
+      "box": false,
+      "message": {
+        "en": "<p><h2>Confirmation Email Sent!</h2></p><p><h4>Email sent to {{mail}}. Click on the link in the email to confirm your address.</h4></p>"
+      },
+      "vAlign": "NEUTRAL",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    },
+    "F439E98C-BEE8-4CEB-A8CA-11266B9F57A0": {
+      "_id": "F439E98C-BEE8-4CEB-A8CA-11266B9F57A0",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {
+        "en": "OK"
+      },
+      "overwriteButton": true,
+      "box": false,
+      "message": {
+        "en": "<p><h2>Something went wrong!</h2></p><p><h4>Please try again.</h4></p>"
+      },
+      "vAlign": "NEUTRAL",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    },
+    "8425d6a1-0e7b-45f9-baf5-8d1cb886377c": {
+      "_id": "8425d6a1-0e7b-45f9-baf5-8d1cb886377c",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "07D2633D-3698-4B37-A1C7-FFDB1E9B7182": {
+      "_id": "07D2633D-3698-4B37-A1C7-FFDB1E9B7182",
+      "transientProperties": {},
+      "properties": {
+        "carLicense": "magicLink"
+      },
+      "addAttributes": false,
+      "_type": {
+        "_id": "SetProfilePropertyNode",
+        "name": "Set Profile Property",
+        "collection": true
+      }
+    },
+    "0e065cfd-02d5-4b6c-960b-0797646ecd4b": {
+      "_id": "0e065cfd-02d5-4b6c-960b-0797646ecd4b",
+      "keys": {
+        "givenName": "givenName",
+        "sn": "sn"
+      },
+      "selectType": "SelectFirst",
+      "_type": {
+        "_id": "ProfileAttributeToStateNode",
+        "name": "Profile Attribute To State",
+        "collection": true
+      }
+    },
+    "176aadc0-1b9d-4e23-9d5a-06be09e134d5": {
+      "_id": "176aadc0-1b9d-4e23-9d5a-06be09e134d5",
+      "nodes": [
+        {
+          "_id": "9f25d222-7d78-4404-801a-2332cb2159bf",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "194356A4-C3F0-49B7-99D0-63916ABF023E",
+          "nodeType": "InputCollectorNode",
+          "displayName": "Email"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "29E16E96-9FA1-4CEB-AB07-701F645F1C88": {
+      "_id": "29E16E96-9FA1-4CEB-AB07-701F645F1C88",
+      "smtpSSLEnabled": true,
+      "htmlType": true,
+      "subject": "{{givenName}}, please confirm your email",
+      "smtpUserName": "vscheuber@gmail.com",
+      "smtpUserPassword": "ujksukjyoiknyphj",
+      "from": "admin@forgerock.com",
+      "smtpHostName": "smtp.gmail.com",
+      "attribute": "mail",
+      "message": "<p><h2>Dear {{givenName}} {{sn}},</h2><a href=\"https://onsemi.mytestrun.com/openam/XUI/?service=email-verify&token={{magicToken}}&username={{username}}#login/\">Please confirm your email address.</a>",
+      "smtpHostPort": "465",
+      "_type": {
+        "_id": "EmailNotifyNode",
+        "name": "Email Notify",
+        "collection": true
+      }
+    },
+    "31877AA7-914B-4727-B76F-B0CDA4D3DF49": {
+      "_id": "31877AA7-914B-4727-B76F-B0CDA4D3DF49",
+      "datastoreAttributes": [
+        "mail",
+        "uid"
+      ],
+      "sharedStateAttribute": "mail",
+      "_type": {
+        "_id": "SearchForUserNode",
+        "name": "Search For User",
+        "collection": true
+      }
+    },
+    "37ab5942-cb31-4f55-beae-fba5aa029d29": {
+      "_id": "37ab5942-cb31-4f55-beae-fba5aa029d29",
+      "nodes": [
+        {
+          "_id": "791a088d-74e7-4836-ab17-319a8c901887",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "479AD05F-E94F-4F31-BF24-FE6C90FCB588",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "HTML Message"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "380bbabf-eab3-4c6e-9cda-e414d6659fff": {
+      "_id": "380bbabf-eab3-4c6e-9cda-e414d6659fff",
+      "nodes": [
+        {
+          "_id": "F439E98C-BEE8-4CEB-A8CA-11266B9F57A0",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "HTML Message"
+        },
+        {
+          "_id": "8425d6a1-0e7b-45f9-baf5-8d1cb886377c",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "8204C0F9-BC6B-4CAD-9B2E-58DF9E6A8704": {
+      "_id": "8204C0F9-BC6B-4CAD-9B2E-58DF9E6A8704",
+      "failureUrl": "https://onsemi.mytestrun.com/openam/XUI/?service=register#login/",
+      "_type": {
+        "_id": "SetFailureUrlNode",
+        "name": "Failure URL",
+        "collection": true
+      }
+    },
+    "B2D65E6A-04FA-4C95-83D8-CAE894173562": {
+      "_id": "B2D65E6A-04FA-4C95-83D8-CAE894173562",
+      "outcomes": [
+        "true"
+      ],
+      "script": "5239b58a-96f1-4652-a390-e710acdad7eb",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "c629848f-7e08-4358-9820-ccf17947a228": {
+      "_id": "c629848f-7e08-4358-9820-ccf17947a228",
+      "outcomes": [
+        "known",
+        "unknown"
+      ],
+      "script": "11613569-8327-4fd3-a377-4d509ed42a09",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "5239b58a-96f1-4652-a390-e710acdad7eb": {
+      "_id": "5239b58a-96f1-4652-a390-e710acdad7eb",
+      "name": "Generate Magic Token",
+      "description": "Generate a magic token for email registration in ForgeRock Access Managmenet",
+      "script": "ZnVuY3Rpb24gbWFnaWNUb2tlbigpIHsKICByZXR1cm4gJ3h4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eCcucmVwbGFjZSgvW3hdL2csIGZ1bmN0aW9uKGMpIHsKICAgIHZhciByID0gTWF0aC5yYW5kb20oKSoxNnwwOwogICAgdmFyIHYgPSByOwogICAgcmV0dXJuIHYudG9TdHJpbmcoMTYpOwogIH0pOwp9CnZhciBtYWdpY0xpbmsgPSB7fTsKbWFnaWNMaW5rLm1hZ2ljVG9rZW4gPSBtYWdpY1Rva2VuKCk7Cm1hZ2ljTGluay5kYXRlID0gbmV3IERhdGUoKS50b0pTT04oKTsKdmFyIG1hZ2ljTGlua1N0cmluZyA9IEpTT04uc3RyaW5naWZ5KG1hZ2ljTGluayk7CnNoYXJlZFN0YXRlLnB1dCgibWFnaWNUb2tlbiIsbWFnaWNMaW5rLm1hZ2ljVG9rZW4pOwpzaGFyZWRTdGF0ZS5wdXQoIm1hZ2ljTGluayIsZW5jb2RlVVJJKG1hZ2ljTGlua1N0cmluZykpOwpvdXRjb21lID0gInRydWUiOw==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    },
+    "11613569-8327-4fd3-a377-4d509ed42a09": {
+      "_id": "11613569-8327-4fd3-a377-4d509ed42a09",
+      "name": "Check Email",
+      "description": "Check if email has already been collected. Return \"known\" if yes, \"unknown\" otherwise.",
+      "script": "LyoKICBDaGVjayBpZiBlbWFpbCBoYXMgYWxyZWFkeSBiZWVuIGNvbGxlY3RlZC4gCiAgUmV0dXJuICJrbm93biIgaWYgeWVzLCAidW5rbm93biIgb3RoZXJ3aXNlLgogKi8KCmlmIChudWxsICE9IHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSkgewoJb3V0Y29tZSA9ICJrbm93biI7Cn0KZWxzZSB7CiAJb3V0Y29tZSA9ICJ1bmtub3duIjsKfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "tree": {
+    "_id": "email-send",
+    "nodes": {
+      "B2D65E6A-04FA-4C95-83D8-CAE894173562": {
+        "displayName": "Generate Token",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "true": "29E16E96-9FA1-4CEB-AB07-701F645F1C88"
+        }
+      },
+      "8204C0F9-BC6B-4CAD-9B2E-58DF9E6A8704": {
+        "displayName": "Failure URL",
+        "nodeType": "SetFailureUrlNode",
+        "connections": {
+          "outcome": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "29E16E96-9FA1-4CEB-AB07-701F645F1C88": {
+        "displayName": "Send Email",
+        "nodeType": "EmailNotifyNode",
+        "connections": {
+          "outcome": "07D2633D-3698-4B37-A1C7-FFDB1E9B7182"
+        }
+      },
+      "07D2633D-3698-4B37-A1C7-FFDB1E9B7182": {
+        "displayName": "Save Token",
+        "nodeType": "SetProfilePropertyNode",
+        "connections": {
+          "outcome": "37ab5942-cb31-4f55-beae-fba5aa029d29"
+        }
+      },
+      "31877AA7-914B-4727-B76F-B0CDA4D3DF49": {
+        "displayName": "Search For User",
+        "nodeType": "SearchForUserNode",
+        "connections": {
+          "found": "0e065cfd-02d5-4b6c-960b-0797646ecd4b",
+          "notFound": "380bbabf-eab3-4c6e-9cda-e414d6659fff",
+          "ambiguous": "380bbabf-eab3-4c6e-9cda-e414d6659fff"
+        }
+      },
+      "176aadc0-1b9d-4e23-9d5a-06be09e134d5": {
+        "displayName": "Collect Email",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "31877AA7-914B-4727-B76F-B0CDA4D3DF49"
+        }
+      },
+      "c629848f-7e08-4358-9820-ccf17947a228": {
+        "displayName": "Check Email",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "known": "31877AA7-914B-4727-B76F-B0CDA4D3DF49",
+          "unknown": "176aadc0-1b9d-4e23-9d5a-06be09e134d5"
+        }
+      },
+      "380bbabf-eab3-4c6e-9cda-e414d6659fff": {
+        "displayName": "Error Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "8204C0F9-BC6B-4CAD-9B2E-58DF9E6A8704"
+        }
+      },
+      "37ab5942-cb31-4f55-beae-fba5aa029d29": {
+        "displayName": "Email Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "8204C0F9-BC6B-4CAD-9B2E-58DF9E6A8704"
+        }
+      },
+      "0e065cfd-02d5-4b6c-960b-0797646ecd4b": {
+        "displayName": "Get Profile",
+        "nodeType": "ProfileAttributeToStateNode",
+        "connections": {
+          "outcome": "B2D65E6A-04FA-4C95-83D8-CAE894173562"
+        }
+      }
+    },
+    "entryNodeId": "c629848f-7e08-4358-9820-ccf17947a228"
+  }
+}

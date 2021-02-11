@@ -1,0 +1,73 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {},
+  "nodes": {
+    "da390917-3ea0-4e87-9bdf-d052cce36a54": {
+      "_id": "da390917-3ea0-4e87-9bdf-d052cce36a54",
+      "accountProviderClass": "org.forgerock.openam.authentication.modules.common.mapping.DefaultAccountProvider",
+      "_type": {
+        "_id": "ProvisionIdmAccountNode",
+        "name": "Provision IDM Account",
+        "collection": true
+      }
+    },
+    "ff5744c3-c2b7-4d3e-95ab-aa4f0a2964c1": {
+      "_id": "ff5744c3-c2b7-4d3e-95ab-aa4f0a2964c1",
+      "redirectURI": "http://am.example.com:8080/openam/XUI/",
+      "authenticationIdKey": "id",
+      "clientId": "aClientId",
+      "basicAuth": true,
+      "cfgAccountProviderClass": "org.forgerock.openam.authentication.modules.common.mapping.DefaultAccountProvider",
+      "scopeString": "public_profile,email",
+      "cfgAccountMapperConfiguration": {
+        "id": "uid"
+      },
+      "cfgAttributeMappingClasses": [
+        "org.forgerock.openam.authentication.modules.common.mapping.JsonAttributeMapper|uid|facebook-"
+      ],
+      "tokenEndpoint": "https://graph.facebook.com/v2.12/oauth/access_token",
+      "cfgAttributeMappingConfiguration": {
+        "name": "cn",
+        "last_name": "sn",
+        "id": "uid",
+        "first_name": "givenName",
+        "email": "mail"
+      },
+      "provider": "facebook",
+      "cfgMixUpMitigation": false,
+      "authorizeEndpoint": "https://www.facebook.com/dialog/oauth",
+      "userInfoEndpoint": "https://graph.facebook.com/v2.6/me?fields=name%2Cemail%2Cfirst_name%2Clast_name",
+      "cfgAccountMapperClass": "org.forgerock.openam.authentication.modules.common.mapping.JsonAttributeMapper",
+      "saveUserAttributesToSession": true,
+      "_type": {
+        "_id": "SocialFacebookNode",
+        "name": "Social Facebook",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "Facebook-ProvisionIDMAccount",
+    "nodes": {
+      "ff5744c3-c2b7-4d3e-95ab-aa4f0a2964c1": {
+        "nodeType": "SocialFacebookNode",
+        "displayName": "Facebook Social Authentication",
+        "connections": {
+          "NO_ACCOUNT": "da390917-3ea0-4e87-9bdf-d052cce36a54",
+          "ACCOUNT_EXISTS": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "da390917-3ea0-4e87-9bdf-d052cce36a54": {
+        "nodeType": "ProvisionIdmAccountNode",
+        "displayName": "Provision IDM Account",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      }
+    },
+    "entryNodeId": "ff5744c3-c2b7-4d3e-95ab-aa4f0a2964c1"
+  }
+}

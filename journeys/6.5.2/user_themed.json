@@ -1,0 +1,134 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {
+    "5894130c-431b-4626-8a5a-7e0e67df5e4a": {
+      "_id": "5894130c-431b-4626-8a5a-7e0e67df5e4a",
+      "_type": {
+        "_id": "UsernameCollectorNode",
+        "name": "Username Collector",
+        "collection": true
+      }
+    },
+    "322a021f-d5ae-4741-8c9d-d0ab380d2e76": {
+      "_id": "322a021f-d5ae-4741-8c9d-d0ab380d2e76",
+      "_type": {
+        "_id": "PasswordCollectorNode",
+        "name": "Password Collector",
+        "collection": true
+      }
+    },
+    "93b6dd43-6d67-49c3-b5de-d67acacfac47": {
+      "_id": "93b6dd43-6d67-49c3-b5de-d67acacfac47",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {},
+      "overwriteButton": false,
+      "box": false,
+      "message": {
+        "en": "<p><a href=\"/openam/?service=register\">Register</a> <span>·</span> <a href=\"/user/#/forgotusername\">Forgot username</a> <span>·</span> <a href=\"/user/#/passwordreset\">Forgot password</a></p>"
+      },
+      "vAlign": "BOTTOM",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    },
+    "0797dbb6-8051-4d5f-930b-a90acae13403": {
+      "_id": "0797dbb6-8051-4d5f-930b-a90acae13403",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "12cfdc5e-8276-4913-a27a-7519440131be": {
+      "_id": "12cfdc5e-8276-4913-a27a-7519440131be",
+      "usernameHeader": "X-OpenAM-Username",
+      "referrerWhiteList": [],
+      "allowWithoutReferer": true,
+      "passwordHeader": "X-OpenAM-Password",
+      "_type": {
+        "_id": "ZeroPageLoginNode",
+        "name": "Zero Page Login Collector",
+        "collection": true
+      }
+    },
+    "64e1d79f-a080-4e41-b511-56ccfa1dd1d9": {
+      "_id": "64e1d79f-a080-4e41-b511-56ccfa1dd1d9",
+      "_type": {
+        "_id": "DataStoreDecisionNode",
+        "name": "Data Store Decision",
+        "collection": true
+      }
+    },
+    "d307dc2b-e6c8-47df-82db-7ad62786f651": {
+      "_id": "d307dc2b-e6c8-47df-82db-7ad62786f651",
+      "nodes": [
+        {
+          "_id": "5894130c-431b-4626-8a5a-7e0e67df5e4a",
+          "nodeType": "UsernameCollectorNode",
+          "displayName": "Username"
+        },
+        {
+          "_id": "322a021f-d5ae-4741-8c9d-d0ab380d2e76",
+          "nodeType": "PasswordCollectorNode",
+          "displayName": "Password"
+        },
+        {
+          "_id": "93b6dd43-6d67-49c3-b5de-d67acacfac47",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "Footer"
+        },
+        {
+          "_id": "0797dbb6-8051-4d5f-930b-a90acae13403",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "user",
+    "nodes": {
+      "64e1d79f-a080-4e41-b511-56ccfa1dd1d9": {
+        "displayName": "Authenticate",
+        "nodeType": "DataStoreDecisionNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "d307dc2b-e6c8-47df-82db-7ad62786f651": {
+        "displayName": "Login",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "64e1d79f-a080-4e41-b511-56ccfa1dd1d9"
+        }
+      },
+      "12cfdc5e-8276-4913-a27a-7519440131be": {
+        "displayName": "Header Login",
+        "nodeType": "ZeroPageLoginNode",
+        "connections": {
+          "true": "64e1d79f-a080-4e41-b511-56ccfa1dd1d9",
+          "false": "d307dc2b-e6c8-47df-82db-7ad62786f651"
+        }
+      }
+    },
+    "entryNodeId": "12cfdc5e-8276-4913-a27a-7519440131be"
+  }
+}

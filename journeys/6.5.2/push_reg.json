@@ -1,0 +1,161 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {
+    "8b57d061-f75a-4a68-bc87-dd81b3d06e3a": {
+      "_id": "8b57d061-f75a-4a68-bc87-dd81b3d06e3a",
+      "_type": {
+        "_id": "UsernameCollectorNode",
+        "name": "Username Collector",
+        "collection": true
+      }
+    },
+    "d8ded1f5-0140-43bf-9210-d9c7700440f4": {
+      "_id": "d8ded1f5-0140-43bf-9210-d9c7700440f4",
+      "_type": {
+        "_id": "PasswordCollectorNode",
+        "name": "Password Collector",
+        "collection": true
+      }
+    },
+    "0fb8f3c1-7b82-4798-8040-a3f9cf3b8dbe": {
+      "_id": "0fb8f3c1-7b82-4798-8040-a3f9cf3b8dbe",
+      "_type": {
+        "_id": "PasswordCollectorNode",
+        "name": "Password Collector",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "5441c823-957a-4b7f-b18e-1177983a7ce6": {
+      "_id": "5441c823-957a-4b7f-b18e-1177983a7ce6",
+      "outcomes": [
+        "known",
+        "unknown"
+      ],
+      "script": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "5b0a3dbb-0004-4d77-8df7-ec7a5a7c1f4c": {
+      "_id": "5b0a3dbb-0004-4d77-8df7-ec7a5a7c1f4c",
+      "_type": {
+        "_id": "DataStoreDecisionNode",
+        "name": "Data Store Decision",
+        "collection": true
+      }
+    },
+    "625fd2cc-5677-4073-b780-6deba6f58287": {
+      "_id": "625fd2cc-5677-4073-b780-6deba6f58287",
+      "nodes": [
+        {
+          "_id": "8b57d061-f75a-4a68-bc87-dd81b3d06e3a",
+          "nodeType": "UsernameCollectorNode",
+          "displayName": "Username"
+        },
+        {
+          "_id": "d8ded1f5-0140-43bf-9210-d9c7700440f4",
+          "nodeType": "PasswordCollectorNode",
+          "displayName": "Password"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "69c95425-ab5c-48df-aee2-7841b6ac0f7c": {
+      "_id": "69c95425-ab5c-48df-aee2-7841b6ac0f7c",
+      "generateRecoveryCodes": true,
+      "color": "519387",
+      "timeout": 4,
+      "issuer": "ForgeRock",
+      "_type": {
+        "_id": "PushRegistrationNode",
+        "name": "Push Registration Node",
+        "collection": true
+      }
+    },
+    "993ca814-27bc-40ff-a868-a326e5598c15": {
+      "_id": "993ca814-27bc-40ff-a868-a326e5598c15",
+      "nodes": [
+        {
+          "_id": "0fb8f3c1-7b82-4798-8040-a3f9cf3b8dbe",
+          "nodeType": "PasswordCollectorNode",
+          "displayName": "Password"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "739bdc48-fd24-4c52-b353-88706d75558a": {
+      "_id": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "name": "Check Username",
+      "description": "Check if username is known.",
+      "script": "LyoKICBDaGVjayBpZiB1c2VybmFtZSBoYXMgYWxyZWFkeSBiZWVuIGNvbGxlY3RlZC4gCiAgUmV0dXJuICJrbm93biIgaWYgeWVzLCAidW5rbm93biIgb3RoZXJ3aXNlLgogKi8KCmlmIChudWxsICE9IHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSkgewoJb3V0Y29tZSA9ICJrbm93biI7Cn0KZWxzZSB7CiAJb3V0Y29tZSA9ICJ1bmtub3duIjsKfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "emailTemplates": {},
+  "tree": {
+    "_id": "push_reg",
+    "nodes": {
+      "5b0a3dbb-0004-4d77-8df7-ec7a5a7c1f4c": {
+        "displayName": "Validate Creds",
+        "nodeType": "DataStoreDecisionNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "69c95425-ab5c-48df-aee2-7841b6ac0f7c"
+        }
+      },
+      "625fd2cc-5677-4073-b780-6deba6f58287": {
+        "displayName": "Login Form",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "5b0a3dbb-0004-4d77-8df7-ec7a5a7c1f4c"
+        }
+      },
+      "5441c823-957a-4b7f-b18e-1177983a7ce6": {
+        "displayName": "Username?",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "unknown": "625fd2cc-5677-4073-b780-6deba6f58287",
+          "known": "993ca814-27bc-40ff-a868-a326e5598c15"
+        }
+      },
+      "993ca814-27bc-40ff-a868-a326e5598c15": {
+        "displayName": "Login Form",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "5b0a3dbb-0004-4d77-8df7-ec7a5a7c1f4c"
+        }
+      },
+      "69c95425-ab5c-48df-aee2-7841b6ac0f7c": {
+        "displayName": "Register",
+        "nodeType": "PushRegistrationNode",
+        "connections": {
+          "SUCCESS": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "FAILURE": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "EXPIRED": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      }
+    },
+    "entryNodeId": "5441c823-957a-4b7f-b18e-1177983a7ce6"
+  }
+}

@@ -1,0 +1,74 @@
+
+{
+  "origin": "b54def31a9620a10efbc3a28b930006f",
+  "innernodes": {},
+  "nodes": {
+    "3C0D7D86-D30D-46E6-98B3-176C326EB93F": {
+      "_id": "3C0D7D86-D30D-46E6-98B3-176C326EB93F",
+      "redirectURI": "https://idp36.mytestrun.com/openam",
+      "authenticationIdKey": "id",
+      "clientId": "123741918345526",
+      "basicAuth": true,
+      "cfgAccountProviderClass": "org.forgerock.openam.authentication.modules.common.mapping.DefaultAccountProvider",
+      "scopeString": "public_profile,email",
+      "cfgAccountMapperConfiguration": {
+        "email": "mail"
+      },
+      "cfgAttributeMappingClasses": [
+        "org.forgerock.openam.authentication.modules.common.mapping.JsonAttributeMapper|iplanet-am-user-alias-list|facebook-"
+      ],
+      "issuer": "https://accounts.facebook.com",
+      "tokenEndpoint": "https://graph.facebook.com/v2.12/oauth/access_token",
+      "cfgAttributeMappingConfiguration": {
+        "name": "cn",
+        "last_name": "sn",
+        "id": "iplanet-am-user-alias-list",
+        "first_name": "givenName",
+        "email": "mail"
+      },
+      "provider": "facebook",
+      "cfgMixUpMitigation": false,
+      "authorizeEndpoint": "https://www.facebook.com/dialog/oauth",
+      "clientSecret": null,
+      "userInfoEndpoint": "https://graph.facebook.com/v2.6/me?fields=name%2Cemail%2Cfirst_name%2Clast_name",
+      "cfgAccountMapperClass": "org.forgerock.openam.authentication.modules.common.mapping.JsonAttributeMapper",
+      "saveUserAttributesToSession": true,
+      "_type": {
+        "_id": "SocialFacebookNode",
+        "name": "Social Facebook",
+        "collection": true
+      }
+    },
+    "A31F261D-C0F2-4231-B6C7-3C0636A2B88E": {
+      "_id": "A31F261D-C0F2-4231-B6C7-3C0636A2B88E",
+      "anonymousUserName": "anonymous",
+      "_type": {
+        "_id": "AnonymousUserNode",
+        "name": "Anonymous User Mapping",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "tree": {
+    "_id": "facebook",
+    "nodes": {
+      "3C0D7D86-D30D-46E6-98B3-176C326EB93F": {
+        "displayName": "Social Facebook",
+        "nodeType": "SocialFacebookNode",
+        "connections": {
+          "NO_ACCOUNT": "A31F261D-C0F2-4231-B6C7-3C0636A2B88E",
+          "ACCOUNT_EXISTS": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "A31F261D-C0F2-4231-B6C7-3C0636A2B88E": {
+        "displayName": "Anonymous User Mapping",
+        "nodeType": "AnonymousUserNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      }
+    },
+    "entryNodeId": "3C0D7D86-D30D-46E6-98B3-176C326EB93F"
+  }
+}

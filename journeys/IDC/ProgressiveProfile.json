@@ -1,0 +1,150 @@
+
+{
+  "origin": "122e2cec99f219b838ff535cad891635",
+  "innernodes": {
+    "10639996-a531-4a6b-ad7a-947752934740": {
+      "_id": "10639996-a531-4a6b-ad7a-947752934740",
+      "validateInputs": false,
+      "attributesToCollect": [
+        "postalAddress"
+      ],
+      "required": false,
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "AttributeCollectorNode",
+        "name": "Attribute Collector",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    }
+  },
+  "nodes": {
+    "3ae4c2fe-b967-4ca8-b29b-9abc4570dd43": {
+      "_id": "3ae4c2fe-b967-4ca8-b29b-9abc4570dd43",
+      "amount": 25,
+      "interval": "AT",
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "LoginCountDecisionNode",
+        "name": "Login Count Decision",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "dff248ab-8015-46fb-86e5-ffbce9003b17": {
+      "_id": "dff248ab-8015-46fb-86e5-ffbce9003b17",
+      "nodes": [
+        {
+          "_id": "10639996-a531-4a6b-ad7a-947752934740",
+          "nodeType": "AttributeCollectorNode",
+          "displayName": "Attribute Collector"
+        }
+      ],
+      "pageDescription": {},
+      "pageHeader": {
+        "en": "Please select your preferences"
+      },
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "f5b32d58-c733-4335-a2a5-5073b22dbab7": {
+      "_id": "f5b32d58-c733-4335-a2a5-5073b22dbab7",
+      "identityAttribute": "userName",
+      "identityResource": "managed/alpha_user",
+      "ignoredFields": [],
+      "patchAsObject": false,
+      "_type": {
+        "_id": "PatchObjectNode",
+        "name": "Patch Object",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "PATCHED",
+          "displayName": "Patched"
+        },
+        {
+          "id": "FAILURE",
+          "displayName": "Failed"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "ProgressiveProfile",
+    "entryNodeId": "3ae4c2fe-b967-4ca8-b29b-9abc4570dd43",
+    "nodes": {
+      "3ae4c2fe-b967-4ca8-b29b-9abc4570dd43": {
+        "x": 152,
+        "y": 36,
+        "connections": {
+          "false": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "true": "dff248ab-8015-46fb-86e5-ffbce9003b17"
+        },
+        "nodeType": "LoginCountDecisionNode",
+        "displayName": "Login Count Decision"
+      },
+      "f5b32d58-c733-4335-a2a5-5073b22dbab7": {
+        "x": 766,
+        "y": 36,
+        "connections": {
+          "PATCHED": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "FAILURE": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "nodeType": "PatchObjectNode",
+        "displayName": "Patch Object"
+      },
+      "dff248ab-8015-46fb-86e5-ffbce9003b17": {
+        "x": 555,
+        "y": 20,
+        "connections": {
+          "outcome": "f5b32d58-c733-4335-a2a5-5073b22dbab7"
+        },
+        "nodeType": "PageNode",
+        "displayName": "Page Node"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 50,
+        "y": 58.5
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 802,
+        "y": 312
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 919,
+        "y": 171
+      }
+    },
+    "description": "Prompt for missing preferences on 3rd login",
+    "identityResource": "managed/alpha_user",
+    "uiConfig": {}
+  }
+}

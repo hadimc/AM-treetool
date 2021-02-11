@@ -1,0 +1,230 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {
+    "aa31be40-1afd-4922-8828-2434efb47956": {
+      "_id": "aa31be40-1afd-4922-8828-2434efb47956",
+      "defaultChoice": "Push",
+      "choices": [
+        "Abort",
+        "Push",
+        "Fido",
+        "Email",
+        "SMS"
+      ],
+      "prompt": "Select your 2nd factor to login",
+      "_type": {
+        "_id": "ChoiceCollectorNode",
+        "name": "Choice Collector",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "045fa7bd-7945-414e-bb75-2b1b5ccb9f9c": {
+      "_id": "045fa7bd-7945-414e-bb75-2b1b5ccb9f9c",
+      "tree": "webauthn",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "2db91f94-11fe-4b3a-996d-d970e08f70ac": {
+      "_id": "2db91f94-11fe-4b3a-996d-d970e08f70ac",
+      "tree": "push",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "6676e357-6139-4d19-92c4-0efe96002a7f": {
+      "_id": "6676e357-6139-4d19-92c4-0efe96002a7f",
+      "tree": "sms",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "a5b61132-961c-45fa-8172-b843e1538ca7": {
+      "_id": "a5b61132-961c-45fa-8172-b843e1538ca7",
+      "sessionDataKey": "UserId",
+      "sharedStateKey": "username",
+      "_type": {
+        "_id": "SessionDataNode",
+        "name": "Get Session Data",
+        "collection": true
+      }
+    },
+    "b6154bbd-106f-44af-a6a0-a88d59a14ebe": {
+      "_id": "b6154bbd-106f-44af-a6a0-a88d59a14ebe",
+      "tree": "simple",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "c156b3dc-f845-48d5-bf45-924870f5dace": {
+      "_id": "c156b3dc-f845-48d5-bf45-924870f5dace",
+      "outcomes": [
+        "hasSession",
+        "noSession"
+      ],
+      "script": "0c1166da-4e37-4e24-83c2-390fdcba240b",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "d6df3a32-8f4a-4382-a94c-31c343baa121": {
+      "_id": "d6df3a32-8f4a-4382-a94c-31c343baa121",
+      "outcomes": [
+        "known",
+        "unknown"
+      ],
+      "script": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "ebb687c0-3ceb-4a91-aa65-a31de94fe90e": {
+      "_id": "ebb687c0-3ceb-4a91-aa65-a31de94fe90e",
+      "nodes": [
+        {
+          "_id": "aa31be40-1afd-4922-8828-2434efb47956",
+          "nodeType": "ChoiceCollectorNode",
+          "displayName": "Select MFA Method"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "f894adaf-13cd-47a3-8397-67a49e43396f": {
+      "_id": "f894adaf-13cd-47a3-8397-67a49e43396f",
+      "tree": "email",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "0c1166da-4e37-4e24-83c2-390fdcba240b": {
+      "_id": "0c1166da-4e37-4e24-83c2-390fdcba240b",
+      "name": "Check For Existing Session",
+      "description": null,
+      "script": "aWYgKHR5cGVvZiBleGlzdGluZ1Nlc3Npb24gIT09ICd1bmRlZmluZWQnKQp7CiAgb3V0Y29tZSA9ICJoYXNTZXNzaW9uIjsKfQplbHNlCnsKICBvdXRjb21lID0gIm5vU2Vzc2lvbiI7Cn0=",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    },
+    "739bdc48-fd24-4c52-b353-88706d75558a": {
+      "_id": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "name": "Check Username",
+      "description": "Check if username is known.",
+      "script": "LyoKICBDaGVjayBpZiB1c2VybmFtZSBoYXMgYWxyZWFkeSBiZWVuIGNvbGxlY3RlZC4gCiAgUmV0dXJuICJrbm93biIgaWYgeWVzLCAidW5rbm93biIgb3RoZXJ3aXNlLgogKi8KCmlmIChudWxsICE9IHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSkgewoJb3V0Y29tZSA9ICJrbm93biI7Cn0KZWxzZSB7CiAJb3V0Y29tZSA9ICJ1bmtub3duIjsKfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "emailTemplates": {},
+  "tree": {
+    "_id": "select",
+    "nodes": {
+      "2db91f94-11fe-4b3a-996d-d970e08f70ac": {
+        "displayName": "Push",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "6676e357-6139-4d19-92c4-0efe96002a7f": {
+        "displayName": "SMS",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "f894adaf-13cd-47a3-8397-67a49e43396f": {
+        "displayName": "Email",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "045fa7bd-7945-414e-bb75-2b1b5ccb9f9c": {
+        "displayName": "WebAuthN",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "ebb687c0-3ceb-4a91-aa65-a31de94fe90e": {
+        "displayName": "Page",
+        "nodeType": "PageNode",
+        "connections": {
+          "Abort": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "Push": "2db91f94-11fe-4b3a-996d-d970e08f70ac",
+          "Fido": "045fa7bd-7945-414e-bb75-2b1b5ccb9f9c",
+          "Email": "f894adaf-13cd-47a3-8397-67a49e43396f",
+          "SMS": "6676e357-6139-4d19-92c4-0efe96002a7f"
+        }
+      },
+      "b6154bbd-106f-44af-a6a0-a88d59a14ebe": {
+        "displayName": "Login",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "d6df3a32-8f4a-4382-a94c-31c343baa121",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "d6df3a32-8f4a-4382-a94c-31c343baa121": {
+        "displayName": "Check Username",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "known": "ebb687c0-3ceb-4a91-aa65-a31de94fe90e",
+          "unknown": "b6154bbd-106f-44af-a6a0-a88d59a14ebe"
+        }
+      },
+      "c156b3dc-f845-48d5-bf45-924870f5dace": {
+        "displayName": "Scripted Decision",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "noSession": "d6df3a32-8f4a-4382-a94c-31c343baa121",
+          "hasSession": "a5b61132-961c-45fa-8172-b843e1538ca7"
+        }
+      },
+      "a5b61132-961c-45fa-8172-b843e1538ca7": {
+        "displayName": "Get Session Data",
+        "nodeType": "SessionDataNode",
+        "connections": {
+          "outcome": "d6df3a32-8f4a-4382-a94c-31c343baa121"
+        }
+      }
+    },
+    "entryNodeId": "c156b3dc-f845-48d5-bf45-924870f5dace"
+  }
+}

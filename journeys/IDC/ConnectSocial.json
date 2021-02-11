@@ -1,0 +1,232 @@
+
+{
+  "origin": "8600b043320dbf667abd29db829273d3",
+  "innernodes": {
+    "6dfba97f-8ee4-4386-94e2-a734a7a0f5bb": {
+      "_id": "6dfba97f-8ee4-4386-94e2-a734a7a0f5bb",
+      "offerOnlyExisting": false,
+      "passwordAttribute": "password",
+      "includeLocalAuthentication": false,
+      "identityAttribute": "mail",
+      "_type": {
+        "_id": "SelectIdPNode",
+        "name": "Select Identity Provider",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "socialAuthentication",
+          "displayName": "Social Authentication"
+        }
+      ]
+    }
+  },
+  "nodes": {
+    "25d4df70-8c4c-42e1-9492-fa871010a4ec": {
+      "_id": "25d4df70-8c4c-42e1-9492-fa871010a4ec",
+      "sessionDataKey": "UserToken",
+      "sharedStateKey": "userName",
+      "_type": {
+        "_id": "SessionDataNode",
+        "name": "Get Session Data",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "41e584b8-2b4e-4954-bdfb-fc52b669025b": {
+      "_id": "41e584b8-2b4e-4954-bdfb-fc52b669025b",
+      "identifier": "userName",
+      "identityAttribute": "mail",
+      "_type": {
+        "_id": "IdentifyExistingUserNode",
+        "name": "Identify Existing User",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "5ce5e6fb-4e43-4401-8484-9568ff478635": {
+      "_id": "5ce5e6fb-4e43-4401-8484-9568ff478635",
+      "usernameAttribute": "userName",
+      "script": "58c824ae-84ed-4724-82cd-db128fc3f6c",
+      "_type": {
+        "_id": "SocialProviderHandlerNode",
+        "name": "Social Provider Handler Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "ACCOUNT_EXISTS",
+          "displayName": "Account exists"
+        },
+        {
+          "id": "NO_ACCOUNT",
+          "displayName": "No account exists"
+        }
+      ]
+    },
+    "699e22be-a481-4309-b37d-d7b6842727c8": {
+      "_id": "699e22be-a481-4309-b37d-d7b6842727c8",
+      "patchAsObject": false,
+      "ignoredFields": [],
+      "identityResource": "managed/alpha_user",
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "PatchObjectNode",
+        "name": "Patch Object",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "PATCHED",
+          "displayName": "Patched"
+        },
+        {
+          "id": "FAILURE",
+          "displayName": "Failed"
+        }
+      ]
+    },
+    "e75e4ec0-42de-4827-83dc-8263066b70ed": {
+      "_id": "e75e4ec0-42de-4827-83dc-8263066b70ed",
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "IncrementLoginCountNode",
+        "name": "Increment Login Count",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "eecdd792-0b5c-46c0-95d4-91d7c53c573d": {
+      "_id": "eecdd792-0b5c-46c0-95d4-91d7c53c573d",
+      "nodes": [
+        {
+          "_id": "6dfba97f-8ee4-4386-94e2-a734a7a0f5bb",
+          "nodeType": "SelectIdPNode",
+          "displayName": "Select IDP"
+        }
+      ],
+      "pageDescription": {
+        "en": "New here? <a href=\"#/service/Registration\">Create an account</a><br><a href=\"#/service/ForgottenUsername\">Forgot username?</a><a href=\"#/service/ResetPassword\"> Forgot password?</a>"
+      },
+      "pageHeader": {
+        "en": "Sign In"
+      },
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "socialAuthentication",
+          "displayName": "Social Authentication"
+        },
+        {
+          "id": "localAuthentication",
+          "displayName": "Local Authentication"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "ConnectSocial",
+    "entryNodeId": "25d4df70-8c4c-42e1-9492-fa871010a4ec",
+    "nodes": {
+      "eecdd792-0b5c-46c0-95d4-91d7c53c573d": {
+        "x": 267,
+        "y": 213,
+        "connections": {
+          "socialAuthentication": "5ce5e6fb-4e43-4401-8484-9568ff478635"
+        },
+        "nodeType": "PageNode",
+        "displayName": "Page Node"
+      },
+      "41e584b8-2b4e-4954-bdfb-fc52b669025b": {
+        "x": 621,
+        "y": 205.76666259765625,
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "699e22be-a481-4309-b37d-d7b6842727c8"
+        },
+        "nodeType": "IdentifyExistingUserNode",
+        "displayName": "Find User"
+      },
+      "5ce5e6fb-4e43-4401-8484-9568ff478635": {
+        "x": 458,
+        "y": 75,
+        "connections": {
+          "ACCOUNT_EXISTS": "e75e4ec0-42de-4827-83dc-8263066b70ed",
+          "NO_ACCOUNT": "41e584b8-2b4e-4954-bdfb-fc52b669025b"
+        },
+        "nodeType": "SocialProviderHandlerNode",
+        "displayName": "Social Login"
+      },
+      "699e22be-a481-4309-b37d-d7b6842727c8": {
+        "x": 821,
+        "y": 336.76666259765625,
+        "connections": {
+          "PATCHED": "e75e4ec0-42de-4827-83dc-8263066b70ed",
+          "FAILURE": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "nodeType": "PatchObjectNode",
+        "displayName": "Patch Object"
+      },
+      "e75e4ec0-42de-4827-83dc-8263066b70ed": {
+        "x": 987,
+        "y": 106,
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "nodeType": "IncrementLoginCountNode",
+        "displayName": "Increment Login Count"
+      },
+      "25d4df70-8c4c-42e1-9492-fa871010a4ec": {
+        "x": 97,
+        "y": 110.76666259765625,
+        "connections": {
+          "outcome": "eecdd792-0b5c-46c0-95d4-91d7c53c573d"
+        },
+        "nodeType": "SessionDataNode",
+        "displayName": "Get Session Data"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 50,
+        "y": 25
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 1238,
+        "y": 98
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 1238,
+        "y": 256
+      }
+    },
+    "description": "Connect Social IDP Tree",
+    "uiConfig": {},
+    "identityResource": "managed/alpha_user"
+  }
+}

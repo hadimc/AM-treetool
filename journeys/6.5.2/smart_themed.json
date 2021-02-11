@@ -1,0 +1,297 @@
+
+{
+  "origin": "6c95f9ef41743c411b138b740e0328e6",
+  "innernodes": {
+    "0d2248ad-920e-4f1c-ab67-5628d7890fd0": {
+      "_id": "0d2248ad-920e-4f1c-ab67-5628d7890fd0",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "64B5F0BC-F822-4626-B023-4E5E6B56E091": {
+      "_id": "64B5F0BC-F822-4626-B023-4E5E6B56E091",
+      "messageYes": {
+        "en": "Continue"
+      },
+      "messageNo": {
+        "en": "Abort"
+      },
+      "message": {
+        "en": "You are outsisde the FW!"
+      },
+      "_type": {
+        "_id": "MessageNode",
+        "name": "Message Node",
+        "collection": true
+      }
+    },
+    "69a92e90-bc6a-41b3-bd55-5ca48f1c9206": {
+      "_id": "69a92e90-bc6a-41b3-bd55-5ca48f1c9206",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "194DD8C5-B16C-4D9F-9E72-8313FCC34869": {
+      "_id": "194DD8C5-B16C-4D9F-9E72-8313FCC34869",
+      "messageYes": {
+        "en": "Continue"
+      },
+      "messageNo": {
+        "en": "Abort"
+      },
+      "message": {
+        "en": "You are VPN-ed in!"
+      },
+      "_type": {
+        "_id": "MessageNode",
+        "name": "Message Node",
+        "collection": true
+      }
+    },
+    "88dcc48d-ae89-42db-844d-fc976a79cc2c": {
+      "_id": "88dcc48d-ae89-42db-844d-fc976a79cc2c",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "105D9500-97C8-4C2B-B82C-58330785C04B": {
+      "_id": "105D9500-97C8-4C2B-B82C-58330785C04B",
+      "messageYes": {
+        "en": "Continue"
+      },
+      "messageNo": {
+        "en": "Abort"
+      },
+      "message": {
+        "en": "You are inside the FW!"
+      },
+      "_type": {
+        "_id": "MessageNode",
+        "name": "Message Node",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "38F0A697-AD7C-4847-B8FD-157D030F1272": {
+      "_id": "38F0A697-AD7C-4847-B8FD-157D030F1272",
+      "tree": "trusona",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "5C32AE1D-5734-416B-A6EC-D05DCF1CCB44": {
+      "_id": "5C32AE1D-5734-416B-A6EC-D05DCF1CCB44",
+      "blacklist": false,
+      "ipList": {
+        "10.1.1.0": "/24",
+        "10.1.0.0": "/24"
+      },
+      "_type": {
+        "_id": "IPAddressDecisionNode",
+        "name": "IP Address Decision Node",
+        "collection": true
+      }
+    },
+    "874ad3fa-06ed-403d-8593-723c44922f17": {
+      "_id": "874ad3fa-06ed-403d-8593-723c44922f17",
+      "nodes": [
+        {
+          "_id": "0d2248ad-920e-4f1c-ab67-5628d7890fd0",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "64B5F0BC-F822-4626-B023-4E5E6B56E091",
+          "nodeType": "MessageNode",
+          "displayName": "Outside FW"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "8C5B8118-33B5-42C1-A0FE-E9C8F6E24884": {
+      "_id": "8C5B8118-33B5-42C1-A0FE-E9C8F6E24884",
+      "tree": "push",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "992c0911-41f3-409a-abde-dd52a5e2281a": {
+      "_id": "992c0911-41f3-409a-abde-dd52a5e2281a",
+      "nodes": [
+        {
+          "_id": "69a92e90-bc6a-41b3-bd55-5ca48f1c9206",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "194DD8C5-B16C-4D9F-9E72-8313FCC34869",
+          "nodeType": "MessageNode",
+          "displayName": "On VPN"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "C2DD70FE-5287-4ED4-AF7A-C147132083C6": {
+      "_id": "C2DD70FE-5287-4ED4-AF7A-C147132083C6",
+      "blacklist": false,
+      "ipList": {
+        "10.1.0.12": "/32"
+      },
+      "_type": {
+        "_id": "IPAddressDecisionNode",
+        "name": "IP Address Decision Node",
+        "collection": true
+      }
+    },
+    "C2EDCDEF-7E22-4322-A509-1D95D1F19C0E": {
+      "_id": "C2EDCDEF-7E22-4322-A509-1D95D1F19C0E",
+      "tree": "simple",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "d010cf07-9faa-46f8-984c-658a40fee4b0": {
+      "_id": "d010cf07-9faa-46f8-984c-658a40fee4b0",
+      "nodes": [
+        {
+          "_id": "88dcc48d-ae89-42db-844d-fc976a79cc2c",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "105D9500-97C8-4C2B-B82C-58330785C04B",
+          "nodeType": "MessageNode",
+          "displayName": "Inside FW"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "ec24e736-6f38-4883-892a-adeed77c8442": {
+      "_id": "ec24e736-6f38-4883-892a-adeed77c8442",
+      "successUrl": "https://onsemi.mytestrun.com/user",
+      "_type": {
+        "_id": "SetSuccessUrlNode",
+        "name": "Success URL",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "tree": {
+    "_id": "smart",
+    "nodes": {
+      "5C32AE1D-5734-416B-A6EC-D05DCF1CCB44": {
+        "displayName": "Inside FW?",
+        "nodeType": "IPAddressDecisionNode",
+        "connections": {
+          "true": "C2DD70FE-5287-4ED4-AF7A-C147132083C6",
+          "false": "874ad3fa-06ed-403d-8593-723c44922f17"
+        }
+      },
+      "C2DD70FE-5287-4ED4-AF7A-C147132083C6": {
+        "displayName": "VPN?",
+        "nodeType": "IPAddressDecisionNode",
+        "connections": {
+          "true": "992c0911-41f3-409a-abde-dd52a5e2281a",
+          "false": "d010cf07-9faa-46f8-984c-658a40fee4b0"
+        }
+      },
+      "C2EDCDEF-7E22-4322-A509-1D95D1F19C0E": {
+        "displayName": "Simple Auth",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "ec24e736-6f38-4883-892a-adeed77c8442",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "38F0A697-AD7C-4847-B8FD-157D030F1272": {
+        "displayName": "MFA - Trusona",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "ec24e736-6f38-4883-892a-adeed77c8442",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "8C5B8118-33B5-42C1-A0FE-E9C8F6E24884": {
+        "displayName": "MFA - Push",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "ec24e736-6f38-4883-892a-adeed77c8442",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "992c0911-41f3-409a-abde-dd52a5e2281a": {
+        "displayName": "VPN Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "true": "38F0A697-AD7C-4847-B8FD-157D030F1272",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "d010cf07-9faa-46f8-984c-658a40fee4b0": {
+        "displayName": "Inside Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "true": "C2EDCDEF-7E22-4322-A509-1D95D1F19C0E",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "874ad3fa-06ed-403d-8593-723c44922f17": {
+        "displayName": "Outside Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "true": "8C5B8118-33B5-42C1-A0FE-E9C8F6E24884",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "ec24e736-6f38-4883-892a-adeed77c8442": {
+        "displayName": "Success URL",
+        "nodeType": "SetSuccessUrlNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      }
+    },
+    "entryNodeId": "5C32AE1D-5734-416B-A6EC-D05DCF1CCB44"
+  }
+}

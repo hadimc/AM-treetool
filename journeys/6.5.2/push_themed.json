@@ -1,0 +1,178 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {
+    "4af5a335-a06c-47e9-a059-1f625f832a54": {
+      "_id": "4af5a335-a06c-47e9-a059-1f625f832a54",
+      "_type": {
+        "_id": "UsernameCollectorNode",
+        "name": "Username Collector",
+        "collection": true
+      }
+    },
+    "0087623a-df01-4c1c-8f47-13b9fb1b0499": {
+      "_id": "0087623a-df01-4c1c-8f47-13b9fb1b0499",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": true,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "13572211-2019-4458-b0b0-187a79efc344": {
+      "_id": "13572211-2019-4458-b0b0-187a79efc344",
+      "spamDetectionTolerance": 3,
+      "spamDetectionEnabled": true,
+      "exitMessage": {
+        "en": "Exit"
+      },
+      "waitingMessage": {},
+      "secondsToWait": 3,
+      "exitable": true,
+      "_type": {
+        "_id": "PollingWaitNode",
+        "name": "Polling Wait Node",
+        "collection": true
+      }
+    },
+    "1a68018e-7fff-4184-8036-d9eb0823df32": {
+      "_id": "1a68018e-7fff-4184-8036-d9eb0823df32",
+      "nodes": [
+        {
+          "_id": "4af5a335-a06c-47e9-a059-1f625f832a54",
+          "nodeType": "UsernameCollectorNode",
+          "displayName": "Username"
+        },
+        {
+          "_id": "0087623a-df01-4c1c-8f47-13b9fb1b0499",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "2e1128bd-23d4-42b3-b1ab-4d78e9f581e3": {
+      "_id": "2e1128bd-23d4-42b3-b1ab-4d78e9f581e3",
+      "tree": "push_reg",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "42c47a61-0a67-45f9-9a24-6b89815ec4fe": {
+      "_id": "42c47a61-0a67-45f9-9a24-6b89815ec4fe",
+      "userMessage": {},
+      "mandatory": true,
+      "messageTimeout": 120000,
+      "_type": {
+        "_id": "PushAuthenticationSenderNode",
+        "name": "Push Sender",
+        "collection": true
+      }
+    },
+    "663f9d10-a212-468d-9275-717a76a79d59": {
+      "_id": "663f9d10-a212-468d-9275-717a76a79d59",
+      "outcomes": [
+        "known",
+        "unknown"
+      ],
+      "script": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "e2e60018-49ed-48ed-a908-460b93404043": {
+      "_id": "e2e60018-49ed-48ed-a908-460b93404043",
+      "_type": {
+        "_id": "PushResultVerifierNode",
+        "name": "Push Result Verifier Node",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "739bdc48-fd24-4c52-b353-88706d75558a": {
+      "_id": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "name": "Check Username",
+      "description": "Check if username is known.",
+      "script": "LyoKICBDaGVjayBpZiB1c2VybmFtZSBoYXMgYWxyZWFkeSBiZWVuIGNvbGxlY3RlZC4gCiAgUmV0dXJuICJrbm93biIgaWYgeWVzLCAidW5rbm93biIgb3RoZXJ3aXNlLgogKi8KCmlmIChudWxsICE9IHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSkgewoJb3V0Y29tZSA9ICJrbm93biI7Cn0KZWxzZSB7CiAJb3V0Y29tZSA9ICJ1bmtub3duIjsKfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "emailTemplates": {},
+  "tree": {
+    "_id": "push",
+    "nodes": {
+      "13572211-2019-4458-b0b0-187a79efc344": {
+        "displayName": "Polling",
+        "nodeType": "PollingWaitNode",
+        "connections": {
+          "DONE": "e2e60018-49ed-48ed-a908-460b93404043",
+          "SPAM": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "EXITED": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "e2e60018-49ed-48ed-a908-460b93404043": {
+        "displayName": "Verify Push",
+        "nodeType": "PushResultVerifierNode",
+        "connections": {
+          "WAITING": "13572211-2019-4458-b0b0-187a79efc344",
+          "EXPIRED": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "FALSE": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "TRUE": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "663f9d10-a212-468d-9275-717a76a79d59": {
+        "displayName": "Username?",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "known": "42c47a61-0a67-45f9-9a24-6b89815ec4fe",
+          "unknown": "1a68018e-7fff-4184-8036-d9eb0823df32"
+        }
+      },
+      "1a68018e-7fff-4184-8036-d9eb0823df32": {
+        "displayName": "Login Form",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "42c47a61-0a67-45f9-9a24-6b89815ec4fe"
+        }
+      },
+      "42c47a61-0a67-45f9-9a24-6b89815ec4fe": {
+        "displayName": "Send Push",
+        "nodeType": "PushAuthenticationSenderNode",
+        "connections": {
+          "NOT_REGISTERED": "2e1128bd-23d4-42b3-b1ab-4d78e9f581e3",
+          "SENT": "13572211-2019-4458-b0b0-187a79efc344"
+        }
+      },
+      "2e1128bd-23d4-42b3-b1ab-4d78e9f581e3": {
+        "displayName": "Register",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "42c47a61-0a67-45f9-9a24-6b89815ec4fe",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      }
+    },
+    "entryNodeId": "663f9d10-a212-468d-9275-717a76a79d59"
+  }
+}

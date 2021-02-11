@@ -1,0 +1,73 @@
+
+{
+  "origin": "b54def31a9620a10efbc3a28b930006f",
+  "innernodes": {},
+  "nodes": {
+    "EC3985BD-23FA-4787-9CBB-D10673DB5E05": {
+      "_id": "EC3985BD-23FA-4787-9CBB-D10673DB5E05",
+      "redirectURI": "https://idp36.mytestrun.com/openam",
+      "authenticationIdKey": "sub",
+      "clientId": "297338177925-mho17cgnm540s2gre8h27feb6sbs1msd.apps.googleusercontent.com",
+      "basicAuth": true,
+      "cfgAccountProviderClass": "org.forgerock.openam.authentication.modules.common.mapping.DefaultAccountProvider",
+      "scopeString": "profile email",
+      "cfgAccountMapperConfiguration": {
+        "email": "mail"
+      },
+      "cfgAttributeMappingClasses": [
+        "org.forgerock.openam.authentication.modules.common.mapping.JsonAttributeMapper|iplanet-am-user-alias-list|google-"
+      ],
+      "tokenEndpoint": "https://www.googleapis.com/oauth2/v4/token",
+      "cfgAttributeMappingConfiguration": {
+        "sub": "iplanet-am-user-alias-list",
+        "name": "cn",
+        "given_name": "givenName",
+        "family_name": "sn",
+        "email": "mail"
+      },
+      "provider": "google",
+      "cfgMixUpMitigation": false,
+      "authorizeEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
+      "clientSecret": null,
+      "cfgAccountMapperClass": "org.forgerock.openam.authentication.modules.common.mapping.JsonAttributeMapper|*| ",
+      "userInfoEndpoint": "https://www.googleapis.com/oauth2/v3/userinfo",
+      "saveUserAttributesToSession": true,
+      "_type": {
+        "_id": "SocialGoogleNode",
+        "name": "Social Google",
+        "collection": true
+      }
+    },
+    "a65c5bc9-0fc2-4358-9885-b8f2187b7ee5": {
+      "_id": "a65c5bc9-0fc2-4358-9885-b8f2187b7ee5",
+      "anonymousUserName": "anonymous",
+      "_type": {
+        "_id": "AnonymousUserNode",
+        "name": "Anonymous User Mapping",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "tree": {
+    "_id": "google",
+    "nodes": {
+      "EC3985BD-23FA-4787-9CBB-D10673DB5E05": {
+        "displayName": "Social Google",
+        "nodeType": "SocialGoogleNode",
+        "connections": {
+          "NO_ACCOUNT": "a65c5bc9-0fc2-4358-9885-b8f2187b7ee5",
+          "ACCOUNT_EXISTS": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "a65c5bc9-0fc2-4358-9885-b8f2187b7ee5": {
+        "displayName": "Anonymous",
+        "nodeType": "AnonymousUserNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      }
+    },
+    "entryNodeId": "EC3985BD-23FA-4787-9CBB-D10673DB5E05"
+  }
+}

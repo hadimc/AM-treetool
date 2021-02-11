@@ -1,0 +1,122 @@
+
+{
+  "origin": "122e2cec99f219b838ff535cad891635",
+  "innernodes": {},
+  "nodes": {
+    "4c6a50a3-2e37-40ee-876c-05bdf6ca4cb1": {
+      "_id": "4c6a50a3-2e37-40ee-876c-05bdf6ca4cb1",
+      "issuer": "HCM",
+      "accountName": "EMAIL_ADDRESS",
+      "timeout": 60,
+      "bgColor": "ffffff",
+      "generateRecoveryCodes": true,
+      "_type": {
+        "_id": "PushRegistrationNode",
+        "name": "Push Registration",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "successOutcome",
+          "displayName": "Success"
+        },
+        {
+          "id": "failureOutcome",
+          "displayName": "Failure"
+        },
+        {
+          "id": "timeoutOutcome",
+          "displayName": "Time Out"
+        }
+      ]
+    },
+    "4f404534-d2c2-41bf-af4d-3e05372a20cc": {
+      "_id": "4f404534-d2c2-41bf-af4d-3e05372a20cc",
+      "_type": {
+        "_id": "RecoveryCodeDisplayNode",
+        "name": "Recovery Code Display Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "923c3357-372d-49c9-9215-bd73a97ae9fc": {
+      "_id": "923c3357-372d-49c9-9215-bd73a97ae9fc",
+      "tree": "Login",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "PushRegistration",
+    "entryNodeId": "923c3357-372d-49c9-9215-bd73a97ae9fc",
+    "nodes": {
+      "923c3357-372d-49c9-9215-bd73a97ae9fc": {
+        "x": 210,
+        "y": 129.5,
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "4c6a50a3-2e37-40ee-876c-05bdf6ca4cb1"
+        },
+        "nodeType": "InnerTreeEvaluatorNode",
+        "displayName": "Login"
+      },
+      "4c6a50a3-2e37-40ee-876c-05bdf6ca4cb1": {
+        "x": 439,
+        "y": 63.5,
+        "connections": {
+          "timeoutOutcome": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "failureOutcome": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "successOutcome": "4f404534-d2c2-41bf-af4d-3e05372a20cc"
+        },
+        "nodeType": "PushRegistrationNode",
+        "displayName": "Register Device"
+      },
+      "4f404534-d2c2-41bf-af4d-3e05372a20cc": {
+        "x": 674,
+        "y": 80,
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "nodeType": "RecoveryCodeDisplayNode",
+        "displayName": "Display Recovery Codes"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 70,
+        "y": 147.5
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 979,
+        "y": 147.5
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 674,
+        "y": 215
+      }
+    },
+    "description": "Register mobile device for push notifications.",
+    "identityResource": "managed/alpha_user",
+    "uiConfig": {}
+  }
+}

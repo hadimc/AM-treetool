@@ -1,0 +1,155 @@
+
+{
+  "origin": "8600b043320dbf667abd29db829273d3",
+  "innernodes": {
+    "c7bf5e50-a041-49ef-8a8a-ff536cdb9e39": {
+      "_id": "c7bf5e50-a041-49ef-8a8a-ff536cdb9e39",
+      "outcomes": [
+        "true"
+      ],
+      "inputs": [
+        "*"
+      ],
+      "outputs": [
+        "*"
+      ],
+      "script": "a4176399-380e-4b3e-873d-cefa68e62229",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "true"
+        }
+      ]
+    },
+    "c6cc8984-df4e-4bd6-a554-bdf150955b7d": {
+      "_id": "c6cc8984-df4e-4bd6-a554-bdf150955b7d",
+      "attributesToCollect": [
+        "givenName"
+      ],
+      "required": false,
+      "validateInputs": false,
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "AttributeCollectorNode",
+        "name": "Attribute Collector",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    }
+  },
+  "nodes": {
+    "3ef13ff0-138b-45b3-9085-3e8cde8a14a2": {
+      "_id": "3ef13ff0-138b-45b3-9085-3e8cde8a14a2",
+      "nodes": [
+        {
+          "_id": "c7bf5e50-a041-49ef-8a8a-ff536cdb9e39",
+          "nodeType": "ScriptedDecisionNode",
+          "displayName": "Hello!"
+        }
+      ],
+      "pageDescription": {},
+      "pageHeader": {},
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "true"
+        }
+      ]
+    },
+    "8e58d35e-7f41-43b8-afd1-ec2344f00add": {
+      "_id": "8e58d35e-7f41-43b8-afd1-ec2344f00add",
+      "nodes": [
+        {
+          "_id": "c6cc8984-df4e-4bd6-a554-bdf150955b7d",
+          "nodeType": "AttributeCollectorNode",
+          "displayName": "Your name?"
+        }
+      ],
+      "pageDescription": {},
+      "pageHeader": {},
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "a4176399-380e-4b3e-873d-cefa68e62229": {
+      "_id": "a4176399-380e-4b3e-873d-cefa68e62229",
+      "name": "hello",
+      "description": null,
+      "script": "dmFyIGZyID0gSmF2YUltcG9ydGVyKAogIG9yZy5mb3JnZXJvY2sub3BlbmFtLmF1dGgubm9kZS5hcGksCiAgamF2YXguc2VjdXJpdHkuYXV0aC5jYWxsYmFjay5UZXh0T3V0cHV0Q2FsbGJhY2sKKTsKICAKb3V0Y29tZSA9ICJ0cnVlIjsKICAKd2l0aCAoZnIpIHsKICBpZiAoY2FsbGJhY2tzLmlzRW1wdHkoKSkgewogICAgdmFyIGNhbGxiYWNrID0gbmV3IFRleHRPdXRwdXRDYWxsYmFjayhUZXh0T3V0cHV0Q2FsbGJhY2suSU5GT1JNQVRJT04sICJIZWxsbyAiLmNvbmNhdChzaGFyZWRTdGF0ZS5nZXQoIm9iamVjdEF0dHJpYnV0ZXMiKS5nZXQoImdpdmVuTmFtZSIpKSk7CiAgICBhY3Rpb24gPSBBY3Rpb24uc2VuZChjYWxsYmFjaykuYnVpbGQoKTsKICB9IGVsc2UgewogICAgYWN0aW9uID0gQWN0aW9uLmdvVG8oInRydWUiKS5idWlsZCgpOwogIH0KfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "emailTemplates": {},
+  "tree": {
+    "_id": "Hello",
+    "entryNodeId": "8e58d35e-7f41-43b8-afd1-ec2344f00add",
+    "nodes": {
+      "8e58d35e-7f41-43b8-afd1-ec2344f00add": {
+        "x": 197,
+        "y": 174.76666259765625,
+        "connections": {
+          "outcome": "3ef13ff0-138b-45b3-9085-3e8cde8a14a2"
+        },
+        "nodeType": "PageNode",
+        "displayName": "Input"
+      },
+      "3ef13ff0-138b-45b3-9085-3e8cde8a14a2": {
+        "x": 460,
+        "y": 176.76666259765625,
+        "connections": {
+          "true": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "nodeType": "PageNode",
+        "displayName": "Output"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 50,
+        "y": 250
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 736,
+        "y": 78
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 750,
+        "y": 351
+      }
+    },
+    "description": "Say \"hello!\"",
+    "identityResource": "managed/alpha_user",
+    "uiConfig": {}
+  }
+}

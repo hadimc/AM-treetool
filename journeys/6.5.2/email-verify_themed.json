@@ -1,0 +1,408 @@
+
+{
+  "origin": "6c95f9ef41743c411b138b740e0328e6",
+  "innernodes": {
+    "2c4382e5-cd54-483a-9a08-9d09c2e4ed05": {
+      "_id": "2c4382e5-cd54-483a-9a08-9d09c2e4ed05",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "2b86eaaa-ae50-49f3-8fc8-355e56bfe733": {
+      "_id": "2b86eaaa-ae50-49f3-8fc8-355e56bfe733",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {
+        "en": "Create Password"
+      },
+      "overwriteButton": true,
+      "box": false,
+      "message": {
+        "en": "<p><h2>Welcome {{givenName}} {{sn}}!</h2><h5 align=\"left\">Please choose a new password that meets the following requirements:<p><ul><li>8+ characters long</li><li>1+ uppercase letters</li><li>1+ numbers</li><li>May not contain your first, last, or user name</li></ul></p></h5></p>"
+      },
+      "vAlign": "NEUTRAL",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    },
+    "60982264-44BB-40EA-9325-2693B1530128": {
+      "_id": "60982264-44BB-40EA-9325-2693B1530128",
+      "minPasswordLength": 8,
+      "_type": {
+        "_id": "CreatePasswordNode",
+        "name": "Create Password",
+        "collection": true
+      }
+    },
+    "23d02962-19cb-406c-8752-9fbc1a17cbfa": {
+      "_id": "23d02962-19cb-406c-8752-9fbc1a17cbfa",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "471a9bed-410c-4306-8d03-aac3291117ed": {
+      "_id": "471a9bed-410c-4306-8d03-aac3291117ed",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {
+        "en": "OK"
+      },
+      "overwriteButton": true,
+      "box": false,
+      "message": {
+        "en": "<p><h2>Missing or invalid token</h2></p><p><h4>Unable to validate your token. Please try again.</h4></p>"
+      },
+      "vAlign": "NEUTRAL",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    },
+    "3ef613c0-f633-4e34-81df-6dfdec39aea3": {
+      "_id": "3ef613c0-f633-4e34-81df-6dfdec39aea3",
+      "overwriteButtonText": {
+        "en": "Next"
+      },
+      "overwriteButton": false,
+      "themeConfigName": "User Theme",
+      "_type": {
+        "_id": "ThemeNode",
+        "name": "Theme",
+        "collection": true
+      }
+    },
+    "48718237-3D4A-4B80-B3CB-D86646CC4185": {
+      "_id": "48718237-3D4A-4B80-B3CB-D86646CC4185",
+      "hAlign": "CENTER",
+      "overwriteButtonText": {
+        "en": "OK"
+      },
+      "overwriteButton": true,
+      "box": false,
+      "message": {
+        "en": "<p><h2>Expired token</h2></p><p><h4>Your token expired. Please try again.</h4></p>"
+      },
+      "vAlign": "NEUTRAL",
+      "_type": {
+        "_id": "HTMLMessageNode",
+        "name": "HTML Message",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "11ADFDF6-2628-4936-92E7-4CD7A01A0091": {
+      "_id": "11ADFDF6-2628-4936-92E7-4CD7A01A0091",
+      "keys": {
+        "givenName": "givenName",
+        "sn": "sn",
+        "carLicense": "carLicense"
+      },
+      "selectType": "SelectFirst",
+      "_type": {
+        "_id": "ProfileAttributeToStateNode",
+        "name": "Profile Attribute To State",
+        "collection": true
+      }
+    },
+    "124a8a42-8622-4903-a879-f1e0b20d9078": {
+      "_id": "124a8a42-8622-4903-a879-f1e0b20d9078",
+      "nodes": [
+        {
+          "_id": "2c4382e5-cd54-483a-9a08-9d09c2e4ed05",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "2b86eaaa-ae50-49f3-8fc8-355e56bfe733",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "HTML Message"
+        },
+        {
+          "_id": "60982264-44BB-40EA-9325-2693B1530128",
+          "nodeType": "CreatePasswordNode",
+          "displayName": "Create Password"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "702419eb-025f-4667-90cc-3acee7a58f7c": {
+      "_id": "702419eb-025f-4667-90cc-3acee7a58f7c",
+      "failureUrl": "https://onsemi.mytestrun.com/openam/XUI/?service=email-send#login/",
+      "_type": {
+        "_id": "SetFailureUrlNode",
+        "name": "Failure URL",
+        "collection": true
+      }
+    },
+    "76baf8da-dc5d-485d-87ed-e0ce6a3c7230": {
+      "_id": "76baf8da-dc5d-485d-87ed-e0ce6a3c7230",
+      "nodes": [
+        {
+          "_id": "23d02962-19cb-406c-8752-9fbc1a17cbfa",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "471a9bed-410c-4306-8d03-aac3291117ed",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "HTML Message"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "87E6F024-B263-42FA-8EFE-5C461FFF9F10": {
+      "_id": "87E6F024-B263-42FA-8EFE-5C461FFF9F10",
+      "smtpSSLEnabled": true,
+      "htmlType": true,
+      "smtpUserName": "vscheuber@gmail.com",
+      "subject": "Welcome to ForgeRock",
+      "smtpUserPassword": "ujksukjyoiknyphj",
+      "from": "admin@forgerock.com",
+      "smtpHostName": "smtp.gmail.com",
+      "attribute": "mail",
+      "message": "Dear {{givenName}} {{sn}}, welcome to ForgeRock! Your registration is now complete. ",
+      "smtpHostPort": "465",
+      "_type": {
+        "_id": "EmailNotifyNode",
+        "name": "Email Notify",
+        "collection": true
+      }
+    },
+    "8FC40FDA-2158-4E63-8655-EAA44F10F5BA": {
+      "_id": "8FC40FDA-2158-4E63-8655-EAA44F10F5BA",
+      "lockAction": "UNLOCK",
+      "_type": {
+        "_id": "AccountLockoutNode",
+        "name": "Account Lockout",
+        "collection": true
+      }
+    },
+    "A95EF676-42EE-434E-982F-AFE4E8EB3C1F": {
+      "_id": "A95EF676-42EE-434E-982F-AFE4E8EB3C1F",
+      "outcomes": [
+        "true",
+        "false"
+      ],
+      "script": "5f8e3898-0edf-4c96-9646-86256b13c123",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "DF774CD3-17B7-48B8-94A4-7CCA85A205B4": {
+      "_id": "DF774CD3-17B7-48B8-94A4-7CCA85A205B4",
+      "transientProperties": {
+        "userPassword": "password"
+      },
+      "properties": {},
+      "addAttributes": false,
+      "_type": {
+        "_id": "SetProfilePropertyNode",
+        "name": "Set Profile Property",
+        "collection": true
+      }
+    },
+    "E3814604-5D6E-4379-8D96-73EF1C0CD86E": {
+      "_id": "E3814604-5D6E-4379-8D96-73EF1C0CD86E",
+      "outcomes": [
+        "valid",
+        "invalid",
+        "expired"
+      ],
+      "script": "a9ffe5eb-0d0f-48ff-baab-0a4503920bdc",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "d5d983fb-9390-44a1-808e-83ba79c3b5a3": {
+      "_id": "d5d983fb-9390-44a1-808e-83ba79c3b5a3",
+      "nodes": [
+        {
+          "_id": "3ef613c0-f633-4e34-81df-6dfdec39aea3",
+          "nodeType": "ThemeNode",
+          "displayName": "Theme"
+        },
+        {
+          "_id": "48718237-3D4A-4B80-B3CB-D86646CC4185",
+          "nodeType": "HTMLMessageNode",
+          "displayName": "HTML Message"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "e9588a61-d14a-4771-b64d-c8fba2ff2470": {
+      "_id": "e9588a61-d14a-4771-b64d-c8fba2ff2470",
+      "successUrl": "https://onsemi.mytestrun.com/apps/frdp/",
+      "_type": {
+        "_id": "SetSuccessUrlNode",
+        "name": "Success URL",
+        "collection": true
+      }
+    },
+    "f205d12a-f1cd-409d-b104-84bd65cc3551": {
+      "_id": "f205d12a-f1cd-409d-b104-84bd65cc3551",
+      "transientProperties": {},
+      "properties": {
+        "carLicense": "\"0\""
+      },
+      "addAttributes": false,
+      "_type": {
+        "_id": "SetProfilePropertyNode",
+        "name": "Set Profile Property",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "5f8e3898-0edf-4c96-9646-86256b13c123": {
+      "_id": "5f8e3898-0edf-4c96-9646-86256b13c123",
+      "name": "Get Username And Token",
+      "description": "Create a script to get the username and token from the referer header.",
+      "script": "dmFyIHJlZmVyZXIgPSByZXF1ZXN0SGVhZGVycy5nZXQoInJlZmVyZXIiKS5nZXQoMCk7CmxvZ2dlci5lcnJvcigiZ2V0dXNlcm5hbWVBbmRUb2tlbjogcmVmZXJlciAiICsgcmVmZXJlcik7Ci8vIFBhcnNlIHRoZSByZWZlcmVyIHRvIGdldCB0aGUgdXNlcm5hbWUgYW5kIHRva2VuIHF1ZXJ5IHBhcmFtZXRlcnMgCnZhciBwYXJhbXMgPSB7fTsKdmFyIHZhcnMgPSByZWZlcmVyLnNwbGl0KCcmJyk7CmZvciAodmFyIGkgPSAwOyBpIDwgdmFycy5sZW5ndGg7IGkrKykgewoJdmFyIHBhaXIgPSB2YXJzW2ldLnNwbGl0KCc9Jyk7CglwYXJhbXNbcGFpclswXV0gPSBkZWNvZGVVUklDb21wb25lbnQocGFpclsxXSk7Cn0KdmFyIHVzZXJuYW1lVVJMID0gcGFyYW1zLnVzZXJuYW1lOwp2YXIgdG9rZW5VUkwgPSBwYXJhbXMudG9rZW47CmlmICh1c2VybmFtZVVSTCAhPSBudWxsICYmIHRva2VuVVJMICE9IG51bGwpewoJc2hhcmVkU3RhdGUucHV0KCJ1c2VybmFtZSIsdXNlcm5hbWVVUkwpOwoJc2hhcmVkU3RhdGUucHV0KCJ0b2tlbiIsdG9rZW5VUkwpOwoJbG9nZ2VyLmVycm9yKCJnZXR1c2VybmFtZUFuZFRva2VuOiB0b2tlbiAiICsgdG9rZW5VUkwpOwoJb3V0Y29tZSA9ICJ0cnVlIjsKCWxvZ2dlci5lcnJvcigiZ2V0dXNlcm5hbWVBbmRUb2tlbjogIiArIHVzZXJuYW1lVVJMKTsKfQplbHNlIHsKCW91dGNvbWUgPSAiZmFsc2UiOwp9",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    },
+    "a9ffe5eb-0d0f-48ff-baab-0a4503920bdc": {
+      "_id": "a9ffe5eb-0d0f-48ff-baab-0a4503920bdc",
+      "name": "Validate Token",
+      "description": "Get the magiclink token and date stored in the user profile, compare it with what has been provided by the user, and then remove the magiclink token and date from the user profile.",
+      "script": "dmFyIG1hZ2ljQXR0cmlidXRlID0gc2hhcmVkU3RhdGUuZ2V0KCJjYXJMaWNlbnNlIik7CnZhciBtYWdpY0pTT04gPSBKU09OLnBhcnNlKGRlY29kZVVSSShtYWdpY0F0dHJpYnV0ZSkpOwoKaWYgKG1hZ2ljSlNPTi5tYWdpY1Rva2VuPT1zaGFyZWRTdGF0ZS5nZXQoInRva2VuIikpewogIHZhciBub3cgPSBuZXcgRGF0ZSgpOwogIHZhciBEaWZmZXJlbmNlX0luX1RpbWUgPSBub3cuZ2V0VGltZSgpIC0gKG5ldyBEYXRlKG1hZ2ljSlNPTi5kYXRlKSkuZ2V0VGltZSgpOwogIGlmIChNYXRoLnJvdW5kKERpZmZlcmVuY2VfSW5fVGltZS8oMTAwMCAqIDYwKSkgPCA1KXsKICAvLyBUaGUgdXNlciB1c2VkIHRoZSBsaW5rIGluIHRpbWUgYW5kIHRva2VucyBtYXRjaGVkCiAgICBvdXRjb21lID0gInZhbGlkIjsKICB9IGVsc2UgewogICAgb3V0Y29tZSA9ICJleHBpcmVkIjsKICAgICAgLy8gdG9rZW4gbm90IHVzZWQgaW4gdGltZQogIH0KfSBlbHNlIHsKICBvdXRjb21lID0gImludmFsaWQiOwogIC8vIHRva2VucyBkb24ndCBtYXRjaAp9",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "tree": {
+    "_id": "email-verify",
+    "nodes": {
+      "E3814604-5D6E-4379-8D96-73EF1C0CD86E": {
+        "displayName": "Validate Token",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "invalid": "76baf8da-dc5d-485d-87ed-e0ce6a3c7230",
+          "valid": "124a8a42-8622-4903-a879-f1e0b20d9078",
+          "expired": "d5d983fb-9390-44a1-808e-83ba79c3b5a3"
+        }
+      },
+      "A95EF676-42EE-434E-982F-AFE4E8EB3C1F": {
+        "displayName": "Parse Request",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "true": "11ADFDF6-2628-4936-92E7-4CD7A01A0091",
+          "false": "76baf8da-dc5d-485d-87ed-e0ce6a3c7230"
+        }
+      },
+      "8FC40FDA-2158-4E63-8655-EAA44F10F5BA": {
+        "displayName": "Activate Account",
+        "nodeType": "AccountLockoutNode",
+        "connections": {
+          "outcome": "87E6F024-B263-42FA-8EFE-5C461FFF9F10"
+        }
+      },
+      "DF774CD3-17B7-48B8-94A4-7CCA85A205B4": {
+        "displayName": "Save Password",
+        "nodeType": "SetProfilePropertyNode",
+        "connections": {
+          "outcome": "8FC40FDA-2158-4E63-8655-EAA44F10F5BA"
+        }
+      },
+      "11ADFDF6-2628-4936-92E7-4CD7A01A0091": {
+        "displayName": "Get Profile",
+        "nodeType": "ProfileAttributeToStateNode",
+        "connections": {
+          "outcome": "f205d12a-f1cd-409d-b104-84bd65cc3551"
+        }
+      },
+      "87E6F024-B263-42FA-8EFE-5C461FFF9F10": {
+        "displayName": "Welcome Email",
+        "nodeType": "EmailNotifyNode",
+        "connections": {
+          "outcome": "e9588a61-d14a-4771-b64d-c8fba2ff2470"
+        }
+      },
+      "f205d12a-f1cd-409d-b104-84bd65cc3551": {
+        "displayName": "Clear Token",
+        "nodeType": "SetProfilePropertyNode",
+        "connections": {
+          "outcome": "E3814604-5D6E-4379-8D96-73EF1C0CD86E"
+        }
+      },
+      "e9588a61-d14a-4771-b64d-c8fba2ff2470": {
+        "displayName": "Success URL",
+        "nodeType": "SetSuccessUrlNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "702419eb-025f-4667-90cc-3acee7a58f7c": {
+        "displayName": "Failure URL",
+        "nodeType": "SetFailureUrlNode",
+        "connections": {
+          "outcome": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "76baf8da-dc5d-485d-87ed-e0ce6a3c7230": {
+        "displayName": "Failure Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "702419eb-025f-4667-90cc-3acee7a58f7c"
+        }
+      },
+      "124a8a42-8622-4903-a879-f1e0b20d9078": {
+        "displayName": "Success Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "DF774CD3-17B7-48B8-94A4-7CCA85A205B4"
+        }
+      },
+      "d5d983fb-9390-44a1-808e-83ba79c3b5a3": {
+        "displayName": "Expired Dialog",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "702419eb-025f-4667-90cc-3acee7a58f7c"
+        }
+      }
+    },
+    "entryNodeId": "A95EF676-42EE-434E-982F-AFE4E8EB3C1F"
+  }
+}

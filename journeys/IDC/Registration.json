@@ -1,0 +1,373 @@
+
+{
+  "origin": "122e2cec99f219b838ff535cad891635",
+  "innernodes": {
+    "0d35c781-2e6d-4f4f-ba88-db44e0be1860": {
+      "_id": "0d35c781-2e6d-4f4f-ba88-db44e0be1860",
+      "attributesToCollect": [
+        "givenName",
+        "sn",
+        "mail",
+        "preferences/marketing",
+        "preferences/updates"
+      ],
+      "required": true,
+      "validateInputs": true,
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "AttributeCollectorNode",
+        "name": "Attribute Collector",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "fd4db2ee-7016-435e-b775-7c95987580e2": {
+      "_id": "fd4db2ee-7016-435e-b775-7c95987580e2",
+      "_type": {
+        "_id": "AcceptTermsAndConditionsNode",
+        "name": "Accept Terms and Conditions",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "2bbbf7cc-7661-4340-9e48-d2c6eda433d3": {
+      "_id": "2bbbf7cc-7661-4340-9e48-d2c6eda433d3",
+      "validateInput": false,
+      "usernameAttribute": "userName",
+      "_type": {
+        "_id": "ValidatedUsernameNode",
+        "name": "Platform Username",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "c3c543ed-597d-4b34-9ac9-bc1769b8246a": {
+      "_id": "c3c543ed-597d-4b34-9ac9-bc1769b8246a",
+      "validateInputs": true,
+      "attributesToCollect": [
+        "givenName",
+        "sn",
+        "mail",
+        "preferences/marketing",
+        "preferences/updates"
+      ],
+      "required": true,
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "AttributeCollectorNode",
+        "name": "Attribute Collector",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "7ffa563f-7a57-4285-ba68-6c4a32a6eb3c": {
+      "_id": "7ffa563f-7a57-4285-ba68-6c4a32a6eb3c",
+      "validateInput": true,
+      "passwordAttribute": "password",
+      "_type": {
+        "_id": "ValidatedPasswordNode",
+        "name": "Platform Password",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "a214984e-eb5f-47ce-805b-e6217275d4b2": {
+      "_id": "a214984e-eb5f-47ce-805b-e6217275d4b2",
+      "_type": {
+        "_id": "AcceptTermsAndConditionsNode",
+        "name": "Accept Terms and Conditions",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "1d6dd05f-bd2c-4060-bfb2-d0c106ff6488": {
+      "_id": "1d6dd05f-bd2c-4060-bfb2-d0c106ff6488",
+      "includeLocalAuthentication": true,
+      "offerOnlyExisting": false,
+      "passwordAttribute": "password",
+      "identityAttribute": "mail",
+      "_type": {
+        "_id": "SelectIdPNode",
+        "name": "Select Identity Provider",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "socialAuthentication",
+          "displayName": "Social Authentication"
+        },
+        {
+          "id": "localAuthentication",
+          "displayName": "Local Authentication"
+        }
+      ]
+    }
+  },
+  "nodes": {
+    "18540589-2b01-45b6-b616-b5751c152f5b": {
+      "_id": "18540589-2b01-45b6-b616-b5751c152f5b",
+      "identityResource": "managed/alpha_user",
+      "_type": {
+        "_id": "CreateObjectNode",
+        "name": "Create Object",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "CREATED",
+          "displayName": "Created"
+        },
+        {
+          "id": "FAILURE",
+          "displayName": "Failed"
+        }
+      ]
+    },
+    "2c13d8b1-5eff-4c36-b24d-e8479196a0c3": {
+      "_id": "2c13d8b1-5eff-4c36-b24d-e8479196a0c3",
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "IncrementLoginCountNode",
+        "name": "Increment Login Count",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "3dcdf215-1f2d-4b1b-8359-e834a84f68cc": {
+      "_id": "3dcdf215-1f2d-4b1b-8359-e834a84f68cc",
+      "nodes": [
+        {
+          "_id": "0d35c781-2e6d-4f4f-ba88-db44e0be1860",
+          "nodeType": "AttributeCollectorNode",
+          "displayName": "Attributes"
+        },
+        {
+          "_id": "fd4db2ee-7016-435e-b775-7c95987580e2",
+          "nodeType": "AcceptTermsAndConditionsNode",
+          "displayName": "T&Cs"
+        }
+      ],
+      "pageDescription": {},
+      "pageHeader": {},
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "585ed298-dd50-438b-ba45-f31d204b94f0": {
+      "_id": "585ed298-dd50-438b-ba45-f31d204b94f0",
+      "identityResource": "managed/alpha_user",
+      "_type": {
+        "_id": "RequiredAttributesDecisionNode",
+        "name": "Required Attributes Present",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "dc996b78-a90f-466d-bf4a-aa36b53e8325": {
+      "_id": "dc996b78-a90f-466d-bf4a-aa36b53e8325",
+      "usernameAttribute": "userName",
+      "script": "58c824ae-84ed-4724-82cd-db128fc3f6c",
+      "_type": {
+        "_id": "SocialProviderHandlerNode",
+        "name": "Social Provider Handler Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "ACCOUNT_EXISTS",
+          "displayName": "Account exists"
+        },
+        {
+          "id": "NO_ACCOUNT",
+          "displayName": "No account exists"
+        }
+      ]
+    },
+    "e82b90f6-34c9-4ba6-8aad-de0cd264bc47": {
+      "_id": "e82b90f6-34c9-4ba6-8aad-de0cd264bc47",
+      "nodes": [
+        {
+          "_id": "2bbbf7cc-7661-4340-9e48-d2c6eda433d3",
+          "nodeType": "ValidatedUsernameNode",
+          "displayName": "Username"
+        },
+        {
+          "_id": "c3c543ed-597d-4b34-9ac9-bc1769b8246a",
+          "nodeType": "AttributeCollectorNode",
+          "displayName": "Attributes"
+        },
+        {
+          "_id": "7ffa563f-7a57-4285-ba68-6c4a32a6eb3c",
+          "nodeType": "ValidatedPasswordNode",
+          "displayName": "Password"
+        },
+        {
+          "_id": "a214984e-eb5f-47ce-805b-e6217275d4b2",
+          "nodeType": "AcceptTermsAndConditionsNode",
+          "displayName": "T&Cs"
+        },
+        {
+          "_id": "1d6dd05f-bd2c-4060-bfb2-d0c106ff6488",
+          "nodeType": "SelectIdPNode",
+          "displayName": "Select IDP"
+        }
+      ],
+      "pageDescription": {
+        "en": "Signing up is fast and easy.<br>Already have an account? <a href='#/service/Login'>Sign In</a>"
+      },
+      "pageHeader": {
+        "en": "Sign Up"
+      },
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "socialAuthentication",
+          "displayName": "Social Authentication"
+        },
+        {
+          "id": "localAuthentication",
+          "displayName": "Local Authentication"
+        }
+      ]
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "Registration",
+    "entryNodeId": "e82b90f6-34c9-4ba6-8aad-de0cd264bc47",
+    "nodes": {
+      "e82b90f6-34c9-4ba6-8aad-de0cd264bc47": {
+        "x": 210,
+        "y": 80,
+        "connections": {
+          "socialAuthentication": "dc996b78-a90f-466d-bf4a-aa36b53e8325",
+          "localAuthentication": "18540589-2b01-45b6-b616-b5751c152f5b"
+        },
+        "nodeType": "PageNode",
+        "displayName": "Registration Page"
+      },
+      "18540589-2b01-45b6-b616-b5751c152f5b": {
+        "x": 1174,
+        "y": 252,
+        "connections": {
+          "FAILURE": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "CREATED": "2c13d8b1-5eff-4c36-b24d-e8479196a0c3"
+        },
+        "nodeType": "CreateObjectNode",
+        "displayName": "Create User"
+      },
+      "2c13d8b1-5eff-4c36-b24d-e8479196a0c3": {
+        "x": 1404,
+        "y": 161.33333333333331,
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "nodeType": "IncrementLoginCountNode",
+        "displayName": "Increment Login Count"
+      },
+      "dc996b78-a90f-466d-bf4a-aa36b53e8325": {
+        "x": 455,
+        "y": 252,
+        "connections": {
+          "ACCOUNT_EXISTS": "2c13d8b1-5eff-4c36-b24d-e8479196a0c3",
+          "NO_ACCOUNT": "585ed298-dd50-438b-ba45-f31d204b94f0"
+        },
+        "nodeType": "SocialProviderHandlerNode",
+        "displayName": "Social Login"
+      },
+      "585ed298-dd50-438b-ba45-f31d204b94f0": {
+        "x": 685,
+        "y": 252,
+        "connections": {
+          "false": "3dcdf215-1f2d-4b1b-8359-e834a84f68cc",
+          "true": "3dcdf215-1f2d-4b1b-8359-e834a84f68cc"
+        },
+        "nodeType": "RequiredAttributesDecisionNode",
+        "displayName": "Required Attributes?"
+      },
+      "3dcdf215-1f2d-4b1b-8359-e834a84f68cc": {
+        "x": 929,
+        "y": 210,
+        "connections": {
+          "outcome": "18540589-2b01-45b6-b616-b5751c152f5b"
+        },
+        "nodeType": "PageNode",
+        "displayName": "Registration Page"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 70,
+        "y": 269.5
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 1663,
+        "y": 269.5
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 1404,
+        "y": 255.66666666666666
+      }
+    },
+    "description": "Platform Registration Tree",
+    "uiConfig": {},
+    "identityResource": "managed/alpha_user"
+  }
+}

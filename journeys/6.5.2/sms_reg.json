@@ -1,0 +1,261 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {
+    "a9a44494-0f56-492d-abc2-28b8de3af2a5": {
+      "_id": "a9a44494-0f56-492d-abc2-28b8de3af2a5",
+      "variable": "telephoneNumber",
+      "useTransient": false,
+      "isPassword": false,
+      "prompt": "Mobile Phone",
+      "_type": {
+        "_id": "InputCollectorNode",
+        "name": "Input Collector Node",
+        "collection": true
+      }
+    },
+    "95e3cf2c-7ac5-4266-a202-04a51ce28d87": {
+      "_id": "95e3cf2c-7ac5-4266-a202-04a51ce28d87",
+      "_type": {
+        "_id": "UsernameCollectorNode",
+        "name": "Username Collector",
+        "collection": true
+      }
+    },
+    "654b2e29-98c4-4927-8862-d567712333b4": {
+      "_id": "654b2e29-98c4-4927-8862-d567712333b4",
+      "_type": {
+        "_id": "PasswordCollectorNode",
+        "name": "Password Collector",
+        "collection": true
+      }
+    },
+    "69902a15-f596-415c-9a0c-0ae8407e7c0d": {
+      "_id": "69902a15-f596-415c-9a0c-0ae8407e7c0d",
+      "_type": {
+        "_id": "PasswordCollectorNode",
+        "name": "Password Collector",
+        "collection": true
+      }
+    }
+  },
+  "nodes": {
+    "05a0ae40-7a12-4297-9517-f3ec7b262fac": {
+      "_id": "05a0ae40-7a12-4297-9517-f3ec7b262fac",
+      "nodes": [
+        {
+          "_id": "a9a44494-0f56-492d-abc2-28b8de3af2a5",
+          "nodeType": "InputCollectorNode",
+          "displayName": "Mobile Phone"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "502bf4d5-466b-4b50-9678-e72f718d881c": {
+      "_id": "502bf4d5-466b-4b50-9678-e72f718d881c",
+      "outcomes": [
+        "known",
+        "unknown"
+      ],
+      "script": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "8306a807-05ad-42ba-990e-acba3ba5011e": {
+      "_id": "8306a807-05ad-42ba-990e-acba3ba5011e",
+      "length": 8,
+      "_type": {
+        "_id": "OneTimePasswordGeneratorNode",
+        "name": "HOTP Generator",
+        "collection": true
+      }
+    },
+    "90cb3c9e-9627-43f3-a76b-f9cc9e07a515": {
+      "_id": "90cb3c9e-9627-43f3-a76b-f9cc9e07a515",
+      "nodes": [
+        {
+          "_id": "95e3cf2c-7ac5-4266-a202-04a51ce28d87",
+          "nodeType": "UsernameCollectorNode",
+          "displayName": "Username"
+        },
+        {
+          "_id": "654b2e29-98c4-4927-8862-d567712333b4",
+          "nodeType": "PasswordCollectorNode",
+          "displayName": "Password"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "c390244d-e331-4797-9deb-dc399a64c526": {
+      "_id": "c390244d-e331-4797-9deb-dc399a64c526",
+      "outcomes": [
+        "sent",
+        "failed"
+      ],
+      "script": "91554b10-79a5-4aa8-aca1-59481a734c19",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "d0639822-6d5c-4233-ab10-f678b4ba5dde": {
+      "_id": "d0639822-6d5c-4233-ab10-f678b4ba5dde",
+      "transientProperties": {},
+      "properties": {
+        "telephoneNumber": "telephoneNumber"
+      },
+      "addAttributes": false,
+      "_type": {
+        "_id": "SetProfilePropertyNode",
+        "name": "Set Profile Property",
+        "collection": true
+      }
+    },
+    "de7ae361-42f7-4629-a1c4-711f6601e237": {
+      "_id": "de7ae361-42f7-4629-a1c4-711f6601e237",
+      "nodes": [
+        {
+          "_id": "69902a15-f596-415c-9a0c-0ae8407e7c0d",
+          "nodeType": "PasswordCollectorNode",
+          "displayName": "Password"
+        }
+      ],
+      "_type": {
+        "_id": "PageNode",
+        "name": "Page Node",
+        "collection": true
+      }
+    },
+    "f202311e-62ab-4499-ac64-fa1617237ea3": {
+      "_id": "f202311e-62ab-4499-ac64-fa1617237ea3",
+      "passwordExpiryTime": 5,
+      "_type": {
+        "_id": "OneTimePasswordCollectorDecisionNode",
+        "name": "OTP Collector Decision",
+        "collection": true
+      }
+    },
+    "f85f5d59-651c-4e87-b997-2b5714db571b": {
+      "_id": "f85f5d59-651c-4e87-b997-2b5714db571b",
+      "_type": {
+        "_id": "DataStoreDecisionNode",
+        "name": "Data Store Decision",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "739bdc48-fd24-4c52-b353-88706d75558a": {
+      "_id": "739bdc48-fd24-4c52-b353-88706d75558a",
+      "name": "Check Username",
+      "description": "Check if username is known.",
+      "script": "LyoKICBDaGVjayBpZiB1c2VybmFtZSBoYXMgYWxyZWFkeSBiZWVuIGNvbGxlY3RlZC4gCiAgUmV0dXJuICJrbm93biIgaWYgeWVzLCAidW5rbm93biIgb3RoZXJ3aXNlLgogKi8KCmlmIChudWxsICE9IHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSkgewoJb3V0Y29tZSA9ICJrbm93biI7Cn0KZWxzZSB7CiAJb3V0Y29tZSA9ICJ1bmtub3duIjsKfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    },
+    "91554b10-79a5-4aa8-aca1-59481a734c19": {
+      "_id": "91554b10-79a5-4aa8-aca1-59481a734c19",
+      "name": "Twilio SMS OTP Sender",
+      "description": "Twilio SMS OTP Sender",
+      "script": "bG9nZ2VyLndhcm5pbmcoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogc3RhcnQiKTsKbG9nZ2VyLmVycm9yKCJUd2lsaW8gU01TIE9UUCBTZW5kZXI6IHNoYXJlZFN0YXRlOiAiLmNvbmNhdChzaGFyZWRTdGF0ZS50b1N0cmluZygpKSk7CmxvZ2dlci5lcnJvcigiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiB0cmFuc2llbnRTdGF0ZTogIi5jb25jYXQodHJhbnNpZW50U3RhdGUudG9TdHJpbmcoKSkpOwoKaWYgKHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSAmJiBzaGFyZWRTdGF0ZS5nZXQoInRlbGVwaG9uZU51bWJlciIpKSB7CiAgICB2YXIgQmFzZTY0PXtfa2V5U3RyOiJBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWmFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1Njc4OSsvPSIsZW5jb2RlOmZ1bmN0aW9uKGlucHV0KXt2YXIgb3V0cHV0PSIiO3ZhciBjaHIxLGNocjIsY2hyMyxlbmMxLGVuYzIsZW5jMyxlbmM0O3ZhciBpPTA7aW5wdXQ9QmFzZTY0Ll91dGY4X2VuY29kZShpbnB1dCk7d2hpbGUoaTxpbnB1dC5sZW5ndGgpe2NocjE9aW5wdXQuY2hhckNvZGVBdChpKyspO2NocjI9aW5wdXQuY2hhckNvZGVBdChpKyspO2NocjM9aW5wdXQuY2hhckNvZGVBdChpKyspO2VuYzE9Y2hyMT4+MjtlbmMyPShjaHIxJjMpPDw0fGNocjI+PjQ7ZW5jMz0oY2hyMiYxNSk8PDJ8Y2hyMz4+NjtlbmM0PWNocjMmNjM7aWYoaXNOYU4oY2hyMikpe2VuYzM9ZW5jND02NH1lbHNlIGlmKGlzTmFOKGNocjMpKXtlbmM0PTY0fW91dHB1dD1vdXRwdXQrdGhpcy5fa2V5U3RyLmNoYXJBdChlbmMxKSt0aGlzLl9rZXlTdHIuY2hhckF0KGVuYzIpK3RoaXMuX2tleVN0ci5jaGFyQXQoZW5jMykrdGhpcy5fa2V5U3RyLmNoYXJBdChlbmM0KX1yZXR1cm4gb3V0cHV0fSxkZWNvZGU6ZnVuY3Rpb24oaW5wdXQpe3ZhciBvdXRwdXQ9IiI7dmFyIGNocjEsY2hyMixjaHIzO3ZhciBlbmMxLGVuYzIsZW5jMyxlbmM0O3ZhciBpPTA7aW5wdXQ9aW5wdXQucmVwbGFjZSgvW15BLVphLXowLTlcK1wvXD1dL2csIiIpO3doaWxlKGk8aW5wdXQubGVuZ3RoKXtlbmMxPXRoaXMuX2tleVN0ci5pbmRleE9mKGlucHV0LmNoYXJBdChpKyspKTtlbmMyPXRoaXMuX2tleVN0ci5pbmRleE9mKGlucHV0LmNoYXJBdChpKyspKTtlbmMzPXRoaXMuX2tleVN0ci5pbmRleE9mKGlucHV0LmNoYXJBdChpKyspKTtlbmM0PXRoaXMuX2tleVN0ci5pbmRleE9mKGlucHV0LmNoYXJBdChpKyspKTtjaHIxPWVuYzE8PDJ8ZW5jMj4+NDtjaHIyPShlbmMyJjE1KTw8NHxlbmMzPj4yO2NocjM9KGVuYzMmMyk8PDZ8ZW5jNDtvdXRwdXQ9b3V0cHV0K1N0cmluZy5mcm9tQ2hhckNvZGUoY2hyMSk7aWYoZW5jMyE9NjQpe291dHB1dD1vdXRwdXQrU3RyaW5nLmZyb21DaGFyQ29kZShjaHIyKX1pZihlbmM0IT02NCl7b3V0cHV0PW91dHB1dCtTdHJpbmcuZnJvbUNoYXJDb2RlKGNocjMpfX1vdXRwdXQ9QmFzZTY0Ll91dGY4X2RlY29kZShvdXRwdXQpO3JldHVybiBvdXRwdXR9LF91dGY4X2VuY29kZTpmdW5jdGlvbihzdHJpbmcpe3N0cmluZz1zdHJpbmcucmVwbGFjZSgvXHJcbi9nLCJcbiIpO3ZhciB1dGZ0ZXh0PSIiO2Zvcih2YXIgbj0wO248c3RyaW5nLmxlbmd0aDtuKyspe3ZhciBjPXN0cmluZy5jaGFyQ29kZUF0KG4pO2lmKGM8MTI4KXt1dGZ0ZXh0Kz1TdHJpbmcuZnJvbUNoYXJDb2RlKGMpfWVsc2UgaWYoYz4xMjcmJmM8MjA0OCl7dXRmdGV4dCs9U3RyaW5nLmZyb21DaGFyQ29kZShjPj42fDE5Mik7dXRmdGV4dCs9U3RyaW5nLmZyb21DaGFyQ29kZShjJjYzfDEyOCl9ZWxzZXt1dGZ0ZXh0Kz1TdHJpbmcuZnJvbUNoYXJDb2RlKGM+PjEyfDIyNCk7dXRmdGV4dCs9U3RyaW5nLmZyb21DaGFyQ29kZShjPj42JjYzfDEyOCk7dXRmdGV4dCs9U3RyaW5nLmZyb21DaGFyQ29kZShjJjYzfDEyOCl9fXJldHVybiB1dGZ0ZXh0fSxfdXRmOF9kZWNvZGU6ZnVuY3Rpb24odXRmdGV4dCl7dmFyIHN0cmluZz0iIjt2YXIgaT0wO3ZhciBjPWMxPWMyPTA7d2hpbGUoaTx1dGZ0ZXh0Lmxlbmd0aCl7Yz11dGZ0ZXh0LmNoYXJDb2RlQXQoaSk7aWYoYzwxMjgpe3N0cmluZys9U3RyaW5nLmZyb21DaGFyQ29kZShjKTtpKyt9ZWxzZSBpZihjPjE5MSYmYzwyMjQpe2MyPXV0ZnRleHQuY2hhckNvZGVBdChpKzEpO3N0cmluZys9U3RyaW5nLmZyb21DaGFyQ29kZSgoYyYzMSk8PDZ8YzImNjMpO2krPTJ9ZWxzZXtjMj11dGZ0ZXh0LmNoYXJDb2RlQXQoaSsxKTtjMz11dGZ0ZXh0LmNoYXJDb2RlQXQoaSsyKTtzdHJpbmcrPVN0cmluZy5mcm9tQ2hhckNvZGUoKGMmMTUpPDwxMnwoYzImNjMpPDw2fGMzJjYzKTtpKz0zfX1yZXR1cm4gc3RyaW5nfX07CgogICAgLy8gVHdpbGlvIFNNUyBNZXNzYWdlIEFQSSBDb25maWd1cmF0aW9uCiAgICB2YXIgVFdJTElPX0FQSV9TSUQgPSAiQUM1NDlmNzRlNTE1ZjczMTEwOTczZGI0MzFmYzFiMTQ3NCI7CiAgICB2YXIgVFdJTElPX0FQSV9UT0tFTiA9ICI5Mzg4ZmYwN2YyNWRkZDczMGMzMjcwN2MzZDc5Zjk0MiI7CiAgICB2YXIgVFdJTElPX0FQSV9GUk9NID0gIisxOTE2MzE4MzQzOCI7CiAgCiAgICB2YXIgVFdJTElPX0FQSV9VUkkgPSAiaHR0cHM6Ly9hcGkudHdpbGlvLmNvbS8yMDEwLTA0LTAxL0FjY291bnRzLyIuY29uY2F0KFRXSUxJT19BUElfU0lEKS5jb25jYXQoIi9NZXNzYWdlcy5qc29uIik7CQogICAgdmFyIFRXSUxJT19BUElfVE8gPSBzaGFyZWRTdGF0ZS5nZXQoInRlbGVwaG9uZU51bWJlciIpOwogICAgdmFyIFRXSUxJT19BUElfQk9EWSA9ICJPVFAgZm9yIGFjY291bnQgIi5jb25jYXQoc2hhcmVkU3RhdGUuZ2V0KCJ1c2VybmFtZSIpKS5jb25jYXQoIjogIikuY29uY2F0KHNoYXJlZFN0YXRlLmdldCgib25lVGltZVBhc3N3b3JkIikpOwogICAgLy9sb2dnZXIud2FybmluZygiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBUbzogIi5jb25jYXQoVFdJTElPX0FQSV9UTykpOwogICAgLy9sb2dnZXIud2FybmluZygiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBNZXNzYWdlOiAiLmNvbmNhdChUV0lMSU9fQVBJX0JPRFkpKTsKCiAgICB2YXIgQVVUSFogPSAiQmFzaWMgIi5jb25jYXQoQmFzZTY0LmVuY29kZShUV0lMSU9fQVBJX1NJRC5jb25jYXQoJzonKS5jb25jYXQoVFdJTElPX0FQSV9UT0tFTikpKTsKICAgIC8vbG9nZ2VyLndhcm5pbmcoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogQVVUSFogLSAiLmNvbmNhdChBVVRIWikpOwoKICAgIHZhciByZXF1ZXN0ID0gbmV3IG9yZy5mb3JnZXJvY2suaHR0cC5wcm90b2NvbC5SZXF1ZXN0KCk7CiAgICByZXF1ZXN0LnNldE1ldGhvZCgnUE9TVCcpOwogICAgcmVxdWVzdC5zZXRVcmkoVFdJTElPX0FQSV9VUkkpOwogICAgcmVxdWVzdC5nZXRIZWFkZXJzKCkuYWRkKCJDb250ZW50LVR5cGUiLCAiYXBwbGljYXRpb24veC13d3ctZm9ybS11cmxlbmNvZGVkIik7CiAgICByZXF1ZXN0LmdldEhlYWRlcnMoKS5hZGQoIkF1dGhvcml6YXRpb24iLCBBVVRIWik7CiAgICB2YXIgcGFyYW1zID0gcmVxdWVzdC5nZXRGb3JtKCk7CiAgICBwYXJhbXMuYWRkKCJGcm9tIiwgVFdJTElPX0FQSV9GUk9NKTsKICAgIHBhcmFtcy5hZGQoIkJvZHkiLCBUV0lMSU9fQVBJX0JPRFkpOwogICAgcGFyYW1zLmFkZCgiVG8iLCBUV0lMSU9fQVBJX1RPKTsKICAgIHJlcXVlc3QuZ2V0RW50aXR5KCkuc2V0U3RyaW5nKHBhcmFtcy50b1N0cmluZygpKTsKCiAgICB2YXIgcmVzcG9uc2UgPSBodHRwQ2xpZW50LnNlbmQocmVxdWVzdCkuZ2V0KCk7CiAgICB2YXIgcmVzdWx0ID0gSlNPTi5wYXJzZShyZXNwb25zZS5nZXRFbnRpdHkoKS5nZXRTdHJpbmcoKSk7CiAgICAvL2xvZ2dlci53YXJuaW5nKCJUd2lsaW8gU01TIE9UUCBTZW5kZXI6IEpTT04gcmVzdWx0OiAiICsgSlNPTi5zdHJpbmdpZnkocmVzdWx0KSk7CgogICAgaWYgKHJlc3VsdFsiZXJyb3JfY29kZSJdKSB7CiAgICAgICAgb3V0Y29tZSA9ICJmYWlsZWQiOwogICAgICAgIGxvZ2dlci5lcnJvcigiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBlcnJvcl9jb2RlID0gIi5jb25jYXQocmVzdWx0WyJlcnJvcl9jb2RlIl0pKTsKICAgICAgICBsb2dnZXIuZXJyb3IoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogZXJyb3JfbWVzc2FnZSA9ICIuY29uY2F0KHJlc3VsdFsiZXJyb3JfbWVzc2FnZSJdKSk7CiAgICAgICAgbG9nZ2VyLmVycm9yKCJUd2lsaW8gU01TIE9UUCBTZW5kZXI6IG91dGNvbWUgPSBmYWlsZWQiKTsKICAgIH0gZWxzZSBpZiAocmVzdWx0WyJjb2RlIl0pIHsKICAgICAgICBvdXRjb21lID0gImZhaWxlZCI7CiAgICAgICAgbG9nZ2VyLmVycm9yKCJUd2lsaW8gU01TIE9UUCBTZW5kZXI6IGNvZGUgPSAiLmNvbmNhdChyZXN1bHRbImNvZGUiXSkpOwogICAgICAgIGxvZ2dlci5lcnJvcigiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBtZXNzYWdlID0gIi5jb25jYXQocmVzdWx0WyJtZXNzYWdlIl0pKTsKICAgIH0gZWxzZSB7CiAgICAgICAgb3V0Y29tZSA9ICJzZW50IjsKICAgICAgICBsb2dnZXIud2FybmluZygiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBvdXRjb21lID0gc2VudCIpOwogICAgfQp9IGVsc2UgewogIAlvdXRjb21lID0gImZhaWxlZCI7CiAgCWxvZ2dlci5lcnJvcigiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBObyB1c2VyIG9yIHBob25lIG51bWJlciBmb3VuZCEiKTsKICAJbG9nZ2VyLmVycm9yKCJUd2lsaW8gU01TIE9UUCBTZW5kZXI6IG91dGNvbWUgPSBmYWlsZWQiKTsKfQ==",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "emailTemplates": {},
+  "tree": {
+    "_id": "sms_reg",
+    "nodes": {
+      "f85f5d59-651c-4e87-b997-2b5714db571b": {
+        "displayName": "Validate Creds",
+        "nodeType": "DataStoreDecisionNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "05a0ae40-7a12-4297-9517-f3ec7b262fac"
+        }
+      },
+      "90cb3c9e-9627-43f3-a76b-f9cc9e07a515": {
+        "displayName": "Login Form",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "f85f5d59-651c-4e87-b997-2b5714db571b"
+        }
+      },
+      "502bf4d5-466b-4b50-9678-e72f718d881c": {
+        "displayName": "Username?",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "unknown": "90cb3c9e-9627-43f3-a76b-f9cc9e07a515",
+          "known": "de7ae361-42f7-4629-a1c4-711f6601e237"
+        }
+      },
+      "de7ae361-42f7-4629-a1c4-711f6601e237": {
+        "displayName": "Login Form",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "f85f5d59-651c-4e87-b997-2b5714db571b"
+        }
+      },
+      "05a0ae40-7a12-4297-9517-f3ec7b262fac": {
+        "displayName": "Register",
+        "nodeType": "PageNode",
+        "connections": {
+          "outcome": "8306a807-05ad-42ba-990e-acba3ba5011e"
+        }
+      },
+      "d0639822-6d5c-4233-ab10-f678b4ba5dde": {
+        "displayName": "Save Mobile Phone",
+        "nodeType": "SetProfilePropertyNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "c390244d-e331-4797-9deb-dc399a64c526": {
+        "displayName": "Send OTP",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "sent": "f202311e-62ab-4499-ac64-fa1617237ea3",
+          "failed": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "8306a807-05ad-42ba-990e-acba3ba5011e": {
+        "displayName": "Generate OTP",
+        "nodeType": "OneTimePasswordGeneratorNode",
+        "connections": {
+          "outcome": "c390244d-e331-4797-9deb-dc399a64c526"
+        }
+      },
+      "f202311e-62ab-4499-ac64-fa1617237ea3": {
+        "displayName": "Validate OTP",
+        "nodeType": "OneTimePasswordCollectorDecisionNode",
+        "connections": {
+          "true": "d0639822-6d5c-4233-ab10-f678b4ba5dde",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      }
+    },
+    "entryNodeId": "502bf4d5-466b-4b50-9678-e72f718d881c"
+  }
+}

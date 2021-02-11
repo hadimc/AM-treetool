@@ -1,0 +1,89 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {},
+  "nodes": {
+    "058767c2-ad2f-4cdf-95ad-ed0822ee2cd8": {
+      "_id": "058767c2-ad2f-4cdf-95ad-ed0822ee2cd8",
+      "password": "password",
+      "threshold": 0,
+      "_type": {
+        "_id": "HaveIBeenPwnedPasswordNode",
+        "name": "Have I Been Pwned Password",
+        "collection": true
+      }
+    },
+    "a96ccdd8-cb63-4a0e-b10e-b0300a9a01fb": {
+      "_id": "a96ccdd8-cb63-4a0e-b10e-b0300a9a01fb",
+      "tree": "simple",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "a9b2102e-2f85-48f0-b8df-9f52d5b1fdf0": {
+      "_id": "a9b2102e-2f85-48f0-b8df-9f52d5b1fdf0",
+      "defaultChoice": "Continue",
+      "choices": [
+        "Abort",
+        "Continue"
+      ],
+      "prompt": "Your pwd has been compromised! Please change it immediately. To continue provide 2nd factor.",
+      "_type": {
+        "_id": "ChoiceCollectorNode",
+        "name": "Choice Collector",
+        "collection": true
+      }
+    },
+    "de4f5628-2079-460c-aa58-6be35b1486c4": {
+      "_id": "de4f5628-2079-460c-aa58-6be35b1486c4",
+      "tree": "select",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "solid",
+    "nodes": {
+      "a96ccdd8-cb63-4a0e-b10e-b0300a9a01fb": {
+        "displayName": "Login",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "058767c2-ad2f-4cdf-95ad-ed0822ee2cd8"
+        }
+      },
+      "058767c2-ad2f-4cdf-95ad-ed0822ee2cd8": {
+        "displayName": "Pwd Compromised?",
+        "nodeType": "HaveIBeenPwnedPasswordNode",
+        "connections": {
+          "false": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "true": "a9b2102e-2f85-48f0-b8df-9f52d5b1fdf0"
+        }
+      },
+      "a9b2102e-2f85-48f0-b8df-9f52d5b1fdf0": {
+        "displayName": "Pwd Compromised",
+        "nodeType": "ChoiceCollectorNode",
+        "connections": {
+          "Abort": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "Continue": "de4f5628-2079-460c-aa58-6be35b1486c4"
+        }
+      },
+      "de4f5628-2079-460c-aa58-6be35b1486c4": {
+        "displayName": "MFA",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      }
+    },
+    "entryNodeId": "a96ccdd8-cb63-4a0e-b10e-b0300a9a01fb"
+  }
+}

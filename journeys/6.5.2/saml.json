@@ -1,0 +1,153 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {},
+  "nodes": {
+    "4b3666fc-7e96-48aa-bf55-5d8a3f87d5c1": {
+      "_id": "4b3666fc-7e96-48aa-bf55-5d8a3f87d5c1",
+      "authLevelIncrement": 10,
+      "_type": {
+        "_id": "ModifyAuthLevelNode",
+        "name": "Modify Auth Level",
+        "collection": true
+      }
+    },
+    "9c14aa41-a63d-4648-80b5-70c79d900017": {
+      "_id": "9c14aa41-a63d-4648-80b5-70c79d900017",
+      "tree": "select",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "9e68a43e-95c1-4bd1-8287-286781401336": {
+      "_id": "9e68a43e-95c1-4bd1-8287-286781401336",
+      "tree": "user",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "d651491c-f941-4b8d-be80-66f5a168826d": {
+      "_id": "d651491c-f941-4b8d-be80-66f5a168826d",
+      "outcomes": [
+        "hasSession",
+        "noSession"
+      ],
+      "script": "0c1166da-4e37-4e24-83c2-390fdcba240b",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    },
+    "edba4379-bcac-4309-bcf3-93890f1afddb": {
+      "_id": "edba4379-bcac-4309-bcf3-93890f1afddb",
+      "sessionDataKey": "UserId",
+      "sharedStateKey": "username",
+      "_type": {
+        "_id": "SessionDataNode",
+        "name": "Get Session Data",
+        "collection": true
+      }
+    },
+    "ef32f076-afa7-47cc-9368-4ec49d7aa383": {
+      "_id": "ef32f076-afa7-47cc-9368-4ec49d7aa383",
+      "outcomes": [
+        "https://stonex.mytest.run:443/openam",
+        "urn:federation:MicrosoftOnline",
+        "other"
+      ],
+      "script": "6f0139fc-db2a-4f39-aff7-d49e69aab1c4",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {
+    "0c1166da-4e37-4e24-83c2-390fdcba240b": {
+      "_id": "0c1166da-4e37-4e24-83c2-390fdcba240b",
+      "name": "Check For Existing Session",
+      "description": null,
+      "script": "aWYgKHR5cGVvZiBleGlzdGluZ1Nlc3Npb24gIT09ICd1bmRlZmluZWQnKQp7CiAgb3V0Y29tZSA9ICJoYXNTZXNzaW9uIjsKfQplbHNlCnsKICBvdXRjb21lID0gIm5vU2Vzc2lvbiI7Cn0=",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    },
+    "6f0139fc-db2a-4f39-aff7-d49e69aab1c4": {
+      "_id": "6f0139fc-db2a-4f39-aff7-d49e69aab1c4",
+      "name": "SAML SP Multiplexer",
+      "description": null,
+      "script": "b3V0Y29tZSA9ICJvdGhlciI7Cgp2YXIgcmVmZXJlciA9IHBhcnNlVXJsKHJlcXVlc3RIZWFkZXJzLmdldCgicmVmZXJlciIpLmdldCgwKSk7Cgpsb2dnZXIuZXJyb3IoIlNBTUwgU1AgTXVsdGlwbGV4ZXI6IHJlZmVyZXIgIiArIEpTT04uc3RyaW5naWZ5KHJlZmVyZXIpKTsKCmlmIChyZWZlcmVyLnNlYXJjaFBhcmFtICYmIHJlZmVyZXIuc2VhcmNoUGFyYW0uc3BFbnRpdHlJRCkgewogIAl2YXIgc3AgPSByZWZlcmVyLnNlYXJjaFBhcmFtLnNwRW50aXR5SUQ7CiAgCWxvZ2dlci5lcnJvcigiU0FNTCBTUCBNdWx0aXBsZXhlcjogc3BFbnRpdHlJRD0iICsgc3ApOwogIAlvdXRjb21lID0gc3A7Cn0KCmZ1bmN0aW9uIHBhcnNlVXJsKGhyZWYpIHsKICAgIHZhciBtID0gaHJlZi5tYXRjaCgvXigoW146XC8/I10rKTo/KD86XC9cLygoPzooW15cLz8jOl0qKTooW15cLz8jOl0qKUApPyhbXlwvPyM6XSopKD86OihbXlwvPyM6XSopKT8pKSk/KFtePyNdKikoXD9bXiNdKik/KCMuKik/JC8pLAogICAgciA9IHsKICAgICAgICBoYXNoOiBtWzEwXSB8fCAiIiwgICAgICAgICAgICAgICAgICAgICAgLy8gIy8KICAgICAgICBob3N0OiBtWzNdIHx8ICIiLCAgICAgICAgICAgICAgICAgICAgICAgLy8gb3BlbmFtLXZvbGtlci1kZXYuZm9yZ2VibG9ja3MuY29tCiAgICAgICAgaG9zdG5hbWU6IG1bNl0gfHwgIiIsICAgICAgICAgICAgICAgICAgIC8vIG9wZW5hbS12b2xrZXItZGV2LmZvcmdlYmxvY2tzLmNvbQogICAgICAgIGhyZWY6IG1bMF0gfHwgIiIsICAgICAgICAgICAgICAgICAgICAgICAvLyBodHRwczovL29wZW5hbS12b2xrZXItZGV2LmZvcmdlYmxvY2tzLmNvbS9hbS9YVUkvP3JlYWxtPS9icmF2byZhdXRoSW5kZXhUeXBlPXNlcnZpY2UmYXV0aEluZGV4VmFsdWU9SW5pdGlhdGVPd25lckNsYWltIy8KICAgICAgICBvcmlnaW46IG1bMV0gfHwgIiIsICAgICAgICAgICAgICAgICAgICAgLy8gaHR0cHM6Ly9vcGVuYW0tdm9sa2VyLWRldi5mb3JnZWJsb2Nrcy5jb20KICAgICAgICBwYXRobmFtZTogbVs4XSB8fCAobVsxXSA/ICIvIiA6ICIiKSwgICAgLy8gL2FtL1hVSS8KICAgICAgICBwb3J0OiBtWzddIHx8ICIiLCAgICAgICAgICAgICAgICAgICAgICAgLy8gCiAgICAgICAgcHJvdG9jb2w6IG1bMl0gfHwgIiIsICAgICAgICAgICAgICAgICAgIC8vIGh0dHBzCiAgICAgICAgc2VhcmNoOiBtWzldIHx8ICIiLCAgICAgICAgICAgICAgICAgICAgIC8vID9yZWFsbT0vYnJhdm8mYXV0aEluZGV4VHlwZT1zZXJ2aWNlJmF1dGhJbmRleFZhbHVlPUluaXRpYXRlT3duZXJDbGFpbQogICAgICAgIHVzZXJuYW1lOiBtWzRdIHx8ICIiLCAgICAgICAgICAgICAgICAgICAvLyAKICAgICAgICBwYXNzd29yZDogbVs1XSB8fCAiIiwgICAgICAgICAgICAgICAgICAgLy8gCiAgICAgICAgc2VhcmNoUGFyYW06IHt9ICAgICAgICAgICAgICAgICAgICAgICAgIC8vIHsgcmVhbG06ICcvYnJhdm8nLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvLyAgIGF1dGhJbmRleFR5cGU6ICdzZXJ2aWNlJywKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLy8gICBhdXRoSW5kZXhWYWx1ZTogJ0luaXRpYXRlT3duZXJDbGFpbScgfQogICAgfTsKICAgIGlmIChyLnByb3RvY29sLmxlbmd0aCA9PSAyKSB7CiAgICAgICAgci5wcm90b2NvbCA9ICJmaWxlOi8vLyIgKyByLnByb3RvY29sLnRvVXBwZXJDYXNlKCk7CiAgICAgICAgci5vcmlnaW4gPSByLnByb3RvY29sICsgIi8vIiArIHIuaG9zdDsKICAgIH0KICAgIGlmIChyLnNlYXJjaC5sZW5ndGggPiAyKSB7CiAgICAgICAgdmFyIHF1ZXJ5ID0gKHIuc2VhcmNoLmluZGV4T2YoJz8nKSA9PT0gMCkgPyByLnNlYXJjaC5zdWJzdHIoMSkgOiByLnNlYXJjaDsKICAgICAgICB2YXIgdmFycyA9IHF1ZXJ5LnNwbGl0KCcmJyk7CiAgICAgICAgZm9yICh2YXIgaSA9IDA7IGkgPCB2YXJzLmxlbmd0aDsgaSsrKSB7CiAgICAgICAgdmFyIHBhaXIgPSB2YXJzW2ldLnNwbGl0KCc9Jyk7CiAgICAgICAgci5zZWFyY2hQYXJhbVtkZWNvZGVVUklDb21wb25lbnQocGFpclswXSldID0gZGVjb2RlVVJJQ29tcG9uZW50KHBhaXJbMV0pOwogICAgICAgIH0KICAgIH0KICAgIHIuaHJlZiA9IHIub3JpZ2luICsgci5wYXRobmFtZSArIHIuc2VhcmNoICsgci5oYXNoOwogICAgcmV0dXJuIHI7Cn07",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "emailTemplates": {},
+  "tree": {
+    "_id": "saml",
+    "nodes": {
+      "ef32f076-afa7-47cc-9368-4ec49d7aa383": {
+        "displayName": "SAML SP Multiplexer",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "other": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "https://sp.mytest.run:443/openam": "9c14aa41-a63d-4648-80b5-70c79d900017",
+          "urn:federation:MicrosoftOnline": "9c14aa41-a63d-4648-80b5-70c79d900017"
+        }
+      },
+      "9e68a43e-95c1-4bd1-8287-286781401336": {
+        "displayName": "Login",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "ef32f076-afa7-47cc-9368-4ec49d7aa383"
+        }
+      },
+      "9c14aa41-a63d-4648-80b5-70c79d900017": {
+        "displayName": "MFA",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "4b3666fc-7e96-48aa-bf55-5d8a3f87d5c1",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "4b3666fc-7e96-48aa-bf55-5d8a3f87d5c1": {
+        "displayName": "Modify Auth Level",
+        "nodeType": "ModifyAuthLevelNode",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "edba4379-bcac-4309-bcf3-93890f1afddb": {
+        "displayName": "Get Session Data",
+        "nodeType": "SessionDataNode",
+        "connections": {
+          "outcome": "ef32f076-afa7-47cc-9368-4ec49d7aa383"
+        }
+      },
+      "d651491c-f941-4b8d-be80-66f5a168826d": {
+        "displayName": "Scripted Decision",
+        "nodeType": "ScriptedDecisionNode",
+        "connections": {
+          "hasSession": "edba4379-bcac-4309-bcf3-93890f1afddb",
+          "noSession": "9e68a43e-95c1-4bd1-8287-286781401336"
+        }
+      }
+    },
+    "entryNodeId": "d651491c-f941-4b8d-be80-66f5a168826d"
+  }
+}

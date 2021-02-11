@@ -1,0 +1,195 @@
+
+{
+  "origin": "ca6558ff3fda6dd85d29c8c00e5c385f",
+  "innernodes": {},
+  "nodes": {
+    "23413857-0ab9-4a29-8636-5cc83671dd1e": {
+      "_id": "23413857-0ab9-4a29-8636-5cc83671dd1e",
+      "length": 8,
+      "_type": {
+        "_id": "OneTimePasswordGeneratorNode",
+        "name": "HOTP Generator",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "outcome",
+          "displayName": "Outcome"
+        }
+      ]
+    },
+    "2873135c-9e8e-4476-b8cf-0c9aa55c4f86": {
+      "_id": "2873135c-9e8e-4476-b8cf-0c9aa55c4f86",
+      "tree": "Login",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "3ec93d6f-fc77-4254-b246-edb1aa3b026a": {
+      "_id": "3ec93d6f-fc77-4254-b246-edb1aa3b026a",
+      "outcomes": [
+        "sent",
+        "failed"
+      ],
+      "inputs": [
+        "*"
+      ],
+      "outputs": [
+        "*"
+      ],
+      "script": "91554b10-79a5-4aa8-aca1-59481a734c19",
+      "_type": {
+        "_id": "ScriptedDecisionNode",
+        "name": "Scripted Decision",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "sent",
+          "displayName": "sent"
+        },
+        {
+          "id": "failed",
+          "displayName": "failed"
+        }
+      ]
+    },
+    "59f0027c-c10c-4401-8b39-f949b1ae4561": {
+      "_id": "59f0027c-c10c-4401-8b39-f949b1ae4561",
+      "passwordExpiryTime": 5,
+      "_type": {
+        "_id": "OneTimePasswordCollectorDecisionNode",
+        "name": "OTP Collector Decision",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    },
+    "e0646812-2bbc-41e8-b745-b601216f7960": {
+      "_id": "e0646812-2bbc-41e8-b745-b601216f7960",
+      "identifier": "userName",
+      "identityAttribute": "userName",
+      "_type": {
+        "_id": "IdentifyExistingUserNode",
+        "name": "Identify Existing User",
+        "collection": true
+      },
+      "_outcomes": [
+        {
+          "id": "true",
+          "displayName": "True"
+        },
+        {
+          "id": "false",
+          "displayName": "False"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "91554b10-79a5-4aa8-aca1-59481a734c19": {
+      "_id": "91554b10-79a5-4aa8-aca1-59481a734c19",
+      "name": "Twilio SMS OTP Sender",
+      "description": "Twilio SMS OTP Sender",
+      "script": "bG9nZ2VyLndhcm5pbmcoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogc3RhcnQiKTsKCmlmIChzaGFyZWRTdGF0ZS5nZXQoIl9pZCIpICYmIGlkUmVwb3NpdG9yeS5nZXRBdHRyaWJ1dGUoc2hhcmVkU3RhdGUuZ2V0KCJfaWQiKSwgInRlbGVwaG9uZU51bWJlciIpLml0ZXJhdG9yKCkuaGFzTmV4dCgpKSB7CiAgICB2YXIgQmFzZTY0PXtfa2V5U3RyOiJBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWmFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1Njc4OSsvPSIsZW5jb2RlOmZ1bmN0aW9uKGlucHV0KXt2YXIgb3V0cHV0PSIiO3ZhciBjaHIxLGNocjIsY2hyMyxlbmMxLGVuYzIsZW5jMyxlbmM0O3ZhciBpPTA7aW5wdXQ9QmFzZTY0Ll91dGY4X2VuY29kZShpbnB1dCk7d2hpbGUoaTxpbnB1dC5sZW5ndGgpe2NocjE9aW5wdXQuY2hhckNvZGVBdChpKyspO2NocjI9aW5wdXQuY2hhckNvZGVBdChpKyspO2NocjM9aW5wdXQuY2hhckNvZGVBdChpKyspO2VuYzE9Y2hyMT4+MjtlbmMyPShjaHIxJjMpPDw0fGNocjI+PjQ7ZW5jMz0oY2hyMiYxNSk8PDJ8Y2hyMz4+NjtlbmM0PWNocjMmNjM7aWYoaXNOYU4oY2hyMikpe2VuYzM9ZW5jND02NH1lbHNlIGlmKGlzTmFOKGNocjMpKXtlbmM0PTY0fW91dHB1dD1vdXRwdXQrdGhpcy5fa2V5U3RyLmNoYXJBdChlbmMxKSt0aGlzLl9rZXlTdHIuY2hhckF0KGVuYzIpK3RoaXMuX2tleVN0ci5jaGFyQXQoZW5jMykrdGhpcy5fa2V5U3RyLmNoYXJBdChlbmM0KX1yZXR1cm4gb3V0cHV0fSxkZWNvZGU6ZnVuY3Rpb24oaW5wdXQpe3ZhciBvdXRwdXQ9IiI7dmFyIGNocjEsY2hyMixjaHIzO3ZhciBlbmMxLGVuYzIsZW5jMyxlbmM0O3ZhciBpPTA7aW5wdXQ9aW5wdXQucmVwbGFjZSgvW15BLVphLXowLTlcK1wvXD1dL2csIiIpO3doaWxlKGk8aW5wdXQubGVuZ3RoKXtlbmMxPXRoaXMuX2tleVN0ci5pbmRleE9mKGlucHV0LmNoYXJBdChpKyspKTtlbmMyPXRoaXMuX2tleVN0ci5pbmRleE9mKGlucHV0LmNoYXJBdChpKyspKTtlbmMzPXRoaXMuX2tleVN0ci5pbmRleE9mKGlucHV0LmNoYXJBdChpKyspKTtlbmM0PXRoaXMuX2tleVN0ci5pbmRleE9mKGlucHV0LmNoYXJBdChpKyspKTtjaHIxPWVuYzE8PDJ8ZW5jMj4+NDtjaHIyPShlbmMyJjE1KTw8NHxlbmMzPj4yO2NocjM9KGVuYzMmMyk8PDZ8ZW5jNDtvdXRwdXQ9b3V0cHV0K1N0cmluZy5mcm9tQ2hhckNvZGUoY2hyMSk7aWYoZW5jMyE9NjQpe291dHB1dD1vdXRwdXQrU3RyaW5nLmZyb21DaGFyQ29kZShjaHIyKX1pZihlbmM0IT02NCl7b3V0cHV0PW91dHB1dCtTdHJpbmcuZnJvbUNoYXJDb2RlKGNocjMpfX1vdXRwdXQ9QmFzZTY0Ll91dGY4X2RlY29kZShvdXRwdXQpO3JldHVybiBvdXRwdXR9LF91dGY4X2VuY29kZTpmdW5jdGlvbihzdHJpbmcpe3N0cmluZz1zdHJpbmcucmVwbGFjZSgvXHJcbi9nLCJcbiIpO3ZhciB1dGZ0ZXh0PSIiO2Zvcih2YXIgbj0wO248c3RyaW5nLmxlbmd0aDtuKyspe3ZhciBjPXN0cmluZy5jaGFyQ29kZUF0KG4pO2lmKGM8MTI4KXt1dGZ0ZXh0Kz1TdHJpbmcuZnJvbUNoYXJDb2RlKGMpfWVsc2UgaWYoYz4xMjcmJmM8MjA0OCl7dXRmdGV4dCs9U3RyaW5nLmZyb21DaGFyQ29kZShjPj42fDE5Mik7dXRmdGV4dCs9U3RyaW5nLmZyb21DaGFyQ29kZShjJjYzfDEyOCl9ZWxzZXt1dGZ0ZXh0Kz1TdHJpbmcuZnJvbUNoYXJDb2RlKGM+PjEyfDIyNCk7dXRmdGV4dCs9U3RyaW5nLmZyb21DaGFyQ29kZShjPj42JjYzfDEyOCk7dXRmdGV4dCs9U3RyaW5nLmZyb21DaGFyQ29kZShjJjYzfDEyOCl9fXJldHVybiB1dGZ0ZXh0fSxfdXRmOF9kZWNvZGU6ZnVuY3Rpb24odXRmdGV4dCl7dmFyIHN0cmluZz0iIjt2YXIgaT0wO3ZhciBjPWMxPWMyPTA7d2hpbGUoaTx1dGZ0ZXh0Lmxlbmd0aCl7Yz11dGZ0ZXh0LmNoYXJDb2RlQXQoaSk7aWYoYzwxMjgpe3N0cmluZys9U3RyaW5nLmZyb21DaGFyQ29kZShjKTtpKyt9ZWxzZSBpZihjPjE5MSYmYzwyMjQpe2MyPXV0ZnRleHQuY2hhckNvZGVBdChpKzEpO3N0cmluZys9U3RyaW5nLmZyb21DaGFyQ29kZSgoYyYzMSk8PDZ8YzImNjMpO2krPTJ9ZWxzZXtjMj11dGZ0ZXh0LmNoYXJDb2RlQXQoaSsxKTtjMz11dGZ0ZXh0LmNoYXJDb2RlQXQoaSsyKTtzdHJpbmcrPVN0cmluZy5mcm9tQ2hhckNvZGUoKGMmMTUpPDwxMnwoYzImNjMpPDw2fGMzJjYzKTtpKz0zfX1yZXR1cm4gc3RyaW5nfX07CgogICAgLy8gVHdpbGlvIFNNUyBNZXNzYWdlIEFQSSBDb25maWd1cmF0aW9uCiAgICB2YXIgVFdJTElPX0FQSV9TSUQgPSAiQUM1NDlmNzRlNTE1ZjczMTEwOTczZGI0MzFmYzFiMTQ3NCI7CiAgICB2YXIgVFdJTElPX0FQSV9UT0tFTiA9ICI5Mzg4ZmYwN2YyNWRkZDczMGMzMjcwN2MzZDc5Zjk0MiI7CiAgICB2YXIgVFdJTElPX0FQSV9GUk9NID0gIisxOTE2MzE4MzQzOCI7CiAgCiAgICB2YXIgVFdJTElPX0FQSV9VUkkgPSAiaHR0cHM6Ly9hcGkudHdpbGlvLmNvbS8yMDEwLTA0LTAxL0FjY291bnRzLyIuY29uY2F0KFRXSUxJT19BUElfU0lEKS5jb25jYXQoIi9NZXNzYWdlcy5qc29uIik7CQogICAgdmFyIFRXSUxJT19BUElfVE8gPSBpZFJlcG9zaXRvcnkuZ2V0QXR0cmlidXRlKHNoYXJlZFN0YXRlLmdldCgiX2lkIiksICJ0ZWxlcGhvbmVOdW1iZXIiKS5pdGVyYXRvcigpLm5leHQoKTsKICAgIHZhciBUV0lMSU9fQVBJX0JPRFkgPSAiT1RQIGZvciBhY2NvdW50ICIuY29uY2F0KHNoYXJlZFN0YXRlLmdldCgidXNlcm5hbWUiKSkuY29uY2F0KCI6ICIpLmNvbmNhdChzaGFyZWRTdGF0ZS5nZXQoIm9uZVRpbWVQYXNzd29yZCIpKTsKICAgIC8vbG9nZ2VyLndhcm5pbmcoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogVG86ICIuY29uY2F0KFRXSUxJT19BUElfVE8pKTsKICAgIC8vbG9nZ2VyLndhcm5pbmcoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogTWVzc2FnZTogIi5jb25jYXQoVFdJTElPX0FQSV9CT0RZKSk7CgogICAgdmFyIEFVVEhaID0gIkJhc2ljICIuY29uY2F0KEJhc2U2NC5lbmNvZGUoVFdJTElPX0FQSV9TSUQuY29uY2F0KCc6JykuY29uY2F0KFRXSUxJT19BUElfVE9LRU4pKSk7CiAgICAvL2xvZ2dlci53YXJuaW5nKCJUd2lsaW8gU01TIE9UUCBTZW5kZXI6IEFVVEhaIC0gIi5jb25jYXQoQVVUSFopKTsKCiAgICB2YXIgcmVxdWVzdCA9IG5ldyBvcmcuZm9yZ2Vyb2NrLmh0dHAucHJvdG9jb2wuUmVxdWVzdCgpOwogICAgcmVxdWVzdC5zZXRNZXRob2QoJ1BPU1QnKTsKICAgIHJlcXVlc3Quc2V0VXJpKFRXSUxJT19BUElfVVJJKTsKICAgIHJlcXVlc3QuZ2V0SGVhZGVycygpLmFkZCgiQ29udGVudC1UeXBlIiwgImFwcGxpY2F0aW9uL3gtd3d3LWZvcm0tdXJsZW5jb2RlZCIpOwogICAgcmVxdWVzdC5nZXRIZWFkZXJzKCkuYWRkKCJBdXRob3JpemF0aW9uIiwgQVVUSFopOwogICAgdmFyIHBhcmFtcyA9IHJlcXVlc3QuZ2V0Rm9ybSgpOwogICAgcGFyYW1zLmFkZCgiRnJvbSIsIFRXSUxJT19BUElfRlJPTSk7CiAgICBwYXJhbXMuYWRkKCJCb2R5IiwgVFdJTElPX0FQSV9CT0RZKTsKICAgIHBhcmFtcy5hZGQoIlRvIiwgVFdJTElPX0FQSV9UTyk7CiAgICByZXF1ZXN0LmdldEVudGl0eSgpLnNldFN0cmluZyhwYXJhbXMudG9TdHJpbmcoKSk7CgogICAgdmFyIHJlc3BvbnNlID0gaHR0cENsaWVudC5zZW5kKHJlcXVlc3QpLmdldCgpOwogICAgdmFyIHJlc3VsdCA9IEpTT04ucGFyc2UocmVzcG9uc2UuZ2V0RW50aXR5KCkuZ2V0U3RyaW5nKCkpOwogICAgLy9sb2dnZXIud2FybmluZygiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBKU09OIHJlc3VsdDogIiArIEpTT04uc3RyaW5naWZ5KHJlc3VsdCkpOwoKICAgIGlmIChyZXN1bHRbImVycm9yX2NvZGUiXSkgewogICAgICAgIG91dGNvbWUgPSAiZmFpbGVkIjsKICAgICAgICBsb2dnZXIuZXJyb3IoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogZXJyb3JfY29kZSA9ICIuY29uY2F0KHJlc3VsdFsiZXJyb3JfY29kZSJdKSk7CiAgICAgICAgbG9nZ2VyLmVycm9yKCJUd2lsaW8gU01TIE9UUCBTZW5kZXI6IGVycm9yX21lc3NhZ2UgPSAiLmNvbmNhdChyZXN1bHRbImVycm9yX21lc3NhZ2UiXSkpOwogICAgICAgIGxvZ2dlci5lcnJvcigiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBvdXRjb21lID0gZmFpbGVkIik7CiAgICB9IGVsc2UgaWYgKHJlc3VsdFsiY29kZSJdKSB7CiAgICAgICAgb3V0Y29tZSA9ICJmYWlsZWQiOwogICAgICAgIGxvZ2dlci5lcnJvcigiVHdpbGlvIFNNUyBPVFAgU2VuZGVyOiBjb2RlID0gIi5jb25jYXQocmVzdWx0WyJjb2RlIl0pKTsKICAgICAgICBsb2dnZXIuZXJyb3IoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogbWVzc2FnZSA9ICIuY29uY2F0KHJlc3VsdFsibWVzc2FnZSJdKSk7CiAgICB9IGVsc2UgewogICAgICAgIG91dGNvbWUgPSAic2VudCI7CiAgICAgICAgbG9nZ2VyLndhcm5pbmcoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogb3V0Y29tZSA9IHNlbnQiKTsKICAgIH0KfSBlbHNlIHsKICAJb3V0Y29tZSA9ICJmYWlsZWQiOwogIAlsb2dnZXIuZXJyb3IoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogTm8gdXNlciBvciBwaG9uZSBudW1iZXIgZm91bmQhIFVzZSAnSWRlbnRpZnkgRXhpc3RpbmcgVXNlciBub2RlIGJlZm9yZSB0aGlzIHNjcmlwdCB0byBwb3B1bGF0ZSB0aGUgdXNlcidzIF9pZCBpbiBzaGFyZWQgc3RhdGUhJyIpOwogIAlsb2dnZXIuZXJyb3IoIlR3aWxpbyBTTVMgT1RQIFNlbmRlcjogb3V0Y29tZSA9IGZhaWxlZCIpOwp9",
+      "default": false,
+      "language": "JAVASCRIPT",
+      "context": "AUTHENTICATION_TREE_DECISION_NODE",
+      "createdBy": "null",
+      "creationDate": 0,
+      "lastModifiedBy": "null",
+      "lastModifiedDate": 0
+    }
+  },
+  "tree": {
+    "_id": "MFAWithSMSOTP",
+    "entryNodeId": "2873135c-9e8e-4476-b8cf-0c9aa55c4f86",
+    "nodes": {
+      "2873135c-9e8e-4476-b8cf-0c9aa55c4f86": {
+        "x": 210,
+        "y": 137,
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "e0646812-2bbc-41e8-b745-b601216f7960"
+        },
+        "nodeType": "InnerTreeEvaluatorNode",
+        "displayName": "Login"
+      },
+      "23413857-0ab9-4a29-8636-5cc83671dd1e": {
+        "x": 687,
+        "y": 162.5,
+        "connections": {
+          "outcome": "3ec93d6f-fc77-4254-b246-edb1aa3b026a"
+        },
+        "nodeType": "OneTimePasswordGeneratorNode",
+        "displayName": "Generate HOTP"
+      },
+      "59f0027c-c10c-4401-8b39-f949b1ae4561": {
+        "x": 1147,
+        "y": 137,
+        "connections": {
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        },
+        "nodeType": "OneTimePasswordCollectorDecisionNode",
+        "displayName": "Validate OTP"
+      },
+      "3ec93d6f-fc77-4254-b246-edb1aa3b026a": {
+        "x": 917,
+        "y": 137,
+        "connections": {
+          "sent": "59f0027c-c10c-4401-8b39-f949b1ae4561",
+          "failed": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "nodeType": "ScriptedDecisionNode",
+        "displayName": "Send OTP"
+      },
+      "e0646812-2bbc-41e8-b745-b601216f7960": {
+        "x": 440,
+        "y": 137,
+        "connections": {
+          "true": "23413857-0ab9-4a29-8636-5cc83671dd1e",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        },
+        "nodeType": "IdentifyExistingUserNode",
+        "displayName": "Identify Existing User"
+      }
+    },
+    "staticNodes": {
+      "startNode": {
+        "x": 70,
+        "y": 155
+      },
+      "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+        "x": 1377,
+        "y": 230
+      },
+      "e301438c-0bd0-429c-ab0c-66126501069a": {
+        "x": 1296,
+        "y": 367
+      }
+    },
+    "uiConfig": {},
+    "identityResource": "managed/alpha_user"
+  }
+}

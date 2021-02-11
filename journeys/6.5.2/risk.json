@@ -1,0 +1,185 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {},
+  "nodes": {
+    "09a477dc-f838-46fd-b930-ac01de5d30b1": {
+      "_id": "09a477dc-f838-46fd-b930-ac01de5d30b1",
+      "distanceUnit": "MILE",
+      "speedLimitModerateRisk": "600",
+      "ipDataStoreField": "carLicense",
+      "countryWhiteList": [],
+      "proxyAttribute": "x-forwarded-for",
+      "nodeMode": "STORE",
+      "speedLimitNoRisk": "15",
+      "proxyMode": "PROXY",
+      "distanceLowRisk": "50",
+      "speedLimitLowRisk": "70",
+      "distanceRisk": false,
+      "distanceNoRisk": "30",
+      "provider": "IPAPI",
+      "distanceModerateRisk": "100",
+      "countryListType": "NONE",
+      "speedLimitRisk": false,
+      "countryBlackList": [],
+      "_type": {
+        "_id": "GeoLocationNode",
+        "name": "GeoLocation Node",
+        "collection": true
+      }
+    },
+    "16d75683-16a5-448a-8a63-cc4cdc5e151d": {
+      "_id": "16d75683-16a5-448a-8a63-cc4cdc5e151d",
+      "tree": "push",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "62103325-b47c-4ce0-9ab6-fcb93d152bf2": {
+      "_id": "62103325-b47c-4ce0-9ab6-fcb93d152bf2",
+      "tree": "simple",
+      "_type": {
+        "_id": "InnerTreeEvaluatorNode",
+        "name": "Inner Tree Evaluator",
+        "collection": true
+      }
+    },
+    "ca2d8837-923e-4bce-b682-1fde64d38b4f": {
+      "_id": "ca2d8837-923e-4bce-b682-1fde64d38b4f",
+      "distanceUnit": "MILE",
+      "speedLimitModerateRisk": "600",
+      "ipDataStoreField": "carLicense",
+      "countryWhiteList": [],
+      "proxyAttribute": "x-forwarded-for",
+      "nodeMode": "STORE",
+      "speedLimitNoRisk": "15",
+      "proxyMode": "PROXY",
+      "distanceLowRisk": "50",
+      "speedLimitLowRisk": "70",
+      "distanceRisk": false,
+      "distanceNoRisk": "30",
+      "provider": "IPAPI",
+      "distanceModerateRisk": "100",
+      "countryListType": "NONE",
+      "speedLimitRisk": false,
+      "countryBlackList": [],
+      "_type": {
+        "_id": "GeoLocationNode",
+        "name": "GeoLocation Node",
+        "collection": true
+      }
+    },
+    "e38176b9-a1a3-4231-9edc-7d235d83a64e": {
+      "_id": "e38176b9-a1a3-4231-9edc-7d235d83a64e",
+      "messageYes": {
+        "en": "OK"
+      },
+      "messageNo": {
+        "en": "Abort"
+      },
+      "message": {
+        "en": "Access Denied!"
+      },
+      "_type": {
+        "_id": "MessageNode",
+        "name": "Message Node",
+        "collection": true
+      }
+    },
+    "e6956bf7-9db1-452f-a2b7-5a99aa8c28fc": {
+      "_id": "e6956bf7-9db1-452f-a2b7-5a99aa8c28fc",
+      "distanceUnit": "MILE",
+      "speedLimitModerateRisk": "600",
+      "ipDataStoreField": "carLicense",
+      "countryWhiteList": [],
+      "proxyAttribute": "x-forwarded-for",
+      "nodeMode": "CHECK",
+      "speedLimitNoRisk": "15",
+      "proxyMode": "PROXY",
+      "distanceLowRisk": "1000",
+      "speedLimitLowRisk": "70",
+      "distanceRisk": true,
+      "distanceNoRisk": "500",
+      "provider": "IPAPI",
+      "distanceModerateRisk": "6000",
+      "countryListType": "NONE",
+      "speedLimitRisk": false,
+      "countryBlackList": [
+        "GB",
+        "US"
+      ],
+      "_type": {
+        "_id": "GeoLocationNode",
+        "name": "GeoLocation Node",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "risk",
+    "nodes": {
+      "e6956bf7-9db1-452f-a2b7-5a99aa8c28fc": {
+        "displayName": "Check Geolocation",
+        "nodeType": "GeoLocationNode",
+        "connections": {
+          "HIGH": "e38176b9-a1a3-4231-9edc-7d235d83a64e",
+          "UNKNOWN": "e38176b9-a1a3-4231-9edc-7d235d83a64e",
+          "NONE": "09a477dc-f838-46fd-b930-ac01de5d30b1",
+          "LOW": "09a477dc-f838-46fd-b930-ac01de5d30b1",
+          "MODERATE": "16d75683-16a5-448a-8a63-cc4cdc5e151d"
+        }
+      },
+      "09a477dc-f838-46fd-b930-ac01de5d30b1": {
+        "displayName": "Track GeoLocation",
+        "nodeType": "GeoLocationNode",
+        "connections": {
+          "NONE": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "LOW": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "MODERATE": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "HIGH": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "UNKNOWN": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "62103325-b47c-4ce0-9ab6-fcb93d152bf2": {
+        "displayName": "Simple",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "e6956bf7-9db1-452f-a2b7-5a99aa8c28fc",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "e38176b9-a1a3-4231-9edc-7d235d83a64e": {
+        "displayName": "Disallow",
+        "nodeType": "MessageNode",
+        "connections": {
+          "true": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "false": "ca2d8837-923e-4bce-b682-1fde64d38b4f"
+        }
+      },
+      "16d75683-16a5-448a-8a63-cc4cdc5e151d": {
+        "displayName": "MFA - Push",
+        "nodeType": "InnerTreeEvaluatorNode",
+        "connections": {
+          "true": "09a477dc-f838-46fd-b930-ac01de5d30b1",
+          "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "ca2d8837-923e-4bce-b682-1fde64d38b4f": {
+        "displayName": "Track GeoLocation",
+        "nodeType": "GeoLocationNode",
+        "connections": {
+          "NONE": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "LOW": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "MODERATE": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "HIGH": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "UNKNOWN": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      }
+    },
+    "entryNodeId": "62103325-b47c-4ce0-9ab6-fcb93d152bf2"
+  }
+}

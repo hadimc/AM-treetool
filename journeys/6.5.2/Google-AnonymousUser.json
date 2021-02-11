@@ -1,0 +1,89 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {},
+  "nodes": {
+    "38c784a4-a284-469f-bde7-8af42d487aec": {
+      "_id": "38c784a4-a284-469f-bde7-8af42d487aec",
+      "successUrl": "https://www.forgerock.com/",
+      "_type": {
+        "_id": "SetSuccessUrlNode",
+        "name": "Success URL",
+        "collection": true
+      }
+    },
+    "5874fef3-d349-4e4f-96dd-a7f58c1e88e1": {
+      "_id": "5874fef3-d349-4e4f-96dd-a7f58c1e88e1",
+      "redirectURI": "http://am.example.com:8080/openam/XUI/",
+      "authenticationIdKey": "sub",
+      "clientId": "aClientId",
+      "basicAuth": true,
+      "cfgAccountProviderClass": "org.forgerock.openam.authentication.modules.common.mapping.DefaultAccountProvider",
+      "scopeString": "profile email",
+      "cfgAccountMapperConfiguration": {
+        "sub": "uid"
+      },
+      "cfgAttributeMappingClasses": [
+        "org.forgerock.openam.authentication.modules.common.mapping.JsonAttributeMapper|iplanet-am-user-alias-list|google-"
+      ],
+      "tokenEndpoint": "https://www.googleapis.com/oauth2/v4/token",
+      "cfgAttributeMappingConfiguration": {
+        "sub": "uid",
+        "name": "cn",
+        "given_name": "givenName",
+        "family_name": "sn",
+        "email": "mail"
+      },
+      "provider": "google",
+      "cfgMixUpMitigation": false,
+      "authorizeEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
+      "cfgAccountMapperClass": "org.forgerock.openam.authentication.modules.common.mapping.JsonAttributeMapper",
+      "userInfoEndpoint": "https://www.googleapis.com/oauth2/v3/userinfo",
+      "saveUserAttributesToSession": true,
+      "_type": {
+        "_id": "SocialGoogleNode",
+        "name": "Social Google",
+        "collection": true
+      }
+    },
+    "66c597ae-f0dd-41de-9c63-f500b811a2d1": {
+      "_id": "66c597ae-f0dd-41de-9c63-f500b811a2d1",
+      "anonymousUserName": "anonymous",
+      "_type": {
+        "_id": "AnonymousUserNode",
+        "name": "Anonymous User Mapping",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "Google-AnonymousUser",
+    "nodes": {
+      "66c597ae-f0dd-41de-9c63-f500b811a2d1": {
+        "nodeType": "AnonymousUserNode",
+        "displayName": "Map to Anonymous User",
+        "connections": {
+          "outcome": "38c784a4-a284-469f-bde7-8af42d487aec"
+        }
+      },
+      "38c784a4-a284-469f-bde7-8af42d487aec": {
+        "nodeType": "SetSuccessUrlNode",
+        "displayName": "Set Success URL",
+        "connections": {
+          "outcome": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      },
+      "5874fef3-d349-4e4f-96dd-a7f58c1e88e1": {
+        "nodeType": "SocialGoogleNode",
+        "displayName": "Google Social Authentication",
+        "connections": {
+          "NO_ACCOUNT": "66c597ae-f0dd-41de-9c63-f500b811a2d1",
+          "ACCOUNT_EXISTS": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0"
+        }
+      }
+    },
+    "entryNodeId": "5874fef3-d349-4e4f-96dd-a7f58c1e88e1"
+  }
+}

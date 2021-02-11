@@ -1,0 +1,85 @@
+
+{
+  "origin": "c864872ea2913a36184af6aaffa81965",
+  "innernodes": {},
+  "nodes": {
+    "811971ad-9f88-4f8a-a637-f4c732de9061": {
+      "_id": "811971ad-9f88-4f8a-a637-f4c732de9061",
+      "yubikeyAttribute": "postalAddress",
+      "_type": {
+        "_id": "YubicoOTPIsRegisteredNode",
+        "name": "Yubico OTP Is Registered",
+        "collection": true
+      }
+    },
+    "a1d17888-c46d-4f11-b0a8-d6618e98d6d2": {
+      "_id": "a1d17888-c46d-4f11-b0a8-d6618e98d6d2",
+      "secretKey": "LC30FUmrqWHQhE1pHbvMN6TMPm0=",
+      "yubikeyAttribute": "postalAddress",
+      "clientId": 46248,
+      "_type": {
+        "_id": "YubicoOTPValidateNode",
+        "name": "Yubico OTP Validate",
+        "collection": true
+      }
+    },
+    "a9a2c07e-713c-461e-af50-ab8afbfe20e3": {
+      "_id": "a9a2c07e-713c-461e-af50-ab8afbfe20e3",
+      "secretKey": "LC30FUmrqWHQhE1pHbvMN6TMPm0=",
+      "yubikeyAttribute": "postalAddress",
+      "clientId": 46248,
+      "_type": {
+        "_id": "YubicoOTPRegisterNode",
+        "name": "Yubico OTP Register",
+        "collection": true
+      }
+    },
+    "babda24d-42de-4d62-af80-789c1cf6f23b": {
+      "_id": "babda24d-42de-4d62-af80-789c1cf6f23b",
+      "_type": {
+        "_id": "UsernameCollectorNode",
+        "name": "Username Collector",
+        "collection": true
+      }
+    }
+  },
+  "scripts": {},
+  "emailTemplates": {},
+  "tree": {
+    "_id": "yubikey",
+    "nodes": {
+      "811971ad-9f88-4f8a-a637-f4c732de9061": {
+        "displayName": "Yubico OTP Is Registered",
+        "nodeType": "YubicoOTPIsRegisteredNode",
+        "connections": {
+          "true": "a1d17888-c46d-4f11-b0a8-d6618e98d6d2",
+          "false": "a9a2c07e-713c-461e-af50-ab8afbfe20e3"
+        }
+      },
+      "a9a2c07e-713c-461e-af50-ab8afbfe20e3": {
+        "displayName": "Yubico OTP Register",
+        "nodeType": "YubicoOTPRegisterNode",
+        "connections": {
+          "outcome": "a1d17888-c46d-4f11-b0a8-d6618e98d6d2"
+        }
+      },
+      "a1d17888-c46d-4f11-b0a8-d6618e98d6d2": {
+        "displayName": "Yubico OTP Validate",
+        "nodeType": "YubicoOTPValidateNode",
+        "connections": {
+          "Success": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+          "Failure": "e301438c-0bd0-429c-ab0c-66126501069a",
+          "Error": "e301438c-0bd0-429c-ab0c-66126501069a"
+        }
+      },
+      "babda24d-42de-4d62-af80-789c1cf6f23b": {
+        "displayName": "Username Collector",
+        "nodeType": "UsernameCollectorNode",
+        "connections": {
+          "outcome": "811971ad-9f88-4f8a-a637-f4c732de9061"
+        }
+      }
+    },
+    "entryNodeId": "babda24d-42de-4d62-af80-789c1cf6f23b"
+  }
+}
