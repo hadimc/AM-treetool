@@ -26,6 +26,7 @@ A shell script to export authentication trees and journeys from any realm to sta
     -P         Prune orphaned configuration artifacts left behind after deleting
                authentication trees. You will be prompted before any destructive
                operations are performed.
+    -z         Login, print versions and tokens, then exit.
 
     Parameters:
     -h url     Access Management host URL, e.g.: https://login.example.com/openam
