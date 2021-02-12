@@ -44,7 +44,7 @@ checkUtils(){
             echo >&2 "Error: neither shasum nor sha256sum installed."
             exit 1
         fi
-        HA256SUM_CMD='sha256sum'
+        SHA256SUM_CMD='sha256sum'
     fi
     if ! [ -x "$(command -v xxd)" ]; then
         echo >&2 "Error: xxd is required but not installed."
@@ -67,16 +67,20 @@ function login {
         AREALM=""
     fi
     shopt -u nocasematch
-    RESPONSE=$(curl -j -c "${COOKIES}" -s -k -i -X POST -H "Accept-API-Version:resource=2.0,protocol=1.0" -H "X-Requested-With:XmlHttpRequest" -H "X-OpenAM-Username:${AMADMIN}" -H "X-OpenAM-Password:${AMPASSWD}" "$AM/json/authenticate")
+    RESPONSE=$(curl -j -c "${COOKIES}" -s -k -i -X POST --data "" -H "Accept-API-Version:resource=2.0,protocol=1.0" -H "X-Requested-With:XmlHttpRequest" -H "X-OpenAM-Username:${AMADMIN}" -H "X-OpenAM-Password:${AMPASSWD}" "$AM/json/authenticate")
     if [[ $RESPONSE = "" ]]; then
         echo 'Error: Check hostname is valid.'
         exit -1
     else
         if [ "null" == "$(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq .tokenId)" ]; then
+            if [ "null" != "$(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq -r '.errorMessage')" ]; then
                 1>&2 echo "Error: $(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq -r '.errorMessage')"
-                exit -1
+            else
+                1>&2 echo "Error: $(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq -r '.message')"
+            fi
+            exit -1
         else
-                AMSESSION=$(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq .tokenId | sed -e 's/\"//g')
+            AMSESSION=$(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq .tokenId | sed -e 's/\"//g')
         fi
     fi
     setVersion
@@ -117,16 +121,29 @@ function getAccessToken() {
 }
 
 function setDeployment {
-    if [[ $VERSION == *"IDCLOUD"* ]] || [[ $VERSION == *"PAAS"* ]]; then
+	VERIFIER=`LC_CTYPE=C && LANG=C && cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1`
+	CHALLENGE=`echo -n $VERIFIER | $SHA256SUM_CMD | cut -d " " -f 1 | xxd -r -p | base64 | tr / _ | tr + - | tr -d =`
+
+    AM_AUTHORIZE=$AM/oauth2/authorize
+    BASE_HOST="${AM%/*}"
+    REDIRECT_URL=$BASE_HOST/platform/appAuthHelperRedirect.html
+
+    STATUS=`curl -o /dev/null -w "%{http_code}" -b "${COOKIES}" -s -k -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "redirect_uri=$REDIRECT_URL&scope=$SCOPES&response_type=$RESPONSE_TYPE&client_id=$CLIENT_ID&csrf=$AMSESSION&decision=allow&code_challenge=$CHALLENGE&code_challenge_method=S256" "$AM_AUTHORIZE"`
+
+    JVERSION=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/serverinfo/version)
+    if [ $STATUS -eq 302 ]; then
         DEPLOYMENT="Cloud"
         1>&2 echo "ForgeRock Identity Cloud detected."
-    elif [[ $VERSION == *"SNAPSHOT"* ]]; then
-        DEPLOYMENT="ForgeOps"
-        CLIENT_ID="idm-admin-ui"
-        1>&2 echo "ForgeOps deployment detected."
     else
-        DEPLOYMENT="Classic"
-        1>&2 echo "Classic deployment detected."
+        CLIENT_ID="idm-admin-ui"
+        STATUS=`curl -o /dev/null -w "%{http_code}" -b "${COOKIES}" -s -k -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "redirect_uri=$REDIRECT_URL&scope=$SCOPES&response_type=$RESPONSE_TYPE&client_id=$CLIENT_ID&csrf=$AMSESSION&decision=allow&code_challenge=$CHALLENGE&code_challenge_method=S256" "$AM_AUTHORIZE"`
+        if [ $STATUS -eq 302 ]; then
+            DEPLOYMENT="ForgeOps"
+            1>&2 echo "ForgeOps deployment detected."
+        else
+            DEPLOYMENT="Classic"
+            1>&2 echo "Classic deployment detected."
+        fi
     fi
 }
 
@@ -848,6 +865,7 @@ function usage {
     1>&2 echo "  -P         Prune orphaned configuration artifacts left behind after deleting"
     1>&2 echo "             authentication trees. You will be prompted before any destructive"
     1>&2 echo "             operations are performed."
+    1>&2 echo "  -z         Login, print versions and tokens, then exit."
     1>&2 echo
     1>&2 echo "Parameters:"
     1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
@@ -876,7 +894,7 @@ function usage {
 
 
 TASK=""
-while getopts "?iIeEldDh:r:u:p:Pf:sSt:o:" arg; do
+while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:" arg; do
     case $arg in
         e) TASK="export";;
         E) TASK="exportAll";;
@@ -888,6 +906,7 @@ while getopts "?iIeEldDh:r:u:p:Pf:sSt:o:" arg; do
         d) TASK="describe";;
         D) TASK="describeAll";;
         P) TASK="prune";;
+        z) TASK="info";;
         h) AM="$OPTARG";;
         r) if [ $OPTARG == "/" ]; then REALM=""; else REALM="$OPTARG"; fi;;
         u) AMADMIN="$OPTARG";;
@@ -1121,6 +1140,25 @@ function checkParams {
             1>&2 echo "  -p passwd  Password."
             exit 1
         fi
+
+    elif [ "$TASK" == 'info' ] ; then
+        # mandatory params:
+        # -h: AM
+        # -u: AMADMIN
+        # -p: AMPASSWD
+        if [[ -z $AM ]] || [[ -z $AMADMIN ]] || [[ -z $AMPASSWD ]] ; then
+            1>&2 echo "Error: Missing mandatory parameter(s) for action/task!"
+            1>&2 echo
+            1>&2 echo "Action/task:"
+            1>&2 echo "  -z         Login, print versions and tokens, then exit."
+            1>&2 echo
+            1>&2 echo "Mandatory Parameters:"
+            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
+            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "  -p passwd  Password."
+            exit 1
+        fi
     fi
 }
 
@@ -1157,6 +1195,10 @@ elif [ "$TASK" == 'describeAll' ] ; then
 elif [ "$TASK" == 'prune' ] ; then
     login
     prune
+elif [ "$TASK" == 'info' ] ; then
+    login
+    1>&2 echo "AM session: $AMSESSION"
+    1>&2 echo "IDM admin token: $ACCESS_TOKEN"
 else
     usage
 fi
