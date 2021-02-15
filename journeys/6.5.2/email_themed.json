@@ -81,7 +81,7 @@
       "sslOption": "SSL",
       "hostPort": 465,
       "emailAttribute": "mail",
-      "fromEmailAddress": "vscheuber@gmail.com",
+      "fromEmailAddress": "sender@gmail.com",
       "smsGatewayImplementationClass": "com.sun.identity.authentication.modules.hotp.DefaultSMSGatewayImpl",
       "username": "vscheuber@gmail.com",
       "_type": {
