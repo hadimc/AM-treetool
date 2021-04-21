@@ -67,20 +67,28 @@ function login {
         AREALM=""
     fi
     shopt -u nocasematch
-    RESPONSE=$(curl -j -c "${COOKIES}" -s -k -i -X POST --data "" -H "Accept-API-Version:resource=2.0,protocol=1.0" -H "X-Requested-With:XmlHttpRequest" -H "X-OpenAM-Username:${AMADMIN}" -H "X-OpenAM-Password:${AMPASSWD}" "$AM/json/authenticate")
+    RESPONSE=$(curl -j -c "${COOKIES}" -s -k -X POST --data "" -H "Accept-API-Version:resource=2.0,protocol=1.0" -H "X-Requested-With:XmlHttpRequest" -H "X-OpenAM-Username:${AMADMIN}" -H "X-OpenAM-Password:${AMPASSWD}" "$AM/json/authenticate")
     if [[ $RESPONSE = "" ]]; then
         echo 'Error: Check hostname is valid.'
         exit -1
     else
-        if [ "null" == "$(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq .tokenId)" ]; then
-            if [ "null" != "$(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq -r '.errorMessage')" ]; then
-                1>&2 echo "Error: $(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq -r '.errorMessage')"
+        if [ "null" != "$(echo $RESPONSE | jq .callbacks)" ]; then
+            # could this be MFA with skip option in ID Cloud?
+            SKIP="$(echo $RESPONSE | jq .callbacks | jq -r '.[] | select(.type == "HiddenValueCallback") | .input | .[] | select(.value | contains("skip-input")) | .value')"
+            if [ ! -z "$SKIP" ]; then
+                DATA=$(echo $RESPONSE | sed -e "s/$SKIP/Skip/g")
+                RESPONSE=$(curl -j -c "${COOKIES}" -s -k -X POST --data "$DATA" -H "Content-Type:application/json" -H "Accept-API-Version:resource=2.0,protocol=1.0" "$AM/json/authenticate")
+            fi
+        fi
+        if [ "null" == "$(echo "$RESPONSE" | jq .tokenId)" ]; then
+            if [ "null" != "$(echo "$RESPONSE" | jq -r '.errorMessage')" ]; then
+                1>&2 echo "Error: $(echo "$RESPONSE" | jq -r '.errorMessage')"
             else
-                1>&2 echo "Error: $(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq -r '.message')"
+                1>&2 echo "Error: $(echo "$RESPONSE" | jq -r '.message')"
             fi
             exit -1
         else
-            AMSESSION=$(echo "$RESPONSE" | sed -n -e 's/^.*{"/{"/p' | jq .tokenId | sed -e 's/\"//g')
+            AMSESSION=$(echo "$RESPONSE" | jq .tokenId | sed -e 's/\"//g')
         fi
     fi
     setVersion
@@ -542,6 +550,11 @@ function exportTree {
                 # Export scripts inside page nodes
                 if itemIn "$PAGENODETYPE" "${SCRIPTNODETYPES[@]}" ; then
                     local SCRIPTID=$(echo $PAGENODE | jq -r '.script')
+                    if [ "$SCRIPTID" == "null" ] || [ "$SCRIPTID" == "" ] ; then
+                        1>&2 echo ""
+                        1>&2 echo "Error processing node with _id: $PAGENODEID"
+                        1>&2 echo "$PAGENODE"
+                    fi
                     local SCRIPT=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$SCRIPTID | jq '. | del (._rev)')
                     EXPORTS=$(echo $EXPORTS "{ \"scripts\": { \"$SCRIPTID\": $SCRIPT } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
                 fi
@@ -565,6 +578,11 @@ function exportTree {
         # Export scripts referenced by nodes in this tree
         if itemIn "$TYPE" "${SCRIPTNODETYPES[@]}" ; then
             local SCRIPTID=$(echo $NODE | jq -r '.script')
+            if [ "$SCRIPTID" == "null" ] || [ "$SCRIPTID" == "" ] ; then
+                1>&2 echo ""
+                1>&2 echo "Error processing node:"
+                1>&2 echo "$NODE"
+            fi
             local SCRIPT=$(curl -b "${COOKIES}" -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" $AM/json${REALM}/scripts/$SCRIPTID | jq '. | del (._rev)')
             1>&2 echo -n "."
             EXPORTS=$(echo $EXPORTS "{ \"scripts\": { \"$SCRIPTID\": $SCRIPT } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
