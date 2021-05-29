@@ -891,8 +891,7 @@ function usage {
     1>&2 echo "  -z         Login, print versions and tokens, then exit."
     1>&2 echo
     1>&2 echo "Options:"
-    1>&2 echo "  -h url     Access Management base URL, e.g.:"
-    1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+    1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
     1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
     1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
     1>&2 echo "             use a tenant admin account if possible."
@@ -964,8 +963,7 @@ function checkParams {
             1>&2 echo "  -i         Import an authentication tree."
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -986,8 +984,7 @@ function checkParams {
             1>&2 echo "  -I         Import all the trees in a realm."
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1007,8 +1004,7 @@ function checkParams {
             1>&2 echo "  -e         Export an authentication tree."
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1029,8 +1025,7 @@ function checkParams {
             1>&2 echo "  -E         Export all the trees in a realm."
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1050,8 +1045,7 @@ function checkParams {
             1>&2 echo "             FileprefixTreename.json."
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1070,8 +1064,7 @@ function checkParams {
             1>&2 echo "  -s         Import all the trees in the current directory"
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1090,8 +1083,7 @@ function checkParams {
             1>&2 echo "  -l         List all the trees in a realm."
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1118,8 +1110,7 @@ function checkParams {
                 1>&2 echo "             otherwise describe the tree export file indicated by -f"
                 1>&2 echo
                 1>&2 echo "Mandatory options:"
-                1>&2 echo "  -h url     Access Management base URL, e.g.:"
-                1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+                1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
                 1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
                 1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
                 1>&2 echo "             use a tenant admin account if possible."
@@ -1140,8 +1131,7 @@ function checkParams {
             1>&2 echo "             otherwise describe the tree export file indicated by -f"
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1159,8 +1149,7 @@ function checkParams {
             1>&2 echo "             otherwise describe the tree export file indicated by -f"
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1186,8 +1175,7 @@ function checkParams {
             1>&2 echo "             operations are performed."
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."
@@ -1207,8 +1195,7 @@ function checkParams {
             1>&2 echo "  -z         Login, print versions and tokens, then exit."
             1>&2 echo
             1>&2 echo "Mandatory options:"
-            1>&2 echo "  -h url     Access Management base URL, e.g.:"
-            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
+            1>&2 echo "  -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
             1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
             1>&2 echo "             use a tenant admin account if possible."

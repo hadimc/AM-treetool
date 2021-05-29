@@ -32,8 +32,7 @@ A shell script to export authentication journeys/trees from any realm to standar
     -z         Login, print versions and tokens, then exit.
 
     Options:
-    -h url     Access Management base URL, e.g.:
-               https://openam-volker-dev.forgeblocks.com/am
+    -h url     Access Management base URL, e.g.: https://cdk.iam.example.com/am
     -u user    Username to login with. Must be an admin user with appropriate
                rights to manage authentication journeys/trees. For Identity Cloud
                use a tenant admin account if possible.
@@ -64,50 +63,39 @@ A shell script to export authentication journeys/trees from any realm to standar
 
 ## Examples:
 1) Export a journey/tree called "Login" from the root realm to a file:  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -e -t Login -f Login.json
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -e -t Login -f Login.json
   
 2) Import a journey/tree into a sub-realm from a file and rename it to "LoginTree":  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -i -t LoginTree -f Login.json -r /parent/child
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -i -t LoginTree -f Login.json -r /parent/child
   
 3) Export all the journeys/trees from the root realm to a file:  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -E -f trees.json
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -E -f trees.json
   
 4) Export all the journeys/trees from the root realm to separate files in the current directory. 
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -S  
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -S  
   
 5) Import all the journeys/trees from a file into a sub-realm:  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -I -f trees.json -r /parent/child
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -I -f trees.json -r /parent/child
   
 6) Import all the trees(*.json) from the currrent directory into a sub-realm:  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -s -r /parent/child  
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -s -r /parent/child  
   
 7) Clone a journey/tree "Login" to "ClonedLogin":  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -e -t Login | ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -i ClonedLogin  
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -e -t Login | ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -i ClonedLogin  
   
 8) Copy a journey/tree "Login" to "ClonedLogin" in another ForgeRock Identity Platform instance:  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -e -t Login | ./amtree.sh -h https://another.domain.org/openam -u amadmin -p password -i ClonedLogin  
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -e -t Login | ./amtree.sh -h https://another.domain.org/openam -u amadmin -p 'password' -i ClonedLogin  
   
 9) Copy all the journeys/trees from one realm in one ForgeRock Identity Platform instance to another realm in another instance:  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -E -r /internal | ./amtree.sh -h https://another.domain.org/openam -u amadmin -p password -I -r /external  
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -E -r /internal | ./amtree.sh -h https://another.domain.org/openam -u amadmin -p 'password' -I -r /external  
   
 10) Pruning:  
-    % ./amtree.sh -P -h https://openam.example.com/openam -u amadmin -p password  
-    % ./amtree.sh -P -h https://openam.example.com/openam -r /parent/child -u amadmin -p password  
-  
-   Sample output during pruning:  
-       
-    Analyzing authentication nodes configuration artifacts...  
-       
-    Total:    74  
-    Orphaned: 37  
-     
-    Do you want to prune (permanently delete) all the orphaned node instances? (N/y): y  
-    Pruning.....................................  
-    Done.
+    % ./amtree.sh -P -h https://cdk.iam.example.com/am -u amadmin -p 'password'  
+    % ./amtree.sh -P -h https://cdk.iam.example.com/am -r /parent/child -u amadmin -p 'password'
   
 11) List all the journeys/trees from the root realm to a file or the console:  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -l -f trees.txt  
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -l
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -l -f trees.txt  
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -l
   
 12) Describe one specific journey/tree export file or all .json files in the current directory:
     If no file name is supplied, describe all json files in the current directory (from -S)
@@ -116,8 +104,8 @@ A shell script to export authentication journeys/trees from any realm to standar
   
 13) Describe one specific journey or all in the realm:
     If no file name is supplied, describe all json files in the current directory (from -S)
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -d -t tree1
-    % ./amtree.sh -h https://openam.example.com/openam -u amadmin -p password -D
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -d -t tree1
+    % ./amtree.sh -h https://cdk.iam.example.com/am -u amadmin -p 'password' -D
 
 ## Limitations:
 This tool can't export passwords (including API secrets, etc), so these need to be manually added back to an imported tree or alternatively, export the source tree to a file, edit the file to add the missing fields before importing. Any dependencies than scripts and email templates needed for a journey/tree must also exist prior to import, for example inner-trees and custom nodes. Currently, scripts are NOT given a new UUID on import; an option to allow re-UUID-ing scripts might be added in the future.
