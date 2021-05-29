@@ -732,9 +732,8 @@ function importAllTrees {
     fi
 
     # get list of already installed trees for dependency and conflict resolution
-    local jinstalled=$(curl -H "Cookie: $COOKIE_NAME=$AMSESSION" -s -k -X GET --data "{}" -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
-    # local installed=($(echo $jinstalled| jq -r  '.result|.[]|._id'))
-    local installed=()
+    local jinstalled=$(curl -H "Cookie: $COOKIE_NAME=$AMSESSION" -s -k -X GET -H "Accept-API-Version:resource=1.0" $AM/json${REALM}/realm-config/authentication/authenticationtrees/trees?_queryFilter=true)
+
     # using while loop with herestring to create the installed array - this is needed for handling trees with spaces in names
     while read -r line ; do
         installed+=( "${line}" )
@@ -744,7 +743,6 @@ function importAllTrees {
     local unresolved=()
     resolve
 
-    # local trees=$(echo $jtrees | jq -r  '.trees | keys | .[]')
     for tree in ${resolved[@]} ; do
         local jtree=$(echo $jtrees | jq --arg tree $tree '.trees[$tree]')
         echo $jtree | importTree "$tree" "noFile"
@@ -867,44 +865,49 @@ function importTree {
 
 
 function usage {
-    1>&2 echo "Usage: $0 ( -e | -E | -i | -I | -l | -d | -P ) [-h url -u user -p passwd [-r realm -f file -t tree] -o version]"
+    1>&2 echo "Usage: $0 ( -e | -E | -i | -I | -l | -d | -P ) [options]"
     1>&2 echo
-    1>&2 echo "Export/import/list/describe/prune authentication trees."
+    1>&2 echo "Export, import, list, describe, and prune authentication journeys/trees in the"
+    1>&2 echo "ForgeRock Identity Platform. The utility supports Identity Cloud, ForgeOps"
+    1>&2 echo "(CDM/CDK) deployments, and classic deployments."
     1>&2 echo
     1>&2 echo "Actions/tasks (must specify only one):"
-    1>&2 echo "  -e         Export an authentication tree."
-    1>&2 echo "  -E         Export all the trees in a realm."
-    1>&2 echo "  -S         Export all the trees in a realm as separate files of the format"
-    1>&2 echo "             FileprefixTreename.json."
-    1>&2 echo "  -s         Import all the trees in the current directory"
-    1>&2 echo "  -i         Import an authentication tree."
-    1>&2 echo "  -I         Import all the trees in a realm."
-    1>&2 echo "  -d         If -h is supplied, describe the indicated tree in the realm,"
-    1>&2 echo "             otherwise describe the tree export file indicated by -f"
-    1>&2 echo "  -D         If -h is supplied, describe all the trees in the realm, otherwise"
-    1>&2 echo "             describe all tree export files in the current directory"
-    1>&2 echo "  -l         List all the trees in a realm."
+    1>&2 echo "  -e         Export an authentication journey/tree."
+    1>&2 echo "  -E         Export all the journeys/trees in a realm."
+    1>&2 echo "  -S         Export all the journeys/trees in a realm as separate files of the"
+    1>&2 echo "             format <journey/tree name>.json."
+    1>&2 echo "  -s         Import all the journeys/trees in the current directory (*.json)."
+    1>&2 echo "  -i         Import an authentication journey/tree."
+    1>&2 echo "  -I         Import all the journeys/trees in a realm."
+    1>&2 echo "  -d         If -h is supplied, describe the journey/tree indicated by -t, or"
+    1>&2 echo "             all journeys/trees in the realm if no -t is supplied, otherwise"
+    1>&2 echo "             describe the journey/tree export file indicated by -f."
+    1>&2 echo "  -D         If -h is supplied, describe all the journeys/trees in the realm,"
+    1>&2 echo "             otherwise describe *.json files in the current directory."
+    1>&2 echo "  -l         List all the journeys/trees in a realm."
     1>&2 echo "  -P         Prune orphaned configuration artifacts left behind after deleting"
-    1>&2 echo "             authentication trees. You will be prompted before any destructive"
+    1>&2 echo "             authentication trees. You will be prompted before any irreversible"
     1>&2 echo "             operations are performed."
     1>&2 echo "  -z         Login, print versions and tokens, then exit."
     1>&2 echo
-    1>&2 echo "Parameters:"
-    1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+    1>&2 echo "Options:"
+    1>&2 echo "  -h url     Access Management base URL, e.g.:"
+    1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
     1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-    1>&2 echo "             rights to manages authentication trees."
+    1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+    1>&2 echo "             use a tenant admin account if possible."
     1>&2 echo "  -p passwd  Password."
     1>&2 echo "  -r realm   Realm. If not specified, the root realm '/' is assumed. Specify"
     1>&2 echo "             realm as '/parent/child'. Note the leading '/'!"
     1>&2 echo "  -f file    If supplied, export/list to and import from <file> instead of"
     1>&2 echo "             stdout and stdin. For -S, use as file prefix"
-    1>&2 echo "  -t tree    Specify the name of an authentication tree. Mandatory in"
+    1>&2 echo "  -t tree    Specify the name of an authentication journey/tree. Mandatory in"
     1>&2 echo "             combination with the following actions: -i, -e, -d."
-    1>&2 echo "  -o version Override version. Notation: \"X.Y.Z\" e.g. \"6.5.2\""
+    1>&2 echo "  -o version Override version. Notation: \"X.Y.Z\" e.g. \"7.1.0\""
     1>&2 echo "             Override detected version with any version. This is helpful in"
-    1>&2 echo "             order to check if trees in one environment would be compatible "
+    1>&2 echo "             order to check if journeys in one environment would be compatible"
     1>&2 echo "             running in another environment (e.g. in preparation of migrating"
-    1>&2 echo "             from on-prem to ForgeRock Identity Cloud PaaS. Only impacts these"
+    1>&2 echo "             from on-prem to ForgeRock Identity Cloud. Only impacts these"
     1>&2 echo "             actions: -d, -l."
     1>&2 echo "  -m type    Override auto-detected deployment type. Valid values for type:"
     1>&2 echo "             Classic  - A classic Access Management-only deployment with custom"
@@ -912,9 +915,9 @@ function usage {
     1>&2 echo "             Cloud    - A ForgeRock Identity Cloud environment."
     1>&2 echo "             ForgeOps - A ForgeOps CDK or CDM deployment."
     1>&2 echo "             The detected or provided deployment type controls certain behavior"
-    1>&2 echo "             like obtaining an Identity Management admin token or not to export/"
-    1>&2 echo "             import referenced email templates or how to walk through the tenant"
-    1>&2 echo "             admin login flow of Identity Cloud and skip MFA."
+    1>&2 echo "             like obtaining an Identity Management admin token or not and whether"
+    1>&2 echo "             to export/import referenced email templates or how to walk through"
+    1>&2 echo "             the tenant admin login flow of Identity Cloud and skip MFA."
     1>&2 echo
     1>&2 echo "Run $0 without any parameters to display this usage information."
     exit 0
@@ -960,13 +963,15 @@ function checkParams {
             1>&2 echo "Action/task:"
             1>&2 echo "  -i         Import an authentication tree."
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
-            1>&2 echo "  -t tree    Specify the name of an authentication tree. Mandatory in combination"
-            1>&2 echo "             with the following actions: -i, -e, -d."
+            1>&2 echo "  -t tree    Specify the name of an authentication journey/tree. Mandatory in"
+            1>&2 echo "             combination with the following actions: -i, -e, -d."
             exit 1
         fi
     elif [ "$TASK" == 'importAll' ] ; then
@@ -980,10 +985,12 @@ function checkParams {
             1>&2 echo "Action/task:"
             1>&2 echo "  -I         Import all the trees in a realm."
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             exit 1
         fi
@@ -999,13 +1006,15 @@ function checkParams {
             1>&2 echo "Action/task:"
             1>&2 echo "  -e         Export an authentication tree."
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
-            1>&2 echo "  -t tree    Specify the name of an authentication tree. Mandatory in combination"
-            1>&2 echo "             with the following actions: -i, -e, -d."
+            1>&2 echo "  -t tree    Specify the name of an authentication journey/tree. Mandatory in"
+            1>&2 echo "             combination with the following actions: -i, -e, -d."
             exit 1
         fi
     elif [ "$TASK" == 'exportAll' ] ; then
@@ -1019,10 +1028,12 @@ function checkParams {
             1>&2 echo "Action/task:"
             1>&2 echo "  -E         Export all the trees in a realm."
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             exit 1
         fi
@@ -1038,10 +1049,12 @@ function checkParams {
             1>&2 echo "  -S         Export all the trees in a realm as separate files of the format"
             1>&2 echo "             FileprefixTreename.json."
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             exit 1
         fi
@@ -1056,10 +1069,12 @@ function checkParams {
             1>&2 echo "Action/task:"
             1>&2 echo "  -s         Import all the trees in the current directory"
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             exit 1
         fi
@@ -1074,10 +1089,12 @@ function checkParams {
             1>&2 echo "Action/task:"
             1>&2 echo "  -l         List all the trees in a realm."
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             exit 1
         fi
@@ -1100,10 +1117,12 @@ function checkParams {
                 1>&2 echo "  -d         If -h is supplied, describe the indicated tree in the realm,"
                 1>&2 echo "             otherwise describe the tree export file indicated by -f"
                 1>&2 echo
-                1>&2 echo "Mandatory Parameters:"
-                1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+                1>&2 echo "Mandatory options:"
+                1>&2 echo "  -h url     Access Management base URL, e.g.:"
+                1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
                 1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-                1>&2 echo "             rights to manages authentication trees."
+                1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+                1>&2 echo "             use a tenant admin account if possible."
                 1>&2 echo "  -p passwd  Password."
                 exit 1
             fi
@@ -1120,10 +1139,12 @@ function checkParams {
             1>&2 echo "  -d         If -h is supplied, describe the indicated tree in the realm,"
             1>&2 echo "             otherwise describe the tree export file indicated by -f"
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             1>&2 echo "  -f file    If supplied, export/list to and import from <file> instead of stdout"
             1>&2 echo "             and stdin. For -S, use as file prefix"
@@ -1137,10 +1158,12 @@ function checkParams {
             1>&2 echo "  -d         If -h is supplied, describe the indicated tree in the realm,"
             1>&2 echo "             otherwise describe the tree export file indicated by -f"
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             1>&2 echo "  -f file    If supplied, export/list to and import from <file> instead of stdout"
             1>&2 echo "             and stdin. For -S, use as file prefix"
@@ -1162,10 +1185,12 @@ function checkParams {
             1>&2 echo "             authentication trees. You will be prompted before any destructive"
             1>&2 echo "             operations are performed."
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             exit 1
         fi
@@ -1181,10 +1206,12 @@ function checkParams {
             1>&2 echo "Action/task:"
             1>&2 echo "  -z         Login, print versions and tokens, then exit."
             1>&2 echo
-            1>&2 echo "Mandatory Parameters:"
-            1>&2 echo "  -h url     Access Management host URL, e.g.: https://login.example.com/openam"
+            1>&2 echo "Mandatory options:"
+            1>&2 echo "  -h url     Access Management base URL, e.g.:"
+            1>&2 echo "             https://openam-volker-dev.forgeblocks.com/am"
             1>&2 echo "  -u user    Username to login with. Must be an admin user with appropriate"
-            1>&2 echo "             rights to manages authentication trees."
+            1>&2 echo "             rights to manage authentication journeys/trees. For Identity Cloud"
+            1>&2 echo "             use a tenant admin account if possible."
             1>&2 echo "  -p passwd  Password."
             exit 1
         fi
