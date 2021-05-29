@@ -23,7 +23,7 @@ ACCESS_TOKEN=""
 FILE=""
 VERSION=""
 COOKIE_NAME=""
-DEPLOYMENT="Classic"
+DEPLOYMENT=""
 ORIGIN_CMD="md5<<<\$AM\$REALM"
 SHA256SUM_CMD='shasum -a 256'
 
@@ -95,9 +95,11 @@ function login {
         setDeployment
     fi
     # if cloud or forgeops deployment, also get an IDM session
-    if [ "$DEPLOYMENT" == "Cloud" ] || [ "$DEPLOYMENT" == "ForgeOps" ] ; then
+    shopt -s nocasematch
+    if [[ "$DEPLOYMENT" == "Cloud" ]] || [[ "$DEPLOYMENT" == "ForgeOps" ]] ; then
         getAccessToken
     fi
+    shopt -u nocasematch
 }
 
 function getAccessToken() {
@@ -113,9 +115,9 @@ function getAccessToken() {
     # 1>&2 echo "authz code: $CODE"
 
     # FIDC uses a different oauth2 client config than forgeops
-    if [ "$DEPLOYMENT" == "Cloud" ] ; then
+    if [[ "$DEPLOYMENT" == "Cloud" ]] ; then
         TOKENS=`curl -s -X POST --user "$CLIENT_ID:$CLIENT_PASSWORD" -H "Cache-Control: no-cache" -d "grant_type=authorization_code&code=$CODE&redirect_uri=$REDIRECT_URL&code_verifier=$VERIFIER" -k "$AM_ACCESS_TOKEN" | jq .`
-    elif [ "$DEPLOYMENT" == "ForgeOps" ] ; then
+    elif [[ "$DEPLOYMENT" == "ForgeOps" ]] ; then
         TOKENS=`curl -s -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Cache-Control: no-cache" -d "client_id=$CLIENT_ID&grant_type=authorization_code&code=$CODE&redirect_uri=$REDIRECT_URL&code_verifier=$VERIFIER" -k "$AM_ACCESS_TOKEN" | jq .`
     fi
     ACCESS_TOKEN=`echo $TOKENS | jq -r .access_token`
@@ -519,7 +521,6 @@ function exportTree {
     local TREENAME=${1//\"} # remove double quotes which were inserted
     TREENAMEFORURL=$(echo "$TREENAME" | sed 's/ /%20/g') # replace any spaces with %20
     local URL="$AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$TREENAMEFORURL"
-    echo "Fetching $URL"
     local TREE=$(curl -H "Cookie: $COOKIE_NAME=$AMSESSION" -f -s -k -X GET -H "Accept-API-Version:resource=1.0" -H "X-Requested-With:XmlHttpRequest" "$URL" | jq -c '. | del (._rev)')
     if [ -z "$TREE" ]; then
         1>&2 echo "Failed to find tree: $TREENAME"
@@ -894,10 +895,7 @@ function usage {
     1>&2 echo "             rights to manages authentication trees."
     1>&2 echo "  -p passwd  Password."
     1>&2 echo "  -r realm   Realm. If not specified, the root realm '/' is assumed. Specify"
-    1>&2 echo "             realm as '/parent/child'. If using 'amadmin' as the user, login"
-    1>&2 echo "             will happen against the root realm but subsequent operations will"
-    1>&2 echo "             be performed in the realm specified. For all other users, login"
-    1>&2 echo "             and subsequent operations will occur against the realm specified."
+    1>&2 echo "             realm as '/parent/child'. Note the leading '/'!"
     1>&2 echo "  -f file    If supplied, export/list to and import from <file> instead of"
     1>&2 echo "             stdout and stdin. For -S, use as file prefix"
     1>&2 echo "  -t tree    Specify the name of an authentication tree. Mandatory in"
@@ -908,6 +906,15 @@ function usage {
     1>&2 echo "             running in another environment (e.g. in preparation of migrating"
     1>&2 echo "             from on-prem to ForgeRock Identity Cloud PaaS. Only impacts these"
     1>&2 echo "             actions: -d, -l."
+    1>&2 echo "  -m type    Override auto-detected deployment type. Valid values for type:"
+    1>&2 echo "             Classic  - A classic Access Management-only deployment with custom"
+    1>&2 echo "                        layout and configuration."
+    1>&2 echo "             Cloud    - A ForgeRock Identity Cloud environment."
+    1>&2 echo "             ForgeOps - A ForgeOps CDK or CDM deployment."
+    1>&2 echo "             The detected or provided deployment type controls certain behavior"
+    1>&2 echo "             like obtaining an Identity Management admin token or not to export/"
+    1>&2 echo "             import referenced email templates or how to walk through the tenant"
+    1>&2 echo "             admin login flow of Identity Cloud and skip MFA."
     1>&2 echo
     1>&2 echo "Run $0 without any parameters to display this usage information."
     exit 0
@@ -915,7 +922,7 @@ function usage {
 
 
 TASK=""
-while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:" arg; do
+while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:m:" arg; do
     case $arg in
         e) TASK="export";;
         E) TASK="exportAll";;
@@ -935,6 +942,7 @@ while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:" arg; do
         f) FILE="$OPTARG";;
         t) TREENAME="$OPTARG";;
         o) OVERSION="$OPTARG";;
+        m) DEPLOYMENT="$OPTARG";;
         \?) echo "Unknown option: $arg"; usage;;
    esac
 done
@@ -1181,6 +1189,37 @@ function checkParams {
             exit 1
         fi
     fi
+
+    # Validate -r realm param
+    if [[ $REALM != "" ]] ; then
+        if [[ $REALM != /* ]] ; then
+            1>&2 echo "Error: Invalid realm: '$REALM'! Must start with a leading '/'"
+            1>&2 echo
+            1>&2 echo "  -r realm   Realm. If not specified, the root realm '/' is assumed. Specify"
+            1>&2 echo "             realm as '/parent/child'. Note the leading '/'!"
+            exit 1
+        fi
+    fi
+
+    # Validate -m type param
+    if [[ $DEPLOYMENT != "" ]] ; then
+        shopt -s nocasematch
+        if [[ "$DEPLOYMENT" != "Cloud" ]] && [[ "$DEPLOYMENT" != "ForgeOps" ]] && [[ "$DEPLOYMENT" != "Classic" ]] ; then
+            1>&2 echo "Error: Invalid deployment type: '$DEPLOYMENT'!"
+            1>&2 echo
+            1>&2 echo "  -m type    Override auto-detected deployment type. Valid values for type:"
+            1>&2 echo "             Classic  - A classic Access Management-only deployment with custom"
+            1>&2 echo "                        layout and configuration."
+            1>&2 echo "             Cloud    - A ForgeRock Identity Cloud environment."
+            1>&2 echo "             ForgeOps - A ForgeOps CDK or CDM deployment."
+            1>&2 echo "             The detected or provided deployment type controls certain behavior"
+            1>&2 echo "             like obtaining an Identity Management admin token or not and whether"
+            1>&2 echo "             to export/import referenced email templates or how to walk through"
+            1>&2 echo "             the tenant admin login flow of Identity Cloud and skip MFA."
+            shopt -u nocasematch
+            exit 1
+        fi
+    fi
 }
 
 checkParams
@@ -1218,8 +1257,12 @@ elif [ "$TASK" == 'prune' ] ; then
     prune
 elif [ "$TASK" == 'info' ] ; then
     login
-    1>&2 echo "AM session: $AMSESSION"
-    1>&2 echo "IDM admin token: $ACCESS_TOKEN"
+    if [ ! -z "$AMSESSION" ] ; then
+        1>&2 echo "AM session: $AMSESSION"
+    fi
+    if [ ! -z "$ACCESS_TOKEN" ] ; then
+        1>&2 echo "IDM admin token: $ACCESS_TOKEN"
+    fi
 else
     usage
 fi
