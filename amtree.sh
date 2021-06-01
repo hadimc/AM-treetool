@@ -26,6 +26,7 @@ COOKIE_NAME=""
 DEPLOYMENT=""
 ORIGIN_CMD="md5<<<\$AM\$REALM"
 SHA256SUM_CMD='shasum -a 256'
+REUUID="true"
 
 checkUtils(){
     if ! [ -x "$(command -v md5)" ]; then
@@ -806,8 +807,12 @@ function importTree {
     do
         INNERNODE=$(echo $TREES | jq --arg node $each '.innernodes[$node]')
         TYPE=$(echo $INNERNODE | jq -r '._type | ._id')
-        NEWUUID=$(echo `uuidgen` | awk '{print tolower($0)}')
-        HASHMAP=$(echo $HASHMAP | jq --arg old $each --arg new $NEWUUID '.map[$old]=$new')
+        if [ "$REUUID" == "true" ]; then
+            NEWUUID=$(echo `uuidgen` | awk '{print tolower($0)}')
+            HASHMAP=$(echo $HASHMAP | jq --arg old $each --arg new $NEWUUID '.map[$old]=$new')
+        else
+            NEWUUID=$(echo $INNERNODE | jq -r '._id')
+        fi
         NEWNODE=$(echo $INNERNODE | jq ._id=\"${NEWUUID}\")
         1>&2 echo -n "."
         #1>&2 echo "Importing inner node $TYPE ($NEWUUID)"
@@ -825,11 +830,15 @@ function importTree {
     do
         NODE=$(echo $TREES | jq --arg node $each '.nodes[$node]')
         TYPE=$(echo $NODE | jq -r '._type | ._id')
-        NEWUUID=$(echo `uuidgen` | awk '{print tolower($0)}')
-        HASHMAP=$(echo $HASHMAP | jq --arg old $each --arg new $NEWUUID '.map[$old]=$new')
+        if [ "$REUUID" == "true" ]; then
+            NEWUUID=$(echo `uuidgen` | awk '{print tolower($0)}')
+            HASHMAP=$(echo $HASHMAP | jq --arg old $each --arg new $NEWUUID '.map[$old]=$new')
+        else
+            NEWUUID=$(echo $NODE | jq -r '._id')
+        fi
         NEWNODE=$(echo $NODE | jq ._id=\"${NEWUUID}\")
         # Need to re-UUID page nodes
-        if [ "$TYPE" == "PageNode" ]; then
+        if [[ "$TYPE" == "PageNode" && "$REUUID" == "true" ]]; then      
             MAP=$(echo $HASHMAP| jq -r  '.map | keys | .[]' )
             for each in $MAP
             do
@@ -852,12 +861,14 @@ function importTree {
     ID="$1"
     IDFORURL=$(echo "$ID" | sed 's/ /%20/g') # replace any spaces with %20
     TREE=$(echo $TREE | jq --arg id "$ID" '._id=$id')
-    MAP=$(echo $HASHMAP| jq -r  '.map | keys | .[]' )
-    for each in $MAP
-    do
-        NEW=$(echo $HASHMAP | jq -r --arg NODE "$each" '.map[$NODE]')
-        TREE=$(echo $TREE | sed -e 's/'$each'/'$NEW'/g')
-    done
+    if [ "$REUUID" == "true" ]; then
+        MAP=$(echo $HASHMAP| jq -r  '.map | keys | .[]' )
+        for each in $MAP
+        do
+            NEW=$(echo $HASHMAP | jq -r --arg NODE "$each" '.map[$NODE]')
+            TREE=$(echo $TREE | sed -e 's/'$each'/'$NEW'/g')
+        done
+    fi
     #1>&2 echo "Importing tree $1"
     curl -H "Cookie: $COOKIE_NAME=$AMSESSION" -s -k -X PUT --data "$TREE" -H "Accept-API-Version:resource=1.0" -H "Content-Type:application/json" -H "X-Requested-With:XmlHttpRequest" "$AM/json${REALM}/realm-config/authentication/authenticationtrees/trees/$IDFORURL" > /dev/null
     1>&2 echo "."
@@ -917,6 +928,8 @@ function usage {
     1>&2 echo "             like obtaining an Identity Management admin token or not and whether"
     1>&2 echo "             to export/import referenced email templates or how to walk through"
     1>&2 echo "             the tenant admin login flow of Identity Cloud and skip MFA."
+    1>&2 echo "  -n         No Re-UUID, i.e., import does not generate new UUIDs for (inner)nodes." 
+    1>&2 echo "             Used to update existing trees/nodes instead of cloneing them."
     1>&2 echo
     1>&2 echo "Run $0 without any parameters to display this usage information."
     exit 0
@@ -924,7 +937,7 @@ function usage {
 
 
 TASK=""
-while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:m:" arg; do
+while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:m:n" arg; do
     case $arg in
         e) TASK="export";;
         E) TASK="exportAll";;
@@ -945,6 +958,7 @@ while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:m:" arg; do
         t) TREENAME="$OPTARG";;
         o) OVERSION="$OPTARG";;
         m) DEPLOYMENT="$OPTARG";;
+        n) REUUID="false";;
         \?) echo "Unknown option: $arg"; usage;;
    esac
 done
