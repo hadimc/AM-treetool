@@ -60,7 +60,7 @@ SCOPES="fr:idm:*"
 RESPONSE_TYPE="code"
 
 function login {
-    COOKIE_NAME=$(curl -s $AM/json/serverinfo/* | jq -r .cookieName)
+    COOKIE_NAME=$(curl -k -s $AM/json/serverinfo/* | jq -r .cookieName)
     AREALM=$REALM
     shopt -s nocasematch
     if [[ $AMADMIN == "amadmin" ]]; then
