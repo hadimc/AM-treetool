@@ -27,6 +27,7 @@ DEPLOYMENT=""
 ORIGIN_CMD="md5<<<\$AM\$REALM"
 SHA256SUM_CMD='shasum -a 256'
 REUUID="true"
+EXPORT_EMAILS="true"
 
 checkUtils(){
     if ! [ -x "$(command -v md5)" ]; then
@@ -570,7 +571,7 @@ function exportTree {
                 # But if somebody were to create such a node and were to follow the same implementation
                 # and property naming pattern as the existing email template referencing nodes, then
                 # this code will handle such a node properly.
-                if [ "$DEPLOYMENT" == "Cloud" ] || [ "$DEPLOYMENT" == "ForgeOps" ] ; then
+                if [[ "$EXPORT_EMAILS" == "true" && ( "$DEPLOYMENT" == "Cloud" || "$DEPLOYMENT" == "ForgeOps" ) ]] ; then
                     if itemIn "$PAGENODETYPE" "${EMAILTEMPLATENODETYPES[@]}" ; then
                         local TEMPLATEID=$(echo $PAGENODE | jq -r '.emailTemplateName')
                         local TEMPLATE=$(curl -s -k -X GET -H "Authorization: Bearer $ACCESS_TOKEN" $BASE_HOST/openidm/config/emailTemplate/$TEMPLATEID | jq '. | del (._rev)')
@@ -593,7 +594,7 @@ function exportTree {
             EXPORTS=$(echo $EXPORTS "{ \"scripts\": { \"$SCRIPTID\": $SCRIPT } }" | jq -s 'reduce .[] as $item ({}; . * $item)')
         fi
         # If this is FIDC or ForgeOps, export email templates referenced by nodes in this tree
-        if [ "$DEPLOYMENT" == "Cloud" ] || [ "$DEPLOYMENT" == "ForgeOps" ] ; then
+        if [[ "$EXPORT_EMAILS" == "true" && ( "$DEPLOYMENT" == "Cloud" || "$DEPLOYMENT" == "ForgeOps" ) ]] ; then
             if itemIn "$TYPE" "${EMAILTEMPLATENODETYPES[@]}" ; then
                 local TEMPLATEID=$(echo $NODE | jq -r '.emailTemplateName')
                 local TEMPLATE=$(curl -s -k -X GET -H "Authorization: Bearer $ACCESS_TOKEN" $BASE_HOST/openidm/config/emailTemplate/$TEMPLATEID | jq '. | del (._rev)')
@@ -930,6 +931,7 @@ function usage {
     1>&2 echo "             the tenant admin login flow of Identity Cloud and skip MFA."
     1>&2 echo "  -n         No Re-UUID, i.e., import does not generate new UUIDs for (inner)nodes." 
     1>&2 echo "             Used to update existing trees/nodes instead of cloneing them."
+    1>&2 echo " --no-email  Do not export/import email templates." 
     1>&2 echo
     1>&2 echo "Run $0 without any parameters to display this usage information."
     exit 0
@@ -937,8 +939,18 @@ function usage {
 
 
 TASK=""
-while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:m:n" arg; do
+while getopts "?iIeEldDzh:r:u:p:Pf:sSt:o:m:n-:" arg; do
     case $arg in
+        -)
+            case "${OPTARG}" in
+                no-email)
+                    EXPORT_EMAILS="false";;
+                *)
+                    if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
+                        echo "Unknown option --${OPTARG}" >&2
+                    fi
+                    ;;
+            esac;;
         e) TASK="export";;
         E) TASK="exportAll";;
         s) TASK="importTreesSeparately";;

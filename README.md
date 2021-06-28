@@ -58,6 +58,9 @@ A shell script to export authentication journeys/trees from any realm to standar
                like obtaining an Identity Management admin token or not and whether
                to export/import referenced email templates or how to walk through
                the tenant admin login flow of Identity Cloud and skip MFA.
+    -n         No Re-UUID, i.e., import does not generate new UUIDs for (inner)nodes.
+               Used to update existing trees/nodes instead of cloneing them.
+    --no-email Do not export/import email templates.
 
     Run ./amtree.sh without any parameters to display this usage information.
 
